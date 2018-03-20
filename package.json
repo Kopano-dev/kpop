@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "private": false,
-  "side-effects": false,
+  "private": true,
+  "sideEffects": false,
   "files": [
     "es",
     "lib",
