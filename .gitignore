@@ -17,3 +17,6 @@ yarn-error.log*
 
 # tar
 *.tgz
+
+# styleguide
+/styleguide
