@@ -16,9 +16,9 @@
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
-    "test": "nwb test-react",
-    "test:coverage": "nwb test-react --coverage",
-    "test:watch": "nwb test-react --server",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
     "tarball": "nwb build-react-component --copy-files --no-demo && yarn pack"
   },
   "dependencies": {
@@ -30,11 +30,16 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
+    "babel-jest": "^23.0.0-alpha.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
     "eslint": "^4.19.0",
     "eslint-plugin-react": "^7.7.0",
+    "jest": "^22.4.2",
     "nwb": "0.21.x",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-test-renderer": "^16.2.0"
   },
   "engines": {
     "node": ">=6.11.0"
