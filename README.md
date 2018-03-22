@@ -1,7 +1,8 @@
 # Kopano REACT UI component library
 
 Kpop is a collection of React UI components and UI uitilites for Kopano Web
-apps.
+apps. All components are located in the `src` directory.
+
 
 ## Using kpop as dependency
 
@@ -30,9 +31,10 @@ For this reason, it is essential that consumers of kpop pin the version number.
 - Patch increases whenever something changes which does not change any
   functionality. It includes only fixes for defects.
 
+
 ## Development
 
-### Add a new component
+### Adding a new component
 
 Adding components to kpop should follow the following simple guidelines.
 
@@ -54,3 +56,19 @@ Adding components to kpop should follow the following simple guidelines.
 6. Eventually the component gets merged into kpop master and released. Then
    update your kpop app branch with the correct dependency of the kpop release
    which contains the new component and create a pull request for your app.
+
+### Minimal requirements for components in kpop
+
+1. Create a new directory in src with the name of your component: `mkdir
+   src/Example`.
+
+2. Create the new component `src/Example/Example.js`
+
+3. Create an `index.js` file which exports the newly created component.
+
+4. Create a test file `src/Example/Example.spec.js`, this should only contain
+   unit tests to be run with jest.
+
+5. Create a readme file `src/Example/README.md` and add a simple demo of the new
+   component. More information about documenting components can be found
+   [here](https://react-styleguidist.js.org/).
