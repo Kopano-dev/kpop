@@ -1,3 +1,5 @@
+/*global module: true*/
+
 module.exports = {
   components: 'src/**/[A-Z]*.js',
   webpackConfig: {
@@ -13,8 +15,8 @@ module.exports = {
         {
           test: /\.css$/,
           loader: 'style-loader!css-loader?modules',
-        }
-      ]
-    }
-  }
-}
+        },
+      ],
+    },
+  },
+};

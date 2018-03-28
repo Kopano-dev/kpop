@@ -13,15 +13,15 @@
     "static"
   ],
   "scripts": {
-    "build": "nwb build-react-component --copy-files",
+    "build": "nwb build-react-component --copy-files --no-demo",
+    "build-demo": "nwb build-demo",
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch",
-    "tarball": "nwb build-react-component --copy-files --no-demo && yarn pack"
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "prop-types": "^15.6.1"
@@ -46,5 +46,19 @@
   },
   "engines": {
     "node": ">=6.11.0"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "dist/.*",
+      "demo/.*"
+    ],
+    "transform": {
+      "^.+\\.js$": "<rootDir>/jest.transform.js"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "jsx"
+    ]
   }
 }

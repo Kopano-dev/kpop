@@ -1,8 +1,26 @@
+PACKAGE_NAME = kpop
+
 # Tools
 
 YARN ?= yarn
 
+# Variables
+
+VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2>/dev/null | sed 's/^v//' || \
+			cat $(CURDIR)/.version 2> /dev/null || echo 0.0.0-unreleased)
+
 # Build
+
+.PHONY: all
+all: build
+
+.PHONY: build
+build:  vendor | src ; $(info building ...)	@
+	@rm -rf build
+
+	REACT_APP_KOPANO_BUILD="${VERSION}" $(YARN) run build
+
+# Tests
 
 .PHONY: test
 test: vendor ; $(info running jest tests ...) @
@@ -27,9 +45,21 @@ vendor: .yarninstall
 	@$(YARN) install --silent
 	@touch $@
 
+# Dist
+
+.PHONY: dist
+dist: ; $(info building dist tarball ...)
+	@mkdir -p "dist/"
+	$(YARN) pack --filename="dist/${PACKAGE_NAME}-${VERSION}.tgz"
+
 .PHONY: clean ; $(info cleaning ...)	@
 clean:
 	$(YARN) cache clean
+	$(YARN) clean
 	@rm -rf node_modules
 	@rm -rf coverage
 	@rm -f .yarninstall
+
+.PHONY: version
+version:
+	@echo $(VERSION)
