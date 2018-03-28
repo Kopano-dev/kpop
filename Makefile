@@ -29,11 +29,11 @@ src/version.js: src/version.js.in
 
 .PHONY: test
 test: vendor ; $(info running jest tests ...) @
-	$(YARN) test
+	$(YARN) jest
 
 .PHONY: test-coverage
 test-coverage: vendor ; $(info running jest tests with coverage ...) @
-	$(YARN) test --coverage --coverageDirectory=coverage
+	$(YARN) jest --coverage --coverageDirectory=coverage
 
 # Documentation
 
