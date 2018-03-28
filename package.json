@@ -8,7 +8,8 @@
   "sideEffects": false,
   "files": [
     "es",
-    "static"
+    "static",
+    ".version"
   ],
   "scripts": {
     "build": "nwb build-react-component --copy-files --no-demo",
@@ -49,8 +50,8 @@
     "modulePathIgnorePatterns": [
       "dist/.*",
       "demo/.*",
-	  "es/.*",
-	  "lib/.*"
+      "es/.*",
+      "lib/.*"
     ],
     "transform": {
       "^.+\\.js$": "<rootDir>/jest.transform.js"

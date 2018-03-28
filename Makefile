@@ -15,10 +15,15 @@ VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2>/dev/null |
 all: build
 
 .PHONY: build
-build:  vendor | src ; $(info building ...)	@
+build:  vendor | src/version.js src ; $(info building ...)	@
 	@rm -rf build
 
 	REACT_APP_KOPANO_BUILD="${VERSION}" $(YARN) run build
+	echo $(VERSION) > .version
+
+.PHONY: src/version.js
+src/version.js: src/version.js.in
+	@sed "s/0.0.0-no-proper-build/$(VERSION)/g" $< >$@
 
 # Tests
 

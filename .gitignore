@@ -27,3 +27,7 @@ yarn-error.log*
 
 # yarn install
 .yarninstall
+
+# version
+/.version
+/src/version.js
