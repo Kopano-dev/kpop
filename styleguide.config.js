@@ -2,6 +2,7 @@
 
 module.exports = {
   components: 'src/**/[A-Z]*.js',
+  serverHost: 'localhost',
   webpackConfig: {
     module: {
       rules: [
