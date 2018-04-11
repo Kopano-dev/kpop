@@ -12,6 +12,11 @@ pipeline {
 		CI = 'true'
 	}
 	stages {
+		stage('build') {
+			steps {
+				sh 'make'
+			}
+		}
 		stage('Documentation') {
 			when {
 				branch 'master'
