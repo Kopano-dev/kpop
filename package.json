@@ -1,7 +1,6 @@
 {
   "name": "kpop",
   "version": "0.0.5",
-  "main": "lib/index.js",
   "jsnext:main": "es/index.js",
   "module": "es/index.js",
   "private": true,
@@ -13,9 +12,7 @@
   ],
   "scripts": {
     "build": "nwb build-react-component --copy-files --no-demo",
-    "build-demo": "nwb build-demo",
     "clean": "nwb clean-module && nwb clean-demo",
-    "start": "nwb serve-react-demo",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
     "test": "jest --watch"
