@@ -1,8 +1,5 @@
-export { default as Example } from './Example';
-export { default as Loading } from './Loading';
+import { build } from './version';
 
-import * as logos from './logos';
-export { logos };
-
-import * as styles from './styles';
-export { styles };
+export default {
+  buildVersion: build,
+};
