@@ -1,5 +1,0 @@
-const build = '0.0.0-no-proper-build';
-
-export {
-  build,
-};

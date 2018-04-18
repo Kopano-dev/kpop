@@ -15,31 +15,26 @@ VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2>/dev/null |
 all: build
 
 .PHONY: build
-build:  vendor | src/version.js src ; $(info building ...)	@
-	@rm -rf build
-
-	REACT_APP_KOPANO_BUILD="${VERSION}" $(YARN) run build
+build:  vendor ; $(info building ...)	@
+	@rm -rf ./es/
+	REACT_APP_KOPANO_BUILD="${VERSION}" BABEL_ENV=production $(YARN) run build
 	echo $(VERSION) > .version
-
-.PHONY: src/version.js
-src/version.js: src/version.js.in
-	@sed "s/0.0.0-no-proper-build/$(VERSION)/g" $< >$@
 
 # Tests
 
 .PHONY: test
 test: vendor ; $(info running jest tests ...) @
-	$(YARN) jest
+	REACT_APP_KOPANO_BUILD="${VERSION}" BABEL_ENV=test $(YARN) jest --verbose
 
 .PHONY: test-coverage
 test-coverage: vendor ; $(info running jest tests with coverage ...) @
-	$(YARN) jest --coverage --coverageDirectory=coverage
+	REACT_APP_KOPANO_BUILD="${VERSION}" BABEL_ENV=test $(YARN) jest --coverage --coverageDirectory=coverage
 
 # Documentation
 
 .PHONY: doc
 doc: vendor ; $(info generating documentation ...) @
-	$(YARN) styleguide:build
+	REACT_APP_KOPANO_BUILD="${VERSION}" $(YARN) styleguide:build
 
 # Yarn
 

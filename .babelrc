@@ -1,0 +1,35 @@
+{
+  "presets": [
+    "stage-1",
+    "react"
+  ],
+  "plugins": [
+    "transform-object-assign",
+    "transform-inline-environment-variables",
+  ],
+  "env": {
+    "development": {
+      "sourceMaps": "both",
+      "plugins": [
+      ]
+    },
+    "production": {
+      "ignore": [
+        "*.spec.js"
+      ],
+      "plugins": [
+        "transform-dev-warning",
+        "transform-react-constant-elements",
+        "transform-runtime",
+        ["transform-react-remove-prop-types", {
+          "mode": "wrap"
+        }]
+      ]
+    },
+    "test": {
+      "presets": [
+        "env"
+      ]
+    }
+  }
+}
