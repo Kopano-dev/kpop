@@ -43,6 +43,7 @@
     "eslint-plugin-jest": "^21.15.0",
     "eslint-plugin-react": "^7.7.0",
     "jest": "^22.4.3",
+    "jest-junit": "^3.6.0",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -55,10 +56,6 @@
     "node": ">=6.11.0"
   },
   "jest": {
-    "modulePathIgnorePatterns": [
-      "dist/.*",
-      "es/.*"
-    ],
     "moduleFileExtensions": [
       "js",
       "json",

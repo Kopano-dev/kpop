@@ -12,18 +12,25 @@ pipeline {
 		CI = 'true'
 	}
 	stages {
-		stage('lint') {
+		stage('Lint') {
 			steps {
 				sh 'make lint-checkstyle'
 				checkstyle pattern: 'test/tests.eslint.xml', canComputeNew: false, failedTotalAll: '5', unstableTotalAll: '50'
 			}
 		}
-		stage('build') {
+		stage('Build') {
 			steps {
 				sh 'make'
 			}
 		}
-		stage('docs') {
+		stage('Test') {
+			steps {
+				sh 'make test-coverage'
+				junit allowEmptyResults: true, testResults: 'test/jest-test-results.xml'
+				publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'coverage/lcov-report/', reportFiles: 'index.html', reportName: 'Test Coverage Report', reportTitles: ''])
+			}
+		}
+		stage('Docs') {
 			when {
 				branch 'master'
 			}
@@ -32,7 +39,7 @@ pipeline {
 				publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'styleguide/', reportFiles: 'index.html', reportName: 'Documentation', reportTitles: ''])
 			}
 		}
-		stage('dist') {
+		stage('Dist') {
 			when {
 				branch 'master'
 			}
