@@ -5,8 +5,8 @@ export function getHeadersFromConfig(config, user, additionalHeaders) {
   if (user) {
     if (user.access_token && user.token_type) {
       headers.set('Authorization', `${user.token_type} ${user.access_token}`);
-    } else if (user.profile.sub) {
-      // TODO(longsleep): This is for debugging only, remove or put behind a flag.
+    } else if (process.env.NODE_ENV !== 'production' && user.profile.sub) { /*eslint-disable-line no-undef*/
+      // NOTE(longsleep): User pass through is disabled in production builds.
       headers.set('X-Kopano-UserEntryID', user.profile.sub || '');
     }
   }
