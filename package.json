@@ -19,9 +19,10 @@
   },
   "dependencies": {},
   "peerDependencies": {
+    "oidc-client": "^1.4.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "oidc-client": "^1.4.1"
+    "material-ui": "^1.0.0-beta.42"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -45,6 +46,7 @@
     "eslint-plugin-react": "^7.7.0",
     "jest": "^22.4.3",
     "jest-junit": "^3.6.0",
+    "material-ui": "^1.0.0-beta.42",
     "oidc-client": "^1.4.1",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
