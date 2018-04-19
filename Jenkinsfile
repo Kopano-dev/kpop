@@ -12,12 +12,18 @@ pipeline {
 		CI = 'true'
 	}
 	stages {
+		stage('lint') {
+			steps {
+				sh 'make lint-checkstyle'
+				checkstyle pattern: 'test/tests.eslint.xml', canComputeNew: false, failedTotalAll: '5', unstableTotalAll: '50'
+			}
+		}
 		stage('build') {
 			steps {
 				sh 'make'
 			}
 		}
-		stage('Documentation') {
+		stage('docs') {
 			when {
 				branch 'master'
 			}
