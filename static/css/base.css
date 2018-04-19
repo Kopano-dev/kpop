@@ -20,7 +20,6 @@ body {
   font-weight: 400;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: #666;
-  text-shadow: #000 0px 0px 1px;
   transform: translate(-50%, -50%);
 }
 
