@@ -1,0 +1,1 @@
+export const KPOP_RECEIVE_USER = 'KPOP_RECEIVE_USER';

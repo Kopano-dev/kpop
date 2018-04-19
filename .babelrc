@@ -9,6 +9,7 @@
   "plugins": [
     "transform-object-assign",
     "transform-inline-environment-variables",
+    "transform-runtime"
   ],
   "env": {
     "development": {
@@ -23,7 +24,6 @@
       "plugins": [
         "transform-dev-warning",
         "transform-react-constant-elements",
-        "transform-runtime",
         ["transform-react-remove-prop-types", {
           "mode": "wrap"
         }]
