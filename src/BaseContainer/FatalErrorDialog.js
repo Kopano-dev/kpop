@@ -26,9 +26,9 @@ function FatalErrorDialog(props) {
     <Dialog
       fullScreen={fullScreen}
       {...other}
-      aria-labelledby="responsive-dialog-title"
+      aria-labelledby="kpop-fatal-error-dialog-title"
     >
-      <DialogTitle id="responsive-dialog-title">{error.message}</DialogTitle>
+      <DialogTitle id="kpop-fatal-error-dialog-title">{error.message}</DialogTitle>
       <DialogContent>
         <DialogContentText>
           {error.detail}

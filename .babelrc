@@ -9,6 +9,7 @@
   "plugins": [
     "transform-object-assign",
     "transform-inline-environment-variables",
+	"transform-class-properties",
     "transform-runtime"
   ],
   "env": {
