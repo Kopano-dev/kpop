@@ -20,6 +20,10 @@ module.exports = {
           test: /\.css$/,
           loader: 'style-loader!css-loader?modules',
         },
+        {
+          test: /\.svg$/,
+          loader: 'svg-inline-loader',
+        },
       ],
     },
   },
