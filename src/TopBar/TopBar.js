@@ -113,19 +113,43 @@ TopBar.propTypes = {
    */
   classes: PropTypes.object.isRequired,
   /**
+   * The color of the component. It supports those theme colors that make sense for this component.
+   */
+  color: PropTypes.oneOf(['inherit', 'primary', 'secondary', 'default']),
+  /**
+  * The positioning type. The behavior of the different options is described
+  * [here](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Positioning).
+  * Note: `sticky` is not universally supported and will fall back to `static` when unavailable.
+  */
+  position: PropTypes.oneOf(['fixed', 'absolute', 'sticky', 'static']),
+  /**
    * @ignore
    */
   className: PropTypes.string,
-
   /**
-   * The elevation of the component
+   * The elevation of the component.
    */
   elevation: PropTypes.number,
-
+  /**
+   * If `true`, the anchor is visible even when no `onAnchorClick` is set.
+   */
   forceAnchor: PropTypes.bool,
+  /**
+   * Callback fired when the anchor is clicked.
+   */
   onAnchorClick: PropTypes.func,
+  /**
+   * The header label shown on the top bar.
+   */
   title: PropTypes.node,
+  /**
+   * The content of the middle part of the component.
+   */
   centerContent: PropTypes.node,
+  /**
+   * The user defails. When used, the right part of the component includes
+   * a user profile section.
+   */
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
   }),
