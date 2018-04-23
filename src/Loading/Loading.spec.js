@@ -1,24 +1,32 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Loading from './Loading';
 
+import createComponentWithIntl from '../utils/createComponentWithIntl';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Loading/>, div);
+test('Loading renders correctly', () => {
+  const component = createComponentWithIntl(<Loading/>);
+
+  let tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 });
 
-it('renders without crashing error=true', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Loading error={true}/>, div);
+test('Loading renders correctly error=true', () => {
+  const component =  createComponentWithIntl(<Loading error={true}/>);
+
+  let tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 });
 
-it('renders without crashing timedOut=true', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Loading timedOut={true}/>, div);
+test('Loading renders correctly timedOut=true', () => {
+  const component = createComponentWithIntl(<Loading timedOut={true}/>);
+
+  let tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 });
 
-it('renders without crashing pastDelay=true', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Loading pastDelay={true}/>, div);
+test('Loading renders correctly pastDelay=true', () => {
+  const component = createComponentWithIntl(<Loading pastDelay={true}/>);
+
+  let tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 });

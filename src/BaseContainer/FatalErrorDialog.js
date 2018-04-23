@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import {FormattedMessage} from 'react-intl';
+
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Dialog, {
@@ -34,12 +36,18 @@ function FatalErrorDialog(props) {
           {error.detail}
         </DialogContentText>
         <DialogContentText>
-          This is a fatal error and the app needs to be reloaded.
+          <FormattedMessage
+            id="kpop.fatalErrorDialog.message"
+            defaultMessage="This is a fatal error and the app needs to be reloaded."
+          ></FormattedMessage>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={onReloadClick} color="primary" autoFocus>
-          Reload
+          <FormattedMessage
+            id="kpop.fatalErrorDialog.reloadButton.text"
+            defaultMessage="Reload"
+          ></FormattedMessage>
         </Button>
       </DialogActions>
     </Dialog>

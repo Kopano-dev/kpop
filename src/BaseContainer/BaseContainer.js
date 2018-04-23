@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import {FormattedMessage} from 'react-intl';
+
 import renderIf from 'render-if';
 
 import FatalErrorDialog from './FatalErrorDialog';
@@ -34,7 +36,9 @@ function BaseContainer(props) {
         children
       )}
       {ifNotReady(
-        <div id="loader">Initializing...</div>
+        <div id="loader">
+          <FormattedMessage id="kpop.loader.initializing.message" defaultMessage="Initializing..."></FormattedMessage>
+        </div>
       )}
       {ifFatalError(
         <FatalErrorDialog open error={error} onReloadClick={handleReload}/>

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import {FormattedMessage} from 'react-intl';
+
 import Button from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 
@@ -12,12 +14,21 @@ function UpdateAvailableSnack(props) {
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}}
       open
       action={<Button color="secondary" size="small" onClick={onReloadClick}>
-        Reload
+        <FormattedMessage
+          id="kpop.updateAvailableSnack.reloadButton.text"
+          defaultMessage="Reload"
+        ></FormattedMessage>
       </Button>}
       SnackbarContentProps={{
-        'aria-describedby': 'message-id',
+        'aria-describedby': 'kpop-update-available-snack-message-id',
       }}
-      message={<span id="message-id">Update available</span>}
+      message={
+        <span id="kpop-update-available-snack-message-id">
+          <FormattedMessage
+            id="kpop.updateAvailableSnack.message"
+            defaultMessage="Update available"
+          ></FormattedMessage>
+        </span>}
     />
   );
 }

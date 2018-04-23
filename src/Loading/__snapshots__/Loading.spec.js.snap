@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading renders correctly 1`] = `null`;
+
+exports[`Loading renders correctly error=true 1`] = `
+<div
+  id="loader"
+>
+  <span>
+    Error!
+  </span>
+</div>
+`;
+
+exports[`Loading renders correctly pastDelay=true 1`] = `
+<div
+  id="loader"
+>
+  <span>
+    Loading...
+  </span>
+</div>
+`;
+
+exports[`Loading renders correctly timedOut=true 1`] = `
+<div
+  id="loader"
+>
+  <span>
+    Taking a long time...
+  </span>
+</div>
+`;

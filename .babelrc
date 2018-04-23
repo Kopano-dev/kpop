@@ -9,8 +9,11 @@
   "plugins": [
     "transform-object-assign",
     "transform-inline-environment-variables",
-	"transform-class-properties",
-    "transform-runtime"
+    "transform-class-properties",
+    "transform-runtime",
+    ["react-intl", {
+      "messagesDir": "./i18n/"
+    }]
   ],
   "env": {
     "development": {

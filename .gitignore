@@ -31,3 +31,8 @@ yarn-error.log*
 
 # version
 /.version
+
+# i18n
+*.mo
+/i18n/locales/*.json
+/i18n/src

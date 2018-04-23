@@ -1,0 +1,72 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-04-23T17:47:38.202Z\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"MIME-Version: 1.0\n"
+"X-Generator: react-intl-po\n"
+
+
+#: ./i18n/src/Loading/Loading.json
+#. [kpop.loader.error.message]
+#. defaultMessage is:
+#. Error!
+msgctxt "kpop.loader.error.message"
+msgid "Error!"
+msgstr ""
+
+#: ./i18n/src/BaseContainer/BaseContainer.json
+#. [kpop.loader.initializing.message]
+#. defaultMessage is:
+#. Initializing...
+msgctxt "kpop.loader.initializing.message"
+msgid "Initializing..."
+msgstr ""
+
+#: ./i18n/src/Loading/Loading.json
+#. [kpop.loader.loading.message]
+#. defaultMessage is:
+#. Loading...
+msgctxt "kpop.loader.loading.message"
+msgid "Loading..."
+msgstr ""
+
+#: ./i18n/src/BaseContainer/FatalErrorDialog.json
+#. [kpop.fatalErrorDialog.reloadButton.text]
+#. defaultMessage is:
+#. Reload
+msgctxt "kpop.fatalErrorDialog.reloadButton.text"
+msgid "Reload"
+msgstr ""
+
+#: ./i18n/src/BaseContainer/UpdateAvailableSnack.json
+#. [kpop.updateAvailableSnack.reloadButton.text]
+#. defaultMessage is:
+#. Reload
+msgctxt "kpop.updateAvailableSnack.reloadButton.text"
+msgid "Reload"
+msgstr ""
+
+#: ./i18n/src/Loading/Loading.json
+#. [kpop.loader.longtime.message]
+#. defaultMessage is:
+#. Taking a long time...
+msgctxt "kpop.loader.longtime.message"
+msgid "Taking a long time..."
+msgstr ""
+
+#: ./i18n/src/BaseContainer/FatalErrorDialog.json
+#. [kpop.fatalErrorDialog.message]
+#. defaultMessage is:
+#. This is a fatal error and the app needs to be reloaded.
+msgctxt "kpop.fatalErrorDialog.message"
+msgid "This is a fatal error and the app needs to be reloaded."
+msgstr ""
+
+#: ./i18n/src/BaseContainer/UpdateAvailableSnack.json
+#. [kpop.updateAvailableSnack.message]
+#. defaultMessage is:
+#. Update available
+msgctxt "kpop.updateAvailableSnack.message"
+msgid "Update available"
+msgstr ""
