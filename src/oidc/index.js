@@ -12,7 +12,7 @@ export default function initialize(appBaseURL=window.location.href, handleError=
         // OIDC silent refresh code - Dynaimically imported to keep the initial
         // javascript chunk size small. This is supported by webpack and the spec
         // can be found at https://github.com/tc39/proposal-dynamic-import.
-        import('./silent-refresh').then(m => {
+        import(/* webpackChunkName: "kpop-oidc-silent-refresh" */ './silent-refresh').then(m => {
           m.signinSilentCallback().catch(err => {
             reject(err);
           });
