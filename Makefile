@@ -15,10 +15,14 @@ VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2>/dev/null |
 all: build
 
 .PHONY: build
-build:  vendor ; $(info building ...)	@
+build:  vendor | i18n ; $(info building ...)	@
 	@rm -rf ./es/
 	REACT_APP_KOPANO_BUILD="${VERSION}" BABEL_ENV=production $(YARN) run build
 	echo $(VERSION) > .version
+
+.PHONY: i18n
+i18n: vendor
+	@$(MAKE) -C i18n
 
 .PHONY: lint
 lint: vendor ; $(info running eslint ...)	@

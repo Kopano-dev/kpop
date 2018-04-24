@@ -5,6 +5,12 @@ MSGMERGE ?= msgmerge
 
 # Translations
 
+.PHONY: build
+build: json
+
+.PHONY: extract
+extract: pot
+
 .PHONY: pot
 pot:
 	$(YARN) rip json2pot './i18n/src/**/*.json' \
