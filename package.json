@@ -18,7 +18,10 @@
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "crc32": "^0.2.2",
+    "hsv-rgb": "^1.0.0"
+  },
   "peerDependencies": {
     "material-ui": "^1.0.0-beta.42",
     "material-ui-icons": "^1.0.0-beta.36",
