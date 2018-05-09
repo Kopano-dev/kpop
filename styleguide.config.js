@@ -1,4 +1,7 @@
 /*global module: true*/
+/*global __dirname*/
+
+const path = require('path');
 
 module.exports = {
   components: 'src/**/[A-Z]*.js',
@@ -26,5 +29,8 @@ module.exports = {
         },
       ],
     },
+  },
+  styleguideComponents: {
+    Wrapper: path.join(__dirname, 'styleguide.wrapper'),
   },
 };
