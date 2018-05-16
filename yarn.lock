@@ -97,9 +97,9 @@
   dependencies:
     csstype "^2.2.0"
 
-"@vxna/mini-html-webpack-template@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@vxna/mini-html-webpack-template/-/mini-html-webpack-template-0.1.6.tgz#64225d564da5fe610b6445523c245572923c00b8"
+"@vxna/mini-html-webpack-template@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@vxna/mini-html-webpack-template/-/mini-html-webpack-template-0.1.7.tgz#2a8270e513ee14f395cc17c2ce22ced383c45d22"
   dependencies:
     common-tags "^1.7.2"
 
@@ -4769,9 +4769,9 @@ markdown-table@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/markdown-table/-/markdown-table-1.1.1.tgz#4b3dd3a133d1518b8ef0dbc709bf2a1b4824bc8c"
 
-markdown-to-jsx@^6.4.1:
-  version "6.6.1"
-  resolved "https://registry.yarnpkg.com/markdown-to-jsx/-/markdown-to-jsx-6.6.1.tgz#858b37f8a92526b1f3407593ff77c95927720bef"
+markdown-to-jsx@^6.6.3:
+  version "6.6.3"
+  resolved "https://registry.yarnpkg.com/markdown-to-jsx/-/markdown-to-jsx-6.6.3.tgz#ccb248236257d4116822b8994fbf9606d045d187"
   dependencies:
     prop-types "^15.5.10"
     unquote "^1.1.0"
@@ -6222,11 +6222,11 @@ react-scrollbar-size@^2.0.2:
     react-event-listener "^0.5.1"
     stifle "^1.0.2"
 
-react-styleguidist@^7.0.5:
-  version "7.0.5"
-  resolved "https://registry.yarnpkg.com/react-styleguidist/-/react-styleguidist-7.0.5.tgz#b98b245e47a71101ac637e24a4123e0a341bd5a5"
+react-styleguidist@^7.0.14:
+  version "7.0.14"
+  resolved "https://registry.yarnpkg.com/react-styleguidist/-/react-styleguidist-7.0.14.tgz#ac6c6e5e7c80cb0e021aebe86f6609122a776a94"
   dependencies:
-    "@vxna/mini-html-webpack-template" "^0.1.6"
+    "@vxna/mini-html-webpack-template" "^0.1.7"
     acorn "^5.5.3"
     ast-types "^0.11.3"
     buble "^0.19.3"
@@ -6262,7 +6262,7 @@ react-styleguidist@^7.0.5:
     loader-utils "^1.1.0"
     lodash "^4.17.5"
     lowercase-keys "^1.0.1"
-    markdown-to-jsx "^6.4.1"
+    markdown-to-jsx "^6.6.3"
     mini-html-webpack-plugin "^0.2.3"
     minimist "^1.2.0"
     ora "^2.0.0"
