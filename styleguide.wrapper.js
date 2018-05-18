@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { IntlProvider } from 'react-intl';
+import { MuiThemeProvider } from 'material-ui/styles';
+
+import { defaultTheme as theme } from './src/theme';
 
 class Wrapper extends Component {
   render() {
     const { children } = this.props;
 
     return (
-      <IntlProvider locale="en">{children}</IntlProvider>
+      <MuiThemeProvider theme={theme}>
+        <IntlProvider locale="en">{children}</IntlProvider>
+      </MuiThemeProvider>
     );
   }
 }

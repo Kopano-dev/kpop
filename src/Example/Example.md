@@ -1,5 +1,5 @@
-Example example:
+Example:
 
 ```js
-<Example pizza="🍕" />
+<Example />
 ```

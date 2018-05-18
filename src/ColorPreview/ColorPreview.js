@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import createPalette from 'material-ui/styles/createPalette';
 
-import blue from 'material-ui/colors/blue';
-
 export const styles = () => {
   return {
     root: {
+      tableLayout: 'fixed',
+      verticalAlign: 'top',
       fontFamily: 'monospace',
       display: 'inline-block',
       borderCollapse: 'collapse',
@@ -22,7 +22,12 @@ export const styles = () => {
     colorRow: {
       '&> td': {
         padding: 10,
+        width: 155,
+        textAlign: 'right',
+      },
+      '&> td:first-child': {
         width: 90,
+        textAlign: 'left',
       },
     },
   };
@@ -30,21 +35,42 @@ export const styles = () => {
 
 class ColorPreview extends React.Component {
   static getDerivedStateFromProps(nextProps) {
-    const palette = createPalette({
-      primary: nextProps.color,
-      type: nextProps.type,
-      contrastThreshold: nextProps.contrastThreshold,
-      tonalOffset: nextProps.tonalOffset,
-    });
+    let title = nextProps.title;
+    let palette;
+    if (nextProps.palette) {
+      palette = nextProps.palette;
+    } else {
+      palette = nextProps.theme.palette;
+      if (!title) {
+        title = `theme ${nextProps.paletteColor}`;
+      }
+    }
+    let color = palette[nextProps.paletteColor];
+    if (nextProps.color) {
+      if (!nextProps.palette) {
+        palette = createPalette({
+          primary: nextProps.color,
+          type: nextProps.type,
+          contrastThreshold: nextProps.contrastThreshold,
+          tonalOffset: nextProps.tonalOffset,
+        });
+        if (!nextProps.title) {
+          title = 'color';
+        }
+      }
+      color = nextProps.color;
+    }
 
     return {
+      title,
       palette,
+      color,
     };
   }
 
   render() {
-    const { classes, color, title } = this.props;
-    const { palette } = this.state;
+    const { classes } = this.props;
+    const { title, palette, color } = this.state;
 
     return (
       <table className={classes.root}>
@@ -65,8 +91,7 @@ class ColorPreview extends React.Component {
 }
 
 ColorPreview.defaultProps = {
-  title: 'color preview',
-  color: blue,
+  paletteColor: 'primary',
 
   type: 'light',
   contrastThreshold: 3,
@@ -75,13 +100,16 @@ ColorPreview.defaultProps = {
 
 ColorPreview.propTypes = {
   classes: PropTypes.object.isRequired,
+  theme: PropTypes.object,
 
   title: PropTypes.string.isRequired,
-  color: PropTypes.object.isRequired,
+  color: PropTypes.object,
+  palette: PropTypes.object,
+  paletteColor: PropTypes.oneOf(['primary', 'secondary', 'text', 'grey', 'error', 'common', 'background']),
 
-  type: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['light', 'dark']),
   contrastThreshold: PropTypes.number.isRequired,
   tonalOffset: PropTypes.number.isRequired,
 };
 
-export default withStyles(styles)(ColorPreview);
+export default withStyles(styles, {withTheme: true})(ColorPreview);
