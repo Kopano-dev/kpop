@@ -5,6 +5,8 @@ const path = require('path');
 
 module.exports = {
   components: 'src/**/[A-Z]*.js',
+  skipComponentsWithoutExample: true,
+  showUsage: true,
   serverHost: 'localhost',
   webpackConfig: {
     module: {
@@ -25,7 +27,7 @@ module.exports = {
         },
         {
           test: /\.svg$/,
-          loader: 'svg-inline-loader',
+          loader: 'url-loader',
         },
       ],
     },

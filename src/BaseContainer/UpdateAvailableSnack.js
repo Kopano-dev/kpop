@@ -7,12 +7,12 @@ import Button from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 
 function UpdateAvailableSnack(props) {
-  const { onReloadClick } = props;
+  const { anchorOrigin, onReloadClick, open } = props;
 
   return (
     <Snackbar
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}}
-      open
+      anchorOrigin={anchorOrigin}
+      open={open}
       action={<Button color="secondary" size="small" onClick={onReloadClick}>
         <FormattedMessage
           id="kpop.updateAvailableSnack.reloadButton.text"
@@ -33,11 +33,30 @@ function UpdateAvailableSnack(props) {
   );
 }
 
+UpdateAvailableSnack.defaultProps = {
+  open: true,
+  anchorOrigin: {vertical: 'bottom', horizontal: 'left'},
+};
+
 UpdateAvailableSnack.propTypes = {
+  /**
+   * The anchor of the `Snackbar`.
+   */
+  anchorOrigin: PropTypes.shape({
+    horizontal: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.oneOf(['left', 'center', 'right']),
+    ]),
+    vertical: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(['top', 'center', 'bottom'])]),
+  }),
   /**
    * Callback fired when the reload button is clicked.
    */
   onReloadClick: PropTypes.func.isRequired,
+  /**
+   * If true, `Snackbar` is open.
+   */
+  open: PropTypes.bool,
 };
 
 export default UpdateAvailableSnack;
