@@ -13,7 +13,7 @@ function UpdateAvailableSnack(props) {
     <Snackbar
       anchorOrigin={anchorOrigin}
       open={open}
-      action={<Button color="secondary" size="small" onClick={onReloadClick}>
+      action={<Button color="primary" size="small" onClick={onReloadClick}>
         <FormattedMessage
           id="kpop.updateAvailableSnack.reloadButton.text"
           defaultMessage="Reload"
