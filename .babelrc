@@ -17,6 +17,9 @@
   ],
   "env": {
     "development": {
+      "ignore": [
+        "*.spec.js"
+      ],
       "sourceMaps": "both",
       "plugins": [
       ]

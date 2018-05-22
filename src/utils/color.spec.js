@@ -1,12 +1,7 @@
-import { generateColorRGB, firstLetters, isLatin } from './index'
+import { generateColorRGB } from './color';
 
-
-const firstname = 'John'
-const lastname = 'Doe'
-
-test('firstLetters', () => {
-  expect(firstLetters(firstname, lastname)).toEqual('JD');
-});
+const firstname = 'John';
+const lastname = 'Doe';
 
 test('generateColorRGB', () => {
   expect(generateColorRGB(firstname, lastname)).toMatch(new RegExp('rgb\\(\\d{2,3}, \\d{2,3}, \\d{2,3}\\)'));
@@ -21,9 +16,4 @@ test('generateColorRGB is different for a different name', () => {
   const rgb1 = generateColorRGB(firstname + lastname);
   const rgb2 = generateColorRGB(firstname + lastname + 'e');
   expect(rgb1).not.toEqual(rgb2);
-});
-
-test('isLatin', () => {
-  expect(isLatin(firstname)).toEqual(true);
-  expect(isLatin('警察')).toEqual(false);
 });

@@ -1,75 +1,83 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import Avatar from 'material-ui/Avatar';
 import PersonIcon from 'material-ui-icons/Person';
 import { withStyles } from 'material-ui/styles';
-import { firstLetters, generateColorRGB, isLatin, splitDisplayName } from '../utils';
 
-
-export const userShape =  PropTypes.shape({
-  // /users API endpoint
-  // TODO(jelle): email address, if displayName is empty?
-  givenName: PropTypes.string,
-  surname: PropTypes.string,
-  displayName: PropTypes.string,
-});
+import { userShape } from '../shapes';
+import { getInitials } from '../utils/initials';
+import { generateColorRGB } from '../utils/color';
 
 const styles = theme => ({
-  colorDefault: {
+  root: {
     color: theme.palette.text.primary,
+    fontSize: theme.typography.pxToRem(18),
   },
 });
 
+/**
+ * Personas are used for rendering an individual's avatar.
+ * @since 0.3.0
+ */
 export class Persona extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: {
-      },
-    };
-  }
-
-  shouldComponentUpdate() {
-    return false;
-  }
-
-  static changed(nextProps, prevState) {
-    const displayName = nextProps.user.displayName === prevState.user.displayName;
-    const givenName = 'givenName' in nextProps.user ? nextProps.user.givenName === prevState.user.givenName: false;
-    const surname = 'surname' in nextProps.user ? nextProps.user.surname === prevState.user.surname: false;
-    return displayName || givenName || surname;
-  }
+  state = {};
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (Persona.changed(nextProps, prevState)) {
+    const { user, allowPhoneInitials, theme } = nextProps;
+
+    if (prevState.user &&
+        user.displayName === prevState.user.displayName &&
+        user.givenName === prevState.user.givenName &&
+        user.surname === prevState.user.surname &&
+        user.id === prevState.user.id) {
       return null;
     }
 
-    let givenName, surname;
-    if ('givenName' in nextProps.user && 'surname' in nextProps.user) {
-      givenName = nextProps.user.givenName;
-      surname = nextProps.user.surname;
-    } else {
-      [givenName, surname] = splitDisplayName(nextProps.user.displayName);
-    }
-
+    const displayName = user.displayName ? user.displayName : `${user.givenName} ${user.surname}`;
     return {
-      color: generateColorRGB(nextProps.user.displayName),
-      letters: firstLetters(givenName, surname),
+      user,
+      displayName,
+      backgroundColor: generateColorRGB(`${user.id}-${displayName}`),
+      initials: getInitials(displayName, theme.direction === 'rtl', !!allowPhoneInitials),
     };
   }
 
-  render() {
-    const { classes } = this.props;
-    const { color, letters } = this.state;
+  shouldComponentUpdate(nextProps, nextState) {
+    const { backgroundColor, initials } = this.state;
 
-    const latin = isLatin(letters);
+    if (nextState.backgroundColor !== backgroundColor ||
+        nextState.initials !== initials) {
+      return true;
+    }
+
+    return false;
+  }
+
+  render() {
+    const {
+      classes,
+      className: classNameProp,
+
+      user, // eslint-disable-line
+      theme, // eslint-disable-line
+      allowPhoneInitials, // eslint-disable-line
+      ...other
+    } = this.props;
+    const { backgroundColor, initials } = this.state;
+
+    const className = classNames(
+      classes.root,
+      classNameProp,
+    );
 
     return (
       <Avatar
-        classes={{colorDefault: classes.colorDefault}}
-        style={{backgroundColor: color}}>{latin ? letters: <PersonIcon/>}
+        className={className}
+        style={{backgroundColor}}
+        {...other}
+      >{initials ? initials: <PersonIcon/>}
       </Avatar>
     );
   }
@@ -77,24 +85,23 @@ export class Persona extends React.Component {
 
 Persona.propTypes = {
   /**
-   * The user object must contain givenName, surname, displayName.
+   * Useful to extend the style applied to components.
    */
-  user: userShape,
+  classes: PropTypes.object.isRequired,
+  /**
+   * @ignore
+   */
+  className: PropTypes.string,
 
   /**
-   * The image url, if provided shows the image of the user.
+   * The user object. Will be used to consistently select the color and label.
    */
-  image: PropTypes.string,
+  user: userShape.isRequired,
 
   /**
-   * The presence of the user.
+   * Wether or not to allow phone numbers as initials.
    */
-  presence: PropTypes.number,
-
-  /*
-   * CSS Classes to override colorDefault.
-   */
-  classes: PropTypes.object,
+  allowPhoneInitials: PropTypes.bool,
 };
 
-export default withStyles(styles)(Persona);
+export default withStyles(styles, {withTheme: true, name: 'KpopPersona'})(Persona);
