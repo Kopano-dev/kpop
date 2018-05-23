@@ -1,7 +1,8 @@
 import { showErrorInLoader } from '../utils';
-
 import { isSilentRefreshRequest } from './utils';
 import { setup } from './settings';
+
+export { profileAsUserShape } from './utils';
 
 export default function initialize(appBaseURL=window.location.href, handleError=true) {
   return setup(appBaseURL).then(() => {

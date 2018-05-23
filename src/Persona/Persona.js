@@ -10,6 +10,7 @@ import { styled } from '../styled';
 import { userShape } from '../shapes';
 import { getInitials } from '../utils/initials';
 import { generateColorRGB } from '../utils/color';
+import { getDisplayName } from '../DisplayName/utils';
 
 const styles = theme => ({
   root: {
@@ -36,7 +37,7 @@ export class Persona extends React.Component {
       return null;
     }
 
-    const displayName = user.displayName ? user.displayName : `${user.givenName} ${user.surname}`;
+    const displayName = getDisplayName(user);
     return {
       user,
       displayName,

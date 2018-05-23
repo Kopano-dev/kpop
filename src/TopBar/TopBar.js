@@ -11,6 +11,8 @@ import MenuIcon from 'material-ui-icons/Menu';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 
 import { KopanoLogo } from '../logos';
+import { userShape } from '../shapes';
+import DisplayName from '../DisplayName';
 
 export const styles = theme => {
   return {
@@ -81,7 +83,7 @@ function TopBar(props) {
       >
         <AccountCircle />
       </IconButton>
-      <span className={classes.userDisplayName}>{user.name}</span>
+      <DisplayName className={classes.userDisplayName} user={user}/>
     </div>
   ) : null;
 
@@ -150,9 +152,7 @@ TopBar.propTypes = {
    * The user defails. When used, the right part of the component includes
    * a user profile section.
    */
-  user: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-  }),
+  user: userShape,
 };
 
 TopBar.defaultProps = {

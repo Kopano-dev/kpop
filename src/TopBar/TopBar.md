@@ -6,7 +6,7 @@ TopBar example with all features enabled:
 	forceAnchor
 	position="static"
 	user={{
-		name: "Freddy Mauser",
+		displayName: "Freddy Mauser",
 	}}
 	centerContent={<span>Center content</span>}
 >
