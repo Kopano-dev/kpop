@@ -6,6 +6,7 @@ import Avatar from 'material-ui/Avatar';
 import PersonIcon from 'material-ui-icons/Person';
 import { withStyles } from 'material-ui/styles';
 
+import { styled } from '../styled';
 import { userShape } from '../shapes';
 import { getInitials } from '../utils/initials';
 import { generateColorRGB } from '../utils/color';
@@ -72,13 +73,18 @@ export class Persona extends React.Component {
       classNameProp,
     );
 
+    const ColoredAvatar = styled(Avatar)({
+      colorDefault: {
+        backgroundColor,
+      },
+    });
+
     return (
-      <Avatar
+      <ColoredAvatar
         className={className}
-        style={{backgroundColor}}
         {...other}
       >{initials ? initials: <PersonIcon/>}
-      </Avatar>
+      </ColoredAvatar>
     );
   }
 }
