@@ -34,6 +34,8 @@ export const styles = () => {
 };
 
 class ColorPreview extends React.Component {
+  state = {};
+
   static getDerivedStateFromProps(nextProps) {
     let title = nextProps.title;
     let palette;
@@ -102,7 +104,7 @@ ColorPreview.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object,
 
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   color: PropTypes.object,
   palette: PropTypes.object,
   paletteColor: PropTypes.oneOf(['primary', 'secondary', 'text', 'grey', 'error', 'common', 'background']),
