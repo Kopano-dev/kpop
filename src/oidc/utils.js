@@ -16,6 +16,7 @@ export function profileAsUserShape(profile) {
     displayName: profile.name,
     givenName: profile.given_name,
     surname: profile.family_name,
+    mail: profile.email,
     id: profile.sub,
   };
 }

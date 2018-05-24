@@ -14,6 +14,10 @@ export const userPropTypes = {
    */
   surname: PropTypes.string,
   /**
+   * The user's email address.
+   */
+  mail: PropTypes.string,
+  /**
    * The users unique id.
    */
   id: PropTypes.string,
