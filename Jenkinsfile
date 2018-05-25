@@ -31,9 +31,6 @@ pipeline {
 			}
 		}
 		stage('Docs') {
-			when {
-				branch 'master'
-			}
 			steps {
 				sh 'make doc'
 				publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'styleguide/', reportFiles: 'index.html', reportName: 'Documentation', reportTitles: ''])
