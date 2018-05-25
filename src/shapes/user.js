@@ -18,9 +18,14 @@ export const userPropTypes = {
    */
   mail: PropTypes.string,
   /**
-   * The users unique id.
+   * The users globally unique id.
    */
-  id: PropTypes.string,
+  guid: PropTypes.string,
+
+  /**
+   * Callback function which triggers sign out.
+   */
+  signoutHandler: PropTypes.func,
 };
 
 const userShape = PropTypes.shape({

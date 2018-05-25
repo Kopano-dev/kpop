@@ -41,7 +41,7 @@ export class Persona extends React.Component {
     return {
       user,
       displayName,
-      backgroundColor: generateColorRGB(`${user.id}-${displayName}`),
+      backgroundColor: generateColorRGB(`${user.guid}-${displayName}`),
       initials: getInitials(displayName, theme.direction === 'rtl', !!allowPhoneInitials),
     };
   }

@@ -21,7 +21,7 @@ function Personas(props) {
 	  <Persona user={{givenName: 'John', surname: 'Doee', displayName: 'John Doee'}}/>
 	  <Persona user={{givenName: '尾田', surname: '栄一郎', displayName: '尾田 栄一郎'}}/>
 	  <Persona user={{displayName: 'Hans Meiser'}}/>
-	  <Persona user={{displayName: 'Hans Meiser', id: '1'}}/>
+	  <Persona user={{displayName: 'Hans Meiser', guid: '1'}}/>
 	  <Persona user={{givenName: 'Max', surname: 'Mustermann'}}/>
 	  <Persona user={{displayName: '+31 (0) 15 750 4712'}}/>
 	  <Persona user={{displayName: '+31 (0) 15 750 4712'}} allowPhoneInitials/>

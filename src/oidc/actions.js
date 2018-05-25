@@ -1,23 +1,22 @@
-/* eslint-disable no-console */
-
-import { UserManager } from 'oidc-client';
-
 import { KPOP_RECEIVE_USER } from './constants';
 import { settings } from './settings';
-import { isCallbackRequest } from './utils';
+import { isSigninCallbackRequest, isPostSignoutCallbackRequest } from './utils';
+import { newUserManager, getUserManager, setUserManagerMetadata } from './usermanager';
 
-let userManager = null;
-
-export function receiveUser(user) {
+export function receiveUser(user, userManager) {
   return {
     type: KPOP_RECEIVE_USER,
     user,
+    userManager,
   };
 }
 
 export function fetchUser() {
+  let userManager = getUserManager();
+
   return async (dispatch) => {
     if (userManager === null) {
+      // Create OIDC userManager.
       userManager = await dispatch(createUserManager(settings.callbackURL));
     }
 
@@ -26,33 +25,45 @@ export function fetchUser() {
         return user;
       }
 
-      if (isCallbackRequest()) {
+      if (isSigninCallbackRequest()) {
         return userManager.signinRedirectCallback().then(user => {
-          console.info('completed authentication', user); // eslint-disable-line no-console
+          console.info('oidc completed authentication', user); // eslint-disable-line no-console
           return user;
         }).catch((err) => {
-          console.error('failed to complete authentication', err); // eslint-disable-line no-console
+          console.error('oidc failed to complete authentication', err); // eslint-disable-line no-console
           return null;
         }).then(user => {
           // FIXME(longsleep): This relies on exclusive hash access.
           window.location.hash = '';
           return user;
         });
+      } else if (isPostSignoutCallbackRequest()) {
+        return userManager.signoutRedirectCallback().then(resp => {
+          console.info('oidc complete signout', resp); // eslint-disable-line no-console
+          return null;
+        }).catch((err) => {
+          console.error('oidc failed to complete signout', err); // eslint-disable-line no-console
+          return null;
+        }).then(user => {
+          // FIXME(longsleep): This relies on exclusive hash access.
+          window.location.hash = '';
+          setTimeout(() => {
+            // NOTE(longsleep): For now redirect ot sigin page after logout.
+            userManager.signinRedirect();
+          }, 0);
+          return user;
+        });
       } else {
-        // Not on the callback, so redirect to sign in.
+        // Not a callback, so redirect to sign in.
         userManager.signinRedirect();
         return null;
       }
     }).then(async user => {
-      await dispatch(receiveUser(user));
+      await dispatch(receiveUser(user, userManager));
 
       return user;
     });
   };
-}
-
-function _createUserManager(config) {
-  return new UserManager(config);
 }
 
 export function createUserManager() {
@@ -64,58 +75,61 @@ export function createUserManager() {
       iss = 'https://' + window.location.host;
     }
 
-    const mgr = _createUserManager({
-      authority: config.oidc.iss,
+    const mgr = newUserManager({
+      authority: iss,
       client_id: config.oidc.clientID, // eslint-disable-line camelcase
-      redirect_uri: settings.callbackURL, // eslint-disable-line camelcase
+      redirect_uri: settings.redirectURL, // eslint-disable-line camelcase
+      post_logout_redirect_uri: settings.postLogoutRedirectURL, // eslint-disable-line camelcase
+      silent_redirect_uri: settings.silentRedirectURL,  // eslint-disable-line camelcase
       response_type: 'id_token token', // eslint-disable-line camelcase
       scope: 'openid profile email konnect/uuid',
       loadUserInfo: true,
       accessTokenExpiringNotificationTime: 120,
-      silent_redirect_uri: settings.silentRedirectURL,  // eslint-disable-line camelcase
       automaticSilentRenew: true,
       includeIdTokenInSilentRenew: true,
     });
     mgr.events.addAccessTokenExpiring(() => {
-      console.log('token expiring');
+      console.debug('oidc token expiring'); // eslint-disable-line no-console
     });
     mgr.events.addAccessTokenExpired(() => {
-      console.log('access token expired');
+      console.warn('oidc access token expired'); // eslint-disable-line no-console
       mgr.removeUser();
     });
     mgr.events.addUserLoaded(async user => {
-      console.log('user loaded', user);
-      await dispatch(receiveUser(user));
+      console.debug('oidc user loaded', user); // eslint-disable-line no-console
+      await dispatch(receiveUser(user, mgr));
     });
     mgr.events.addUserUnloaded(async () => {
-      console.log('user unloaded');
-      await dispatch(receiveUser(null));
-      await dispatch(fetchUser());
+      console.debug('oidc user unloaded'); // eslint-disable-line no-console
+      await dispatch(receiveUser(null, mgr));
     });
     mgr.events.addSilentRenewError(err => {
-      console.log('user silent renew error', err.error);
+      console.warn('oidc user silent renew error', err.error); // eslint-disable-line no-console
       if (err && err.error === 'interaction_required') {
         // Handle the hopeless.
         return;
       }
 
       setTimeout(() => {
-        console.log('retrying silent renew');
+        console.debug('oidc retrying silent renew'); // eslint-disable-line no-console
         mgr.getUser().then(user => {
-          console.log('retrying silent renew of user', user);
+          console.debug('oidc retrying silent renew of user', user); // eslint-disable-line no-console
           if (user && !user.expired) {
             mgr.startSilentRenew();
           } else {
-            console.log('remove user as silent renew has failed to renew in time');
+            console.warn('oidc remove user as silent renew has failed to renew in time'); // eslint-disable-line no-console
             mgr.removeUser();
           }
         });
       }, 5000);
     });
     mgr.events.addUserSignedOut(() => {
-      console.log('user signed out');
+      console.info('oidc user signed out at OP'); // eslint-disable-line no-console
     });
 
-    return Promise.resolve(mgr);
+    return mgr.metadataService.getMetadata().then(metadata => {
+      setUserManagerMetadata(metadata);
+      return mgr;
+    });
   };
 }

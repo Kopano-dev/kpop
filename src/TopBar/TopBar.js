@@ -8,11 +8,10 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
-import AccountCircle from 'material-ui-icons/AccountCircle';
 
 import { KopanoLogo } from '../logos';
 import { userShape } from '../shapes';
-import DisplayName from '../DisplayName';
+import UserProfileButton from './UserProfileButton';
 
 export const styles = theme => {
   return {
@@ -77,15 +76,10 @@ function TopBar(props) {
   ) : null;
 
   const userProfile = user ? (
-    <div>
-      <IconButton
-        color="inherit"
-      >
-        <AccountCircle />
-      </IconButton>
-      <DisplayName className={classes.userDisplayName} user={user}/>
-    </div>
-  ) : null;
+    <UserProfileButton
+      user={user}
+    />
+  ): null;
 
   return (
     <AppBar

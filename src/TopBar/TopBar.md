@@ -6,7 +6,9 @@ TopBar example with all features enabled:
 	forceAnchor
 	position="static"
 	user={{
-		displayName: "Freddy Mauser",
+		displayName: "Jonathan Smith",
+		mail: "heyfromjonathan@kopano.com",
+		signoutHandler: () => {},
 	}}
 	centerContent={<span>Center content</span>}
 >
