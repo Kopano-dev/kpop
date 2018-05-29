@@ -8,6 +8,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
+import Hidden from 'material-ui/Hidden';
 
 import { KopanoLogo } from '../logos';
 import { userShape } from '../shapes';
@@ -89,7 +90,7 @@ function TopBar(props) {
       <Toolbar>
         {anchor}
         <Typography variant="title" color="inherit" noWrap className={classes.flex}>
-          <img src={KopanoLogo} className={classes.logo} alt="Kopano"/> {title}
+          <Hidden smDown><img src={KopanoLogo} className={classes.logo} alt="Kopano"/> </Hidden>{title}
         </Typography>
         <div className={classes.flex}>{centerContent}</div>
         {children}
