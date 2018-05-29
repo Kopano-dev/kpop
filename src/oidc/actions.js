@@ -94,6 +94,10 @@ export function createUserManager() {
     mgr.events.addAccessTokenExpired(() => {
       console.warn('oidc access token expired'); // eslint-disable-line no-console
       mgr.removeUser();
+      setTimeout(() => {
+        // Try to fetch new user. This will redirect to login if unsuccessful.
+        dispatch(fetchUser());
+      }, 0);
     });
     mgr.events.addUserLoaded(async user => {
       console.debug('oidc user loaded', user); // eslint-disable-line no-console
@@ -105,9 +109,19 @@ export function createUserManager() {
     });
     mgr.events.addSilentRenewError(err => {
       console.warn('oidc user silent renew error', err.error); // eslint-disable-line no-console
-      if (err && err.error === 'interaction_required') {
+      if (err) {
         // Handle the hopeless.
-        return;
+        switch (err.error) {
+          case 'interaction_required':
+          case 'login_required':
+            mgr.removeUser();
+            setTimeout(() => {
+              // Try to fetch new user. This will redirect to login if unsuccessful.
+              dispatch(fetchUser());
+            }, 0);
+            return;
+          default:
+        }
       }
 
       setTimeout(() => {
