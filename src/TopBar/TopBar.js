@@ -25,7 +25,7 @@ export const styles = theme => {
       borderBottom: `1px solid ${theme.palette.divider}`,
     },
     logo: {
-      height: 24,
+      height: 20,
       verticalAlign: 'middle',
       paddingRight: 10,
     },
