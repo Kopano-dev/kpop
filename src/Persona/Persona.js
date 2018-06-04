@@ -33,7 +33,7 @@ export class Persona extends React.Component {
         user.displayName === prevState.user.displayName &&
         user.givenName === prevState.user.givenName &&
         user.surname === prevState.user.surname &&
-        user.id === prevState.user.id) {
+        user.guid === prevState.user.guid) {
       return null;
     }
 
