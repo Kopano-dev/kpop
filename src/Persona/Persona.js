@@ -65,6 +65,8 @@ export class Persona extends React.Component {
       user, // eslint-disable-line
       theme, // eslint-disable-line
       allowPhoneInitials, // eslint-disable-line
+      forceIcon,
+      icon,
       ...other
     } = this.props;
     const { backgroundColor, initials } = this.state;
@@ -84,11 +86,15 @@ export class Persona extends React.Component {
       <ColoredAvatar
         className={className}
         {...other}
-      >{initials ? initials: <PersonIcon/>}
+      >{initials && !forceIcon ? initials: icon}
       </ColoredAvatar>
     );
   }
 }
+
+Persona.defaultProps = {
+  icon: <PersonIcon/>,
+};
 
 Persona.propTypes = {
   /**
@@ -109,6 +115,16 @@ Persona.propTypes = {
    * Wether or not to allow phone numbers as initials.
    */
   allowPhoneInitials: PropTypes.bool,
+
+  /**
+   * Wether or not to force icon instead of initials.
+   */
+  forceIcon: PropTypes.bool,
+
+  /**
+   * Icon for Persona when no initials or icon forced.
+   */
+  icon: PropTypes.element.isRequired,
 };
 
 export default withStyles(styles, {withTheme: true, name: 'KpopPersona'})(Persona);
