@@ -141,6 +141,11 @@ export function createUserManager() {
       console.info('oidc user signed out at OP'); // eslint-disable-line no-console
     });
 
+    // Always clear up stale state stuff, when a new manager is created.
+    setTimeout(() => {
+      mgr.clearStaleState();
+    }, 0);
+
     return mgr.metadataService.getMetadata().then(metadata => {
       setUserManagerMetadata(metadata);
       return mgr;
