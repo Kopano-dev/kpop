@@ -32,10 +32,10 @@ function FatalErrorDialog(props) {
     >
       <DialogTitle id="kpop-fatal-error-dialog-title">{error.message}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
+        <DialogContentText gutterBottom>
           {error.detail}
         </DialogContentText>
-        <DialogContentText>
+        <DialogContentText variant="body2">
           <FormattedMessage
             id="kpop.fatalErrorDialog.message"
             defaultMessage="This is a fatal error and the app needs to be reloaded."
