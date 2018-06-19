@@ -11,3 +11,8 @@ export function isSigninCallbackRequest() {
 export function isPostSignoutCallbackRequest() {
   return window.location.href.indexOf(settings.postLogoutRedirectURL) === 0;
 }
+
+export async function resetHash() {
+  const { location } = window;
+  history.replaceState('', document.title, location.pathname + location.search);
+}

@@ -96,3 +96,16 @@ export function networkError(status, response, raisedError=null) {
     return dispatch(setError(error));
   };
 }
+
+export function userRequiredError(fatal=true, raisedError=null) {
+  return (dispatch) => {
+    const error = {
+      fatal,
+      raisedError,
+      message: 'No active user session',
+      detail: 'To use this app you must be signed in, but your active session could not be validated or is expired.',
+    };
+
+    return dispatch(setError(error));
+  };
+}

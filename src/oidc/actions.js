@@ -1,6 +1,6 @@
 import { KPOP_RECEIVE_USER } from './constants';
 import { settings } from './settings';
-import { isSigninCallbackRequest, isPostSignoutCallbackRequest } from './utils';
+import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash } from './utils';
 import { newUserManager, getUserManager, setUserManagerMetadata } from './usermanager';
 
 export function receiveUser(user, userManager) {
@@ -11,14 +11,25 @@ export function receiveUser(user, userManager) {
   };
 }
 
-export function fetchUser() {
-  let userManager = getUserManager();
-
+export function signinRedirect() {
   return async (dispatch) => {
-    if (userManager === null) {
-      // Create OIDC userManager.
-      userManager = await dispatch(createUserManager(settings.callbackURL));
-    }
+    const userManager = await dispatch(getOrCreateUserManager());
+
+    await userManager.signinRedirect({/* TODO(longsleep): Add state */});
+  };
+}
+
+export function signoutRedirect() {
+  return async (dispatch) => {
+    const userManager = await dispatch(getOrCreateUserManager());
+
+    await userManager.signoutRedirect({/* TODO(longsleep): Add state */});
+  };
+}
+
+export function fetchUser() {
+  return async (dispatch) => {
+    const userManager = await dispatch(getOrCreateUserManager());
 
     return userManager.getUser().then(user => {
       if (user !== null) {
@@ -34,7 +45,7 @@ export function fetchUser() {
           return null;
         }).then(user => {
           // FIXME(longsleep): This relies on exclusive hash access.
-          window.location.hash = '';
+          resetHash();
           return user;
         });
       } else if (isPostSignoutCallbackRequest()) {
@@ -46,16 +57,16 @@ export function fetchUser() {
           return null;
         }).then(user => {
           // FIXME(longsleep): This relies on exclusive hash access.
-          window.location.hash = '';
+          resetHash();
           setTimeout(() => {
             // NOTE(longsleep): For now redirect ot sigin page after logout.
-            userManager.signinRedirect();
+            userManager.signinRedirect({/* TODO(longsleep): Add state */});
           }, 0);
           return user;
         });
       } else {
         // Not a callback, so redirect to sign in.
-        userManager.signinRedirect();
+        userManager.signinRedirect({/* TODO(longsleep): Add state */});
         return null;
       }
     }).then(async user => {
@@ -66,9 +77,21 @@ export function fetchUser() {
   };
 }
 
+export function getOrCreateUserManager() {
+  return async (dispatch) => {
+    let userManager = getUserManager();
+    if (userManager) {
+      return userManager;
+    }
+
+    return dispatch(createUserManager());
+  };
+}
+
 export function createUserManager() {
   return (dispatch, getState) => {
     const { config } = getState().common;
+
     let iss = config.oidc.iss;
     if (iss === '') {
       // Auto generate issuer with current host.
