@@ -1,7 +1,8 @@
-import { KPOP_RECEIVE_USER } from './constants';
+import { KPOP_RECEIVE_USER, KPOP_RECEIVE_OIDC_STATE } from './constants';
 import { settings } from './settings';
 import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash } from './utils';
 import { newUserManager, getUserManager, setUserManagerMetadata } from './usermanager';
+import { getOIDCState } from './state';
 
 export function receiveUser(user, userManager) {
   return {
@@ -11,11 +12,21 @@ export function receiveUser(user, userManager) {
   };
 }
 
+export function receiveOIDCState(state) {
+  return {
+    type: KPOP_RECEIVE_OIDC_STATE,
+    state,
+  };
+}
+
 export function signinRedirect() {
   return async (dispatch) => {
     const userManager = await dispatch(getOrCreateUserManager());
 
-    await userManager.signinRedirect({/* TODO(longsleep): Add state */});
+    const args = {
+      state: await dispatch(getOIDCState()),
+    };
+    await userManager.signinRedirect(args);
   };
 }
 
@@ -23,7 +34,10 @@ export function signoutRedirect() {
   return async (dispatch) => {
     const userManager = await dispatch(getOrCreateUserManager());
 
-    await userManager.signoutRedirect({/* TODO(longsleep): Add state */});
+    const args = {
+      state: await dispatch(getOIDCState()),
+    };
+    await userManager.signoutRedirect(args);
   };
 }
 
@@ -31,7 +45,7 @@ export function fetchUser() {
   return async (dispatch) => {
     const userManager = await dispatch(getOrCreateUserManager());
 
-    return userManager.getUser().then(user => {
+    return userManager.getUser().then(async user => {
       if (user !== null) {
         return user;
       }
@@ -49,8 +63,11 @@ export function fetchUser() {
           return user;
         });
       } else if (isPostSignoutCallbackRequest()) {
-        return userManager.signoutRedirectCallback().then(resp => {
+        return userManager.signoutRedirectCallback().then(async resp => {
           console.info('oidc complete signout', resp); // eslint-disable-line no-console
+          if (resp && resp.state) {
+            await dispatch(receiveOIDCState(resp.state));
+          }
           return null;
         }).catch((err) => {
           console.error('oidc failed to complete signout', err); // eslint-disable-line no-console
@@ -58,19 +75,28 @@ export function fetchUser() {
         }).then(user => {
           // FIXME(longsleep): This relies on exclusive hash access.
           resetHash();
-          setTimeout(() => {
+          setTimeout(async () => {
             // NOTE(longsleep): For now redirect ot sigin page after logout.
-            userManager.signinRedirect({/* TODO(longsleep): Add state */});
+            const args = {
+              state: await dispatch(getOIDCState()),
+            };
+            await userManager.signinRedirect(args);
           }, 0);
           return user;
         });
       } else {
         // Not a callback, so redirect to sign in.
-        userManager.signinRedirect({/* TODO(longsleep): Add state */});
+        const args = {
+          state: await dispatch(getOIDCState()),
+        };
+        await userManager.signinRedirect(args);
         return null;
       }
     }).then(async user => {
       await dispatch(receiveUser(user, userManager));
+      if (user && user.state !== undefined) {
+        await dispatch(receiveOIDCState(user.state));
+      }
 
       return user;
     });
