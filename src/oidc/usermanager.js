@@ -1,4 +1,8 @@
-import { UserManager } from 'oidc-client';
+import { UserManager, Log } from 'oidc-client';
+
+// Setup oidc logging.
+Log.logger = console;
+Log.level = Log.WARN;
 
 const record = {
   userManager: null,
