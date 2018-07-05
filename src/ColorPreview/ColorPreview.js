@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles } from 'material-ui/styles';
-import createPalette from 'material-ui/styles/createPalette';
+import { withStyles } from '@material-ui/core/styles';
+import createPalette from '@material-ui/core/styles/createPalette';
 
 export const styles = () => {
   return {

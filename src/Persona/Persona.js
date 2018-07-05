@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import Avatar from 'material-ui/Avatar';
-import PersonIcon from 'material-ui-icons/Person';
-import { withStyles } from 'material-ui/styles';
+import Avatar from '@material-ui/core/Avatar';
+import PersonIcon from '@material-ui/icons/Person';
+import { withStyles } from '@material-ui/core/styles';
 
 import { styled } from '../styled';
 import { userShape } from '../shapes';

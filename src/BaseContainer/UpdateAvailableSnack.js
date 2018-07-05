@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import {FormattedMessage} from 'react-intl';
 
-import Button from 'material-ui/Button';
-import Snackbar from 'material-ui/Snackbar';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
 
 function UpdateAvailableSnack(props) {
   const { anchorOrigin, onReloadClick, open } = props;
@@ -19,7 +19,7 @@ function UpdateAvailableSnack(props) {
           defaultMessage="Reload"
         ></FormattedMessage>
       </Button>}
-      SnackbarContentProps={{
+      ContentProps={{
         'aria-describedby': 'kpop-update-available-snack-message-id',
       }}
       message={

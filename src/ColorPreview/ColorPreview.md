@@ -2,8 +2,8 @@ ColorPreview from colors:
 
 ```jsx
 const kopanoBlue = require('../colors/kopanoBlue').default
-const lightGreen = require('material-ui/colors/lightGreen').default
-const brown = require('material-ui/colors/brown').default
+const lightGreen = require('@material-ui/core/colors/lightGreen').default
+const brown = require('@material-ui/core/colors/brown').default
 ;<div>
 	<ColorPreview title="kopanoBlue" color={kopanoBlue}/>
 	<ColorPreview title="material-ui lightGreen" color={lightGreen}/>

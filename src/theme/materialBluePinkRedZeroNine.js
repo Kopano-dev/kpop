@@ -1,8 +1,8 @@
-import { createMuiTheme } from 'material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
-import blue from 'material-ui/colors/blue';
-import pink from 'material-ui/colors/pink';
-import red from 'material-ui/colors/red';
+import blue from '@material-ui/core/colors/blue';
+import pink from '@material-ui/core/colors/pink';
+import red from '@material-ui/core/colors/red';
 
 const primaryColor = blue;
 const secondaryColor = pink;

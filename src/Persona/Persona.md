@@ -1,8 +1,8 @@
 Persona examples:
 
 ```jsx
-const withStyles = require('material-ui/styles').withStyles;
-const GroupIcon = require('material-ui-icons/Group').default;
+const withStyles = require('@material-ui/core/styles').withStyles;
+const GroupIcon = require('@material-ui/icons/Group').default;
 
 const styles = {
   row: {
