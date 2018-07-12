@@ -131,7 +131,7 @@ export function createUserManager() {
       post_logout_redirect_uri: settings.postLogoutRedirectURL, // eslint-disable-line camelcase
       silent_redirect_uri: settings.silentRedirectURL,  // eslint-disable-line camelcase
       response_type: 'id_token token', // eslint-disable-line camelcase
-      scope: 'openid profile email',
+      scope: 'openid profile email kopano/gc',
       loadUserInfo: true,
       accessTokenExpiringNotificationTime: 120,
       automaticSilentRenew: true,
