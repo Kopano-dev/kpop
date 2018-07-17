@@ -1,4 +1,12 @@
 import {
+  resolveError,
+} from '../errors/actions';
+
+import {
+  KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
+} from '../oidc/constants';
+
+import {
   KPOP_SET_ERROR,
 } from './constants';
 import {
@@ -7,6 +15,16 @@ import {
 
 export function setError(error) {
   return async (dispatch) => {
+    if (error && error.resolution) {
+      if (error.fatal) {
+        error.resolver = async () => {
+          dispatch(resolveError(error));
+        };
+      } else {
+        dispatch(resolveError(error));
+      }
+    }
+
     dispatch({
       type: KPOP_SET_ERROR,
       error,
@@ -69,6 +87,7 @@ export function networkError(status, response, raisedError=null) {
     const error = {
       status,
       fatal: false,
+      resolution: null,
       raisedError,
     };
     if (response) {
@@ -86,6 +105,7 @@ export function networkError(status, response, raisedError=null) {
         // Forbidden.
         error.message = `Error: network request forbidden (${status})`;
         error.fatal = true;
+        error.resolution = KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN;
         break;
 
       default:
@@ -101,6 +121,7 @@ export function userRequiredError(fatal=true, raisedError=null) {
   return (dispatch) => {
     const error = {
       fatal,
+      resolution: KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
       raisedError,
       message: 'No active user session',
       detail: 'To use this app you must be signed in, but your active session could not be validated or is expired.',

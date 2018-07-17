@@ -16,3 +16,10 @@ export async function resetHash() {
   const { location } = window;
   history.replaceState('', document.title, location.pathname + location.search);
 }
+
+export function blockAsyncProgress() {
+  // Return a promise this gets neither resolved nor rejected. Any async code
+  // which returns this promise is effectively blocked and will nether yield
+  // any results.
+  return new Promise(() => {}, () => {});
+}

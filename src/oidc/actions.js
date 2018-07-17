@@ -1,6 +1,9 @@
-import { KPOP_RECEIVE_USER, KPOP_RECEIVE_OIDC_STATE } from './constants';
+import {
+  KPOP_RECEIVE_USER,
+  KPOP_RECEIVE_OIDC_STATE,
+} from './constants';
 import { settings } from './settings';
-import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash } from './utils';
+import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash, blockAsyncProgress } from './utils';
 import { newUserManager, getUserManager, setUserManagerMetadata } from './usermanager';
 import { getOIDCState } from './state';
 
@@ -19,13 +22,13 @@ export function receiveOIDCState(state) {
   };
 }
 
-export function signinRedirect() {
+export function signinRedirect(params={}) {
   return async (dispatch) => {
     const userManager = await dispatch(getOrCreateUserManager());
 
-    const args = {
+    const args = Object.assign({}, params, {
       state: await dispatch(getOIDCState()),
-    };
+    });
     await userManager.signinRedirect(args);
   };
 }
@@ -72,7 +75,7 @@ export function fetchUser() {
         }).catch((err) => {
           console.error('oidc failed to complete signout', err); // eslint-disable-line no-console
           return null;
-        }).then(user => {
+        }).then(() => {
           // FIXME(longsleep): This relies on exclusive hash access.
           resetHash();
           setTimeout(async () => {
@@ -82,7 +85,7 @@ export function fetchUser() {
             };
             await userManager.signinRedirect(args);
           }, 0);
-          return user;
+          return blockAsyncProgress(); // Block resolve since redirect is coming.
         });
       } else {
         // Not a callback, so redirect to sign in.
@@ -90,7 +93,7 @@ export function fetchUser() {
           state: await dispatch(getOIDCState()),
         };
         await userManager.signinRedirect(args);
-        return null;
+        return blockAsyncProgress(); // Block resolve since redirect is coming.
       }
     }).then(async user => {
       await dispatch(receiveUser(user, userManager));

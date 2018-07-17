@@ -8,9 +8,13 @@ import renderIf from 'render-if';
 import FatalErrorDialog from './FatalErrorDialog';
 import UpdateAvailableSnack from './UpdateAvailableSnack';
 
-const handleReload = (event) => {
+const handleReload = (error=null) => async (event) => {
   if (event && event.preventDefault) {
     event.preventDefault();
+  }
+  if (error && error.resolver) {
+    // Special actions for error handling.
+    await error.resolver();
   }
 
   window.location.reload();
@@ -41,10 +45,10 @@ function BaseContainer(props) {
         </div>
       )}
       {ifFatalError(
-        <FatalErrorDialog open error={error} onReloadClick={handleReload}/>
+        <FatalErrorDialog open error={error} onReloadClick={handleReload(error)}/>
       )}
       {ifUpdateAvailable(
-        <UpdateAvailableSnack onReloadClick={handleReload}/>
+        <UpdateAvailableSnack onReloadClick={handleReload()}/>
       )}
     </div>
   );
