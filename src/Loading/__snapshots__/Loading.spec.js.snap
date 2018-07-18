@@ -9,6 +9,15 @@ exports[`Loading renders correctly error=true 1`] = `
   <span>
     Error!
   </span>
+   — 
+  <a
+    href="#"
+    onClick={[Function]}
+  >
+    <span>
+      retry
+    </span>
+  </a>
 </div>
 `;
 
@@ -29,5 +38,14 @@ exports[`Loading renders correctly timedOut=true 1`] = `
   <span>
     Taking a long time...
   </span>
+   — 
+  <a
+    href="#"
+    onClick={[Function]}
+  >
+    <span>
+      retry
+    </span>
+  </a>
 </div>
 `;

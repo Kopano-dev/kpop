@@ -23,6 +23,10 @@ body {
   transform: translate(-50%, -50%);
 }
 
+#loader > a {
+  color: #1e98d7 /* KopanoBlue700 */
+}
+
 #font-preloader {
   position: absolute;
   top: -500px;
