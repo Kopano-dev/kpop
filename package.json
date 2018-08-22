@@ -32,6 +32,7 @@
     "render-if": "^0.1.1"
   },
   "devDependencies": {
+    "@babel/runtime": "7.0.0-beta.55",
     "@material-ui/core": "^1.4.2",
     "@material-ui/icons": "^1.1.0",
     "babel-cli": "^6.26.0",
