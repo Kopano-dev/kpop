@@ -74,7 +74,6 @@ dist: ; $(info building dist tarball ...)
 .PHONY: clean ; $(info cleaning ...)	@
 clean:
 	$(YARN) cache clean
-	$(YARN) clean
 	@rm -rf node_modules
 	@rm -rf coverage
 	@rm -f .yarninstall
