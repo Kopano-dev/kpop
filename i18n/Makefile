@@ -12,7 +12,7 @@ build: json
 extract: pot
 
 .PHONY: pot
-pot:
+pot: src/BaseContainer/BaseContainer.json
 	$(YARN) rip json2pot './i18n/src/**/*.json' \
 		-o ./i18n/kpop.pot \
 		-c 'id'
@@ -32,3 +32,8 @@ merge: kpop.pot
 		--backup=none \
 		--no-wrap \
 		*.po kpop.pot
+
+clean:
+	@rm -f *.mo
+	@rm -rf src/
+	@rm -f locales/*.json

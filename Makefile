@@ -15,7 +15,7 @@ VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2>/dev/null |
 all: build
 
 .PHONY: build
-build:  vendor | i18n ; $(info building ...)	@
+build:  vendor | src i18n ; $(info building ...)	@
 	@rm -rf ./es/
 	REACT_APP_KOPANO_BUILD="${VERSION}" BABEL_ENV=production $(YARN) run build
 	echo $(VERSION) > .version
@@ -23,6 +23,10 @@ build:  vendor | i18n ; $(info building ...)	@
 .PHONY: i18n
 i18n: vendor
 	@$(MAKE) -C i18n
+
+.PHONY: src
+src:
+	@$(MAKE) -C src
 
 .PHONY: lint
 lint: vendor ; $(info running eslint ...)	@
@@ -36,23 +40,23 @@ lint-checkstyle: vendor ; $(info running eslint checkstyle ...)	@
 # Tests
 
 .PHONY: test
-test: vendor ; $(info running jest tests ...) @
+test: vendor | src ; $(info running jest tests ...) @
 	REACT_APP_KOPANO_BUILD="${VERSION}" BABEL_ENV=test $(YARN) jest --verbose
 
 .PHONY: test-coverage
-test-coverage: vendor ; $(info running jest tests with coverage ...) @
+test-coverage: vendor | src ; $(info running jest tests with coverage ...) @
 	@mkdir -p ../test
 	REACT_APP_KOPANO_BUILD="${VERSION}" BABEL_ENV=test JEST_JUNIT_OUTPUT=./test/jest-test-results.xml $(YARN) jest --coverage --coverageDirectory=coverage --testResultsProcessor="jest-junit"
 
 .PHONY: test-xml
-test-xml: vendor ; $(info running jest tests ...) @
+test-xml: vendor | src ; $(info running jest tests ...) @
 	@mkdir -p ../test
 	REACT_APP_KOPANO_BUILD="${VERSION}" BABEL_ENV=test JEST_JUNIT_OUTPUT=./test/jest-test-results.xml $(YARN) jest --verbose --testResultsProcessor="jest-junit"
 
 # Documentation
 
 .PHONY: doc
-doc: vendor ; $(info generating documentation ...) @
+doc: vendor | src ; $(info generating documentation ...) @
 	REACT_APP_KOPANO_BUILD="${VERSION}" $(YARN) styleguide:build
 
 # Yarn
@@ -73,6 +77,8 @@ dist: ; $(info building dist tarball ...)
 
 .PHONY: clean ; $(info cleaning ...)	@
 clean:
+	@$(MAKE) -C src clean
+	@$(MAKE) -C i18n clean
 	$(YARN) cache clean
 	@rm -rf node_modules
 	@rm -rf coverage
