@@ -15,16 +15,17 @@ from __future__ import print_function
 import sys
 from xml.dom.minidom import parse
 
-
 TEMPLATE = b"""
 import React from 'react';
 import createSvgIcon from '../utils/createSvgIcon';
 
+/* eslint-disable max-len */
 const svg = `%(svg)s`;
 
 export default createSvgIcon(
   <g dangerouslySetInnerHTML={{__html: svg}}></g>
-, '%(name)s');
+  , '%(name)s'
+);
 """
 
 

@@ -63,12 +63,12 @@ export function fetchUser() {
           if (err && err.message && err.message === 'No matching state found in storage') {
             // Try to recover silently. This state can happen when the device
             // comes back after it was off/suspended.
-            console.debug('oidc silently retrying afgter no matching state was found'); // eslint-disable-line no-console
+            console.debug('oidc silently retrying after no matching state was found'); // eslint-disable-line no-console
             const args = {
               state: await dispatch(getOIDCState()),
             };
             return userManager.signinSilent(args).catch((err) => {
-              console.debug('oidc failed to silently recover after no matching state was found', err); // eslint-disable-line no-console
+              console.debug('oidc failed to silently recover after no matching state was found', err); // eslint-disable-line no-console, max-len
               return null;
             });
           }
@@ -246,7 +246,7 @@ export function createUserManager() {
           if (user && !user.expired) {
             mgr.startSilentRenew();
           } else {
-            console.warn('oidc remove user as silent renew has failed to renew in time'); // eslint-disable-line no-console
+            console.warn('oidc remove user as silent renew has failed to renew in time'); // eslint-disable-line no-console, max-len
             mgr.removeUser();
           }
         });
