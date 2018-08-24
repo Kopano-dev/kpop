@@ -35,7 +35,7 @@ function BaseContainer(props) {
   const ifUpdateAvailable = renderIf(updateAvailable);
 
   return (
-    <div>
+    <React.Fragment>
       {ifReady(
         children
       )}
@@ -50,7 +50,7 @@ function BaseContainer(props) {
       {ifUpdateAvailable(
         <UpdateAvailableSnack onReloadClick={handleReload()}/>
       )}
-    </div>
+    </React.Fragment>
   );
 }
 

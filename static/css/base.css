@@ -1,7 +1,10 @@
+html, body {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
-  height: 100vh;
 }
 
 #bg {
@@ -40,5 +43,5 @@ body {
 }
 
 #root {
-  height: 100vh;
+  height: 100%;
 }
