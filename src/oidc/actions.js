@@ -57,7 +57,21 @@ export function fetchUser() {
         return userManager.signinRedirectCallback().then(user => {
           console.info('oidc completed authentication', user); // eslint-disable-line no-console
           return user;
-        }).catch((err) => {
+        }).catch(async (err) => {
+          // FIXME(longsleep): Crap we have to check for error messages .. maybe
+          // just always try when typeof err is Error?
+          if (err && err.message && err.message === 'No matching state found in storage') {
+            // Try to recover silently. This state can happen when the device
+            // comes back after it was off/suspended.
+            console.debug('oidc silently retrying afgter no matching state was found'); // eslint-disable-line no-console
+            const args = {
+              state: await dispatch(getOIDCState()),
+            };
+            return userManager.signinSilent(args).catch((err) => {
+              console.debug('oidc failed to silently recover after no matching state was found', err); // eslint-disable-line no-console
+              return null;
+            });
+          }
           console.error('oidc failed to complete authentication', err); // eslint-disable-line no-console
           return null;
         }).then(user => {
@@ -88,13 +102,60 @@ export function fetchUser() {
           return blockAsyncProgress(); // Block resolve since redirect is coming.
         });
       } else {
-        // Not a callback, so redirect to sign in.
+        // Not a callback -> new request and we need auth.
         const args = {
           state: await dispatch(getOIDCState()),
         };
-        await userManager.signinRedirect(args);
+        try {
+          // Try to retrieve user silently. This will fail with error when
+          // not signed in but avoids a top level redirect when signed in.
+          user = await userManager.signinSilent({...args});
+          if (user) {
+            return user;
+          }
+        } catch (err) {
+          console.debug('oidc silent sign-in failed', err); // eslint-disable-line no-console
+        }
+
+        // Having ended up here means that interactive sign in is required.
+        // FIXME(longsleep): Things fall into pieces here when running inside a
+        // PWA on iOS since the redirect leaves the PWA.
+        userManager.signinRedirect(args);
+
         return blockAsyncProgress(); // Block resolve since redirect is coming.
       }
+    }).then(async user => {
+      await dispatch(receiveUser(user, userManager));
+      if (user && user.state !== undefined) {
+        await dispatch(receiveOIDCState(user.state));
+      }
+
+      return user;
+    });
+  };
+}
+
+export function fetchUserSilent() {
+  return async (dispatch) => {
+    const userManager = await dispatch(getOrCreateUserManager());
+
+    return userManager.getUser().then(async user => {
+      if (user !== null) {
+        return user;
+      }
+
+      const args = {
+        state: await dispatch(getOIDCState()),
+      };
+      try {
+        // Try to retrieve user silently. This will fail with error when
+        // not signed in.
+        user = await userManager.signinSilent(args);
+      } catch (err) {
+        console.debug('oidc silent sign-in failed', err); // eslint-disable-line no-console
+        user = null;
+      }
+      return user;
     }).then(async user => {
       await dispatch(receiveUser(user, userManager));
       if (user && user.state !== undefined) {
@@ -147,8 +208,10 @@ export function createUserManager() {
       console.warn('oidc access token expired'); // eslint-disable-line no-console
       mgr.removeUser();
       setTimeout(() => {
-        // Try to fetch new user. This will redirect to login if unsuccessful.
-        dispatch(fetchUser());
+        // Try to fetch new user silently. This for example helps when the device
+        // comes back after it was suspended or lost connection which led it to
+        // miss the opportunity to renew tokens in time.
+        dispatch(fetchUserSilent());
       }, 0);
     });
     mgr.events.addUserLoaded(async user => {
