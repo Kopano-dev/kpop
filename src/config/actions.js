@@ -1,7 +1,11 @@
 import { getHeadersFromConfig } from './utils';
+import { networkFetch, userRequiredError } from '../common/actions';
+import { fetchUser, receiveUser, ensureRequiredScopes } from '../oidc/actions';
 import { KPOP_RECEIVE_CONFIG, KPOP_RESET_CONFIG } from './constants';
 
 const basePrefix = '';
+const defaultID = 'general';
+const defaultScope = 'kopano';
 
 export function receiveConfig(config) {
   return {
@@ -16,21 +20,65 @@ export function resetConfig() {
   };
 }
 
-export function fetchConfig(id='config') {
+export function fetchConfigFromServer(id=defaultID, scope=defaultScope) {
   return (dispatch) => {
-    return fetch(
-      `${basePrefix}/api/${id}/v0/config`, {
+    return dispatch(networkFetch(
+      `${basePrefix}/api/config/v1/${scope}/${id}/config.json`, {
         method: 'GET',
         headers: getHeadersFromConfig(),
+      },
+      200,
+      true,
+      false,
+    ));
+  };
+}
+
+export function fetchConfigAndInitializeUser({id, scope, defaults, requiredScopes} = {id: defaultID, scope: defaultScope, defaults: null}) {
+  return (dispatch) => {
+    return dispatch(fetchConfigFromServer(id, scope)).then(async config => {
+      // Inject OIDC always.
+      config.oidc = Object.assign({
+        iss: '', // If empty, current host is used.
+        clientID: `%{scope}-${id}-` + encodeURI([window.location.protocol, '//', window.location.host, window.location.pathname].join('')),
+      }, config.oidc);
+      // Allow override by app.
+      if (defaults) {
+        if (typeof defaults === 'function') {
+          config = await defaults(config);
+        } else {
+          config = Object.assign({}, defaults, config);
+        }
       }
-    ).then(res => {
-      return res.json();
-    }).then(config => {
-      dispatch(receiveConfig(config));
-      return Promise.resolve(config);
-    }).catch(error => {
-      // TODO(longsleep): Implement proper error handling via dispatch.
-      throw error;
+      return config;
+    }).then(async config => {
+      await dispatch(receiveConfig(config));
+      return config;
+    }).then(async config => {
+      // Check if user was provided in configuration.
+      const result = {
+        config,
+      };
+      if (config.user) {
+        result.user = await dispatch(receiveUser(config.user)).then(() => {
+          return config.user;
+        });
+      } else {
+        result.user = await dispatch(fetchUser());
+      }
+      return result;
+    }).then(async ({user, config}) => {
+      if (!user) {
+        await dispatch(userRequiredError());
+      }
+      if (requiredScopes === undefined) {
+        // If not set, all requested scopes are required.
+        requiredScopes = config.oidc.scope.split(' ');
+      }
+      if (requiredScopes) {
+        await dispatch(ensureRequiredScopes(user, requiredScopes));
+      }
+      return {user, config};
     });
   };
 }

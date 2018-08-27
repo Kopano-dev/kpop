@@ -125,6 +125,8 @@ export function userRequiredError(fatal=true, raisedError=null) {
       raisedError,
       message: 'No active user session',
       detail: 'To use this app you must be signed in, but your active session could not be validated or is expired.',
+      withoutFatalSuffix: true,
+      reloadButtonText: 'Sign in',
     };
 
     return dispatch(setError(error));

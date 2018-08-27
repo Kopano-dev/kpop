@@ -1,6 +1,9 @@
+import { setError } from '../common/actions';
+
 import {
   KPOP_RECEIVE_USER,
   KPOP_RECEIVE_OIDC_STATE,
+  KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
 } from './constants';
 import { settings } from './settings';
 import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash, blockAsyncProgress } from './utils';
@@ -41,6 +44,32 @@ export function signoutRedirect() {
       state: await dispatch(getOIDCState()),
     };
     await userManager.signoutRedirect(args);
+  };
+}
+
+export function ensureRequiredScopes(user, requiredScopes, dispatchError=true) {
+  return (dispatch) => {
+    if (!requiredScopes) {
+      return;
+    }
+
+    const scopes = user.scope.split(' ');
+    let missing = null;
+    for (let required of requiredScopes) {
+      if (!scopes.includes(required)) {
+        missing = required;
+        break;
+      }
+    }
+
+    if (missing) {
+      const err = new Error('missing scope ' + missing);
+      if (dispatchError) {
+        err.handled = true;
+        dispatch(insufficientScopeError());
+      }
+      throw err;
+    }
   };
 }
 
@@ -269,5 +298,21 @@ export function createUserManager() {
       setUserManagerMetadata(metadata);
       return mgr;
     });
+  };
+}
+
+export function insufficientScopeError(fatal=true, raisedError=null) {
+  return (dispatch) => {
+    const error = {
+      fatal,
+      resolution: KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
+      raisedError,
+      message: 'No access to this app',
+      detail: 'You do not have permission to access this app. Please switch to another user or ask your administrator to grant you access.',
+      withoutFatalSuffix: true,
+      reloadButtonText: 'Switch user',
+    };
+
+    return dispatch(setError(error));
   };
 }

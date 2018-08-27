@@ -23,6 +23,24 @@ function FatalErrorDialog(props) {
     ...other
   } = props;
 
+  const suffixes = [];
+  if (!error.withoutFatalSuffix) {
+    suffixes.push(
+      <DialogContentText variant="body2">
+        <FormattedMessage
+          id="kpop.fatalErrorDialog.message"
+          defaultMessage="This is a fatal error and the app needs to be reloaded."
+        ></FormattedMessage>
+      </DialogContentText>
+    );
+  }
+  const reloadButtonText = error.reloadButtonText ?
+    error.reloadButtonText :
+    <FormattedMessage
+      id="kpop.fatalErrorDialog.reloadButton.text"
+      defaultMessage="Reload"
+    ></FormattedMessage>;
+
   return (
     <Dialog
       fullScreen={fullScreen}
@@ -34,19 +52,11 @@ function FatalErrorDialog(props) {
         <DialogContentText gutterBottom>
           {error.detail}
         </DialogContentText>
-        <DialogContentText variant="body2">
-          <FormattedMessage
-            id="kpop.fatalErrorDialog.message"
-            defaultMessage="This is a fatal error and the app needs to be reloaded."
-          ></FormattedMessage>
-        </DialogContentText>
+        {suffixes}
       </DialogContent>
       <DialogActions>
         <Button onClick={onReloadClick} color="primary" autoFocus>
-          <FormattedMessage
-            id="kpop.fatalErrorDialog.reloadButton.text"
-            defaultMessage="Reload"
-          ></FormattedMessage>
+          {reloadButtonText}
         </Button>
       </DialogActions>
     </Dialog>
@@ -64,6 +74,8 @@ FatalErrorDialog.propTypes = {
   error: PropTypes.shape({
     message: PropTypes.string,
     detail: PropTypes.string,
+    withoutFatalSuffix: PropTypes.boolean,
+    reloadButtonText: PropTypes.node,
   }).isRequired,
   /**
    * Callback fired when the reload button is clicked.
