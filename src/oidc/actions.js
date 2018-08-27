@@ -187,15 +187,19 @@ export function createUserManager() {
       // Auto generate issuer with current host.
       iss = 'https://' + window.location.host;
     }
+    let scope = config.oidc.scope;
+    if (scope === '' || scope === undefined) {
+      scope = 'openid profile email kopano/gc';
+    }
 
     const mgr = newUserManager({
       authority: iss,
-      client_id: config.oidc.clientID, // eslint-disable-line camelcase
+      client_id: config.oidc.clientID || 'kpop-' + encodeURI([location.protocol, '//', location.host, location.pathname].join('')), // eslint-disable-line camelcase
       redirect_uri: settings.redirectURL, // eslint-disable-line camelcase
       post_logout_redirect_uri: settings.postLogoutRedirectURL, // eslint-disable-line camelcase
       silent_redirect_uri: settings.silentRedirectURL,  // eslint-disable-line camelcase
       response_type: 'id_token token', // eslint-disable-line camelcase
-      scope: 'openid profile email kopano/gc',
+      scope,
       loadUserInfo: true,
       accessTokenExpiringNotificationTime: 120,
       automaticSilentRenew: true,
