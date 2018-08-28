@@ -34,7 +34,7 @@ export function fetchConfigFromServer(id=defaultID, scope=defaultScope) {
   };
 }
 
-export function fetchConfigAndInitializeUser({id, scope, defaults, requiredScopes} = {id: defaultID, scope: defaultScope, defaults: null}) {
+export function fetchConfigAndInitializeUser({id, scope, defaults, requiredScopes, dispatchError} = {id: defaultID, scope: defaultScope, defaults: null, dispatchError: true}) {
   return (dispatch) => {
     return dispatch(fetchConfigFromServer(id, scope)).then(async config => {
       // Inject OIDC always.
@@ -68,15 +68,18 @@ export function fetchConfigAndInitializeUser({id, scope, defaults, requiredScope
       }
       return result;
     }).then(async ({user, config}) => {
-      if (!user) {
-        await dispatch(userRequiredError());
+      if (!user || user.expired) {
+        if (dispatchError) {
+          await dispatch(userRequiredError());
+        }
+        throw new Error('no user or user expired');
       }
       if (requiredScopes === undefined) {
         // If not set, all requested scopes are required.
         requiredScopes = config.oidc.scope.split(' ');
       }
       if (requiredScopes) {
-        await dispatch(ensureRequiredScopes(user, requiredScopes));
+        await dispatch(ensureRequiredScopes(user, requiredScopes, dispatchError));
       }
       return {user, config};
     });
