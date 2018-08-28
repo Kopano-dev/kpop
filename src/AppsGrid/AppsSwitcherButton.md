@@ -1,0 +1,5 @@
+AppsSwitcherButton example:
+
+```jsx
+<AppsSwitcherButton/>
+```
