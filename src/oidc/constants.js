@@ -1,3 +1,5 @@
+export const KPOP_OIDC_DEFAULT_SCOPE = 'openid profile email kopano/gc';
+
 export const KPOP_RECEIVE_USER = 'KPOP_RECEIVE_USER';
 export const KPOP_RESET_USER = 'KPOP_RESET_USER';
 export const KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN = 'KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN';

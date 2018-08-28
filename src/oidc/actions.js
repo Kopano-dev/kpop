@@ -4,6 +4,7 @@ import {
   KPOP_RECEIVE_USER,
   KPOP_RECEIVE_OIDC_STATE,
   KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
+  KPOP_OIDC_DEFAULT_SCOPE,
 } from './constants';
 import { settings } from './settings';
 import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash, blockAsyncProgress } from './utils';
@@ -218,7 +219,7 @@ export function createUserManager() {
     }
     let scope = config.oidc.scope;
     if (scope === '' || scope === undefined) {
-      scope = 'openid profile email kopano/gc';
+      scope = KPOP_OIDC_DEFAULT_SCOPE;
     }
 
     const mgr = newUserManager({
