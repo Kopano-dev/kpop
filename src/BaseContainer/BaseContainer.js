@@ -29,7 +29,9 @@ function BaseContainer(props) {
     updateAvailable,
   } = props;
 
-  const ifReady = renderIf(ready);
+  const readyAndNotFatalError = ready && (!error || !error.fatal);
+
+  const ifReady = renderIf(readyAndNotFatalError);
   const ifNotReady = renderIf(!ready);
   const ifFatalError = renderIf(error && error.fatal);
   const ifUpdateAvailable = renderIf(updateAvailable);
@@ -45,7 +47,12 @@ function BaseContainer(props) {
         </div>
       )}
       {ifFatalError(
-        <FatalErrorDialog open error={error} onReloadClick={handleReload(error)}/>
+        <React.Fragment>
+          <div id="loader">
+            <FormattedMessage id="kpop.loader.fatalerror.message" defaultMessage="Error..."></FormattedMessage>
+          </div>
+          <FatalErrorDialog open error={error} onReloadClick={handleReload(error)}/>
+        </React.Fragment>
       )}
       {ifUpdateAvailable(
         <UpdateAvailableSnack onReloadClick={handleReload()}/>
