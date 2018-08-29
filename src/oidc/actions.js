@@ -5,6 +5,7 @@ import {
   KPOP_RECEIVE_OIDC_STATE,
   KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
   KPOP_OIDC_DEFAULT_SCOPE,
+  KPOP_OIDC_TOKEN_EXPIRATION_NOTIFICATION_TIME,
 } from './constants';
 import { settings } from './settings';
 import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash, blockAsyncProgress } from './utils';
@@ -231,7 +232,7 @@ export function createUserManager() {
       response_type: 'id_token token', // eslint-disable-line camelcase
       scope,
       loadUserInfo: true,
-      accessTokenExpiringNotificationTime: 120,
+      accessTokenExpiringNotificationTime: KPOP_OIDC_TOKEN_EXPIRATION_NOTIFICATION_TIME,
       automaticSilentRenew: true,
       includeIdTokenInSilentRenew: true,
     });
@@ -250,6 +251,15 @@ export function createUserManager() {
     });
     mgr.events.addUserLoaded(async user => {
       console.debug('oidc user loaded', user); // eslint-disable-line no-console
+      const { user: oldUser } = getState().common;
+      if (oldUser && oldUser.profile.sub !== user.profile.sub) {
+        // Huh we received another user, this should not happen so lets clear
+        // our local stuff and pretend nothing happened.
+        console.warn('oidc remove user as the user has changed'); // eslint-disable-line no-console
+        await mgr.removeUser();
+        return;
+      }
+
       await dispatch(receiveUser(user, mgr));
     });
     mgr.events.addUserUnloaded(async () => {
