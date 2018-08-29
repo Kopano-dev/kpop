@@ -84,7 +84,7 @@ export const kopanoApps = [
     name: 'kopano-konnect',
     icon: KopanoKonnectIcon,
     title: 'Account',
-    href: '/signin/v1/identifier/welcome',
+    href: '/signin/v1/welcome',
   },
 ];
 
