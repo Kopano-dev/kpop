@@ -11,7 +11,7 @@ export async function setup(appBaseURL=window.location.href) {
   settings.postLogoutRedirectURL = `${appBaseURL}${ENDSESSION_CALLBACK_MARKER}`;
   settings.silentRedirectURL = appBaseURL.replace(/\/$/, '') + SILENT_REFRESH_MARKER;
 
-  console.info('OIDC setup complete', settings); // eslint-disable-line no-console
+  console.info('oidc setup complete', settings); // eslint-disable-line no-console
 }
 
 export default settings;
