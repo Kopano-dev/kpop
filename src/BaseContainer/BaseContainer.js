@@ -7,58 +7,56 @@ import renderIf from 'render-if';
 
 import FatalErrorDialog from './FatalErrorDialog';
 import UpdateAvailableSnack from './UpdateAvailableSnack';
+import errorShape from '../shapes/error';
 
-const handleReload = (error=null) => async (event) => {
-  if (event && event.preventDefault) {
-    event.preventDefault();
-  }
-  if (error && error.resolver) {
-    // Special actions for error handling.
-    await error.resolver();
-  }
+class BaseContainer extends React.PureComponent {
+  handleReload = (error=null) => async (event) => {
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
+    if (error && error.resolver) {
+      // Special actions for error handling.
+      await error.resolver();
+    }
 
-  window.location.reload();
-};
+    window.location.reload();
+  };
 
-function BaseContainer(props) {
-  const {
-    children,
+  render() {
+    const {
+      children,
 
-    ready,
-    error,
-    updateAvailable,
-  } = props;
+      ready,
+      error,
+      updateAvailable,
+    } = this.props;
 
-  const readyAndNotFatalError = ready && (!error || !error.fatal);
+    const readyAndNotFatalError = ready && (!error || !error.fatal);
 
-  const ifReady = renderIf(readyAndNotFatalError);
-  const ifNotReady = renderIf(!ready);
-  const ifFatalError = renderIf(error && error.fatal);
-  const ifUpdateAvailable = renderIf(updateAvailable);
+    const ifReady = renderIf(readyAndNotFatalError);
+    const ifNotReady = renderIf(!ready);
+    const ifFatalError = renderIf(error && error.fatal);
+    const ifUpdateAvailable = renderIf(updateAvailable);
 
-  return (
-    <React.Fragment>
-      {ifReady(
-        children
-      )}
-      {ifNotReady(
-        <div id="loader">
-          <FormattedMessage id="kpop.loader.initializing.message" defaultMessage="Initializing..."></FormattedMessage>
-        </div>
-      )}
-      {ifFatalError(
-        <React.Fragment>
+    return (
+      <React.Fragment>
+        {ifReady(
+          children
+        )}
+        {ifNotReady(
           <div id="loader">
-            <FormattedMessage id="kpop.loader.fatalerror.message" defaultMessage="Error..."></FormattedMessage>
+            <FormattedMessage id="kpop.loader.initializing.message" defaultMessage="Initializing..."></FormattedMessage>
           </div>
-          <FatalErrorDialog open error={error} onReloadClick={handleReload(error)}/>
-        </React.Fragment>
-      )}
-      {ifUpdateAvailable(
-        <UpdateAvailableSnack onReloadClick={handleReload()}/>
-      )}
-    </React.Fragment>
-  );
+        )}
+        {ifFatalError(
+          <FatalErrorDialog open error={error} onReloadClick={this.handleReload(error)}/>
+        )}
+        {ifUpdateAvailable(
+          <UpdateAvailableSnack onReloadClick={this.handleReload()}/>
+        )}
+      </React.Fragment>
+    );
+  }
 }
 
 BaseContainer.propTypes = {
@@ -73,10 +71,7 @@ BaseContainer.propTypes = {
   /**
    * If an error is provided, the component will show an error dialog.
    */
-  error: PropTypes.shape({
-    message: PropTypes.string,
-    detail: PropTypes.string,
-  }),
+  error: errorShape,
   /**
    * If true the component will show a notification that an update is available.
    */

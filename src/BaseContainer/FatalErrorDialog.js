@@ -12,6 +12,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 
+import errorShape from '../shapes/error';
+
 const styles = () => ({
 });
 
@@ -71,12 +73,7 @@ FatalErrorDialog.propTypes = {
   /**
    * The error what will be shown.
    */
-  error: PropTypes.shape({
-    message: PropTypes.string,
-    detail: PropTypes.string,
-    withoutFatalSuffix: PropTypes.boolean,
-    reloadButtonText: PropTypes.node,
-  }).isRequired,
+  error: errorShape.isRequired,
   /**
    * Callback fired when the reload button is clicked.
    */
