@@ -297,7 +297,8 @@ export function createUserManager() {
       }, 5000);
     });
     mgr.events.addUserSignedOut(() => {
-      console.info('oidc user signed out at OP'); // eslint-disable-line no-console
+      console.debug('oidc user signed out at OP'); // eslint-disable-line no-console
+      mgr.removeUser();
     });
 
     // Always clear up stale state stuff, when a new manager is created.
