@@ -28,7 +28,7 @@ function FatalErrorDialog(props) {
   const suffixes = [];
   if (!error.withoutFatalSuffix) {
     suffixes.push(
-      <DialogContentText variant="body2">
+      <DialogContentText variant="body2" key="fatal-suffix">
         <FormattedMessage
           id="kpop.fatalErrorDialog.message"
           defaultMessage="This is a fatal error and the app needs to be reloaded."
