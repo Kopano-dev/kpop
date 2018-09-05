@@ -89,6 +89,14 @@ export const kopanoApps = [
 ];
 
 class AppsGrid extends React.PureComponent {
+  handleClick = (app) => (event) => {
+    const { onAppClick } = this.props;
+
+    if (onAppClick) {
+      onAppClick(event, app);
+    }
+  }
+
   render() {
     const { classes, apps, enabledApps, target, baseHref } = this.props;
 
@@ -99,7 +107,7 @@ class AppsGrid extends React.PureComponent {
       }
       const href = `${baseHref}${app.href}`;
       icons.push(<li className={classes.app} key={app.name}>
-        <ButtonBase className={classes.button} target={target} href={href} aria-label={app.title} component="a">
+        <ButtonBase className={classes.button} target={target} href={href} onClick={this.handleClick(app)} aria-label={app.title} component="a">
           <app.icon className={classes.icon} fontSize="inherit"/>
           <Typography className={classes.label}>{app.title}</Typography>
         </ButtonBase>
@@ -146,6 +154,11 @@ AppsGrid.propTypes = {
    * The base href to be prepended to the invidual href values for each app.
    */
   baseHref: PropTypes.string.isRequired,
+
+  /**
+   * Callback fired when the an app is clicked.
+   */
+  onAppClick: PropTypes.func,
 };
 
 export default withStyles(styles, { name: 'KpopAppsGrid' })(AppsGrid);

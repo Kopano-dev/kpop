@@ -27,8 +27,21 @@ class AppsSwitcherListItem extends React.PureComponent {
     this.setState(state => ({ open: !state.open }));
   };
 
+  handleAppClick = (event, app) => {
+    const { onAppClick } = this.props;
+
+    if (onAppClick) {
+      onAppClick(event, app);
+    }
+  };
+
   render() {
     const { classes, label, AppsGridProps, ...other } = this.props;
+
+    const appsGridProps = {
+      onAppClick: this.handleAppClick,
+      ...AppsGridProps,
+    };
 
     return (
       <React.Fragment>
@@ -42,7 +55,7 @@ class AppsSwitcherListItem extends React.PureComponent {
         <Collapse in={this.state.open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem button className={classes.nested}>
-              <AppsGrid {...AppsGridProps}/>
+              <AppsGrid {...appsGridProps}/>
             </ListItem>
           </List>
         </Collapse>
@@ -70,6 +83,11 @@ AppsSwitcherListItem.propTypes = {
    * Properties applied to the `AppsGrid` element.
    */
   AppsGridProps: PropTypes.object,
+
+  /**
+   * Callback fired when the an app is clicked.
+   */
+  onAppClick: PropTypes.func,
 };
 
 export default withStyles(styles, { name: 'KpopAppsSwitcherListItem' })(AppsSwitcherListItem);

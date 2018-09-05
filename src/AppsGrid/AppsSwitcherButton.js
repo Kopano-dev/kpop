@@ -31,11 +31,28 @@ class AppsSwitcherButton extends React.PureComponent {
     this.setState({ anchorEl: null });
   };
 
+  handleAppClick = (event, app) => {
+    const { onAppClick } = this.props;
+
+    if (onAppClick) {
+      onAppClick(event, app);
+    }
+
+    if (!event.defaultPrevented) {
+      setTimeout(this.handleClose, 0);
+    }
+  };
+
   render() {
     const { anchorEl } = this.state;
     const { classes, AppsGridProps, ...other } = this.props;
 
     const menuID = 'kpop-apps-switcher-menu';
+
+    const appsGridProps = {
+      onAppClick: this.handleAppClick,
+      ...AppsGridProps,
+    };
 
     return (
       <React.Fragment>
@@ -63,7 +80,7 @@ class AppsSwitcherButton extends React.PureComponent {
         >
           <Card className={classes.card}>
             <CardContent>
-              <AppsGrid {...AppsGridProps}/>
+              <AppsGrid {...appsGridProps}/>
             </CardContent>
           </Card>
         </Popover>
@@ -83,6 +100,11 @@ AppsSwitcherButton.propTypes = {
    * Properties applied to the `AppsGrid` element.
    */
   AppsGridProps: PropTypes.object,
+
+  /**
+   * Callback fired when the an app is clicked.
+   */
+  onAppClick: PropTypes.func,
 };
 
 export default withStyles(styles, { name: 'KpopAppsSwitcherButton' })(AppsSwitcherButton);
