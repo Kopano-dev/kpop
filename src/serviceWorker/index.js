@@ -11,6 +11,10 @@
 /*eslint-disable no-console*/
 
 import {
+  registerBeforeinstallPrompt,
+} from '../pwa';
+
+import {
   newContent,
   readyForOfflineUse,
   registrationError,
@@ -38,6 +42,10 @@ const defaultOptions = {
 export default function register(store, options=defaultOptions) {
   if (options.env === undefined || options.publicUrl === undefined) {
     throw new Error('invalid service worker invocation, missing env and publicUrl options');
+  }
+
+  if (!options.noInstallPrompt) {
+    registerBeforeinstallPrompt(store);
   }
 
   if (options.env === 'production' && 'serviceWorker' in navigator) {
