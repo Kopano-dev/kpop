@@ -34,11 +34,11 @@ export function triggerA2HsPrompt() {
       return;
     }
 
-    deferredPrompt.prompt()
+    deferredPrompt.prompt();
     return deferredPrompt.userChoice.then(async choiceResult => {
       delete stash.deferredPrompt;
-      await dispatch(a2HsPromptResult(choiceResult.outcome))
+      await dispatch(a2HsPromptResult(choiceResult.outcome));
       return choiceResult;
     });
-  }
+  };
 }

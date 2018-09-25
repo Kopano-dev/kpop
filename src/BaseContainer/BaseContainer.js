@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {FormattedMessage} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import renderIf from 'render-if';
 
 import FatalErrorDialog from './FatalErrorDialog';
 import UpdateAvailableSnack from './UpdateAvailableSnack';
 import errorShape from '../shapes/error';
+import A2HsAvailableSnack from '../pwa/A2HsAvailableSnack';
+import { triggerA2HsPrompt } from '../pwa/actions';
 
 class BaseContainer extends React.PureComponent {
   handleReload = (error=null) => async (event) => {
@@ -22,6 +24,13 @@ class BaseContainer extends React.PureComponent {
     window.location.reload();
   };
 
+  handleA2Hs = () => {
+    const { dispatch } = this.props;
+
+    // Trigger system prompt.
+    dispatch(triggerA2HsPrompt());
+  }
+
   render() {
     const {
       children,
@@ -29,6 +38,7 @@ class BaseContainer extends React.PureComponent {
       ready,
       error,
       updateAvailable,
+      a2HsAvailable,
     } = this.props;
 
     const readyAndNotFatalError = ready && (!error || !error.fatal);
@@ -37,6 +47,7 @@ class BaseContainer extends React.PureComponent {
     const ifNotReady = renderIf(!ready);
     const ifFatalError = renderIf(error && error.fatal);
     const ifUpdateAvailable = renderIf(updateAvailable);
+    const ifA2HsAvailable = renderIf(!updateAvailable && a2HsAvailable);
 
     return (
       <React.Fragment>
@@ -54,6 +65,9 @@ class BaseContainer extends React.PureComponent {
         {ifUpdateAvailable(
           <UpdateAvailableSnack onReloadClick={this.handleReload()}/>
         )}
+        {ifA2HsAvailable(
+          <A2HsAvailableSnack onAddClick={this.handleA2Hs}/>
+        )}
       </React.Fragment>
     );
   }
@@ -64,6 +78,10 @@ BaseContainer.propTypes = {
    * The content of the component.
    */
   children: PropTypes.node.isRequired,
+  /**
+   * A dispatch function, for example from redux.
+   */
+  dispatch: PropTypes.func.isRequired,
   /**
    * If true the component will show its content.
    */
@@ -76,6 +94,11 @@ BaseContainer.propTypes = {
    * If true the component will show a notification that an update is available.
    */
   updateAvailable: PropTypes.bool,
+  /**
+   * If true the component will showa notification that the app can be installed
+   * to the home screen (Progressive web app app to home screen a2hs).
+   */
+  a2HsAvailable: PropTypes.bool,
 };
 
 export default BaseContainer;
