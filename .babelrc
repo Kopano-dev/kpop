@@ -34,7 +34,7 @@
   "env": {
     "development": {
       "ignore": [
-        "*.spec.js"
+        "**/*.spec.js"
       ],
       "sourceMaps": "both",
       "plugins": [
@@ -42,7 +42,7 @@
     },
     "production": {
       "ignore": [
-        "*.spec.js"
+        "**/*.spec.js"
       ],
       "plugins": [
         "transform-dev-warning",
