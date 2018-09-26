@@ -6,7 +6,6 @@ const path = require('path');
 module.exports = {
   components: 'src/**/[A-Z]*.js',
   skipComponentsWithoutExample: true,
-  showUsage: true,
   serverHost: 'localhost',
   webpackConfig: {
     module: {
@@ -17,8 +16,8 @@ module.exports = {
           exclude: /node_modules/,
           loader: 'babel-loader',
           options: {
-            presets: ['env', 'react'],
-            plugins: ['transform-class-properties'],
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+            plugins: ['@babel/plugin-proposal-class-properties'],
           },
         },
         // Other loaders that are needed for your components
