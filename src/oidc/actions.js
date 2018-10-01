@@ -225,7 +225,7 @@ export function createUserManager() {
 
     const mgr = newUserManager({
       authority: iss,
-      client_id: config.oidc.clientID || 'kpop-' + encodeURI([location.protocol, '//', location.host, location.pathname].join('')), // eslint-disable-line camelcase
+      client_id: config.oidc.clientID || 'kpop-' + encodeURI(settings.appBaseURL), // eslint-disable-line camelcase
       redirect_uri: settings.redirectURL, // eslint-disable-line camelcase
       post_logout_redirect_uri: settings.postLogoutRedirectURL, // eslint-disable-line camelcase
       silent_redirect_uri: settings.silentRedirectURL,  // eslint-disable-line camelcase
