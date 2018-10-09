@@ -13,18 +13,20 @@
 from __future__ import print_function
 
 import sys
-from xml.dom.minidom import parse
 
 TEMPLATE = b"""
 import React from 'react';
 import createSvgIcon from '../utils/createSvgIcon';
 
 /* eslint-disable max-len */
-const svg = `%(svg)s`;
+import %(name)s from '%(fn)s';
 
 export default createSvgIcon(
-  <g dangerouslySetInnerHTML={{__html: svg}}></g>
-  , '%(name)s'
+  <image
+    x="0" y="0" width="24" height="24"
+    preserveAspectRatio
+    href={%(name)s}
+  />
 );
 """
 
@@ -36,14 +38,7 @@ if __name__ == "__main__":
         print("Usage: %s: name svg-file" % sys.argv[0])
         sys.exit(1)
 
-    with open(sys.argv[2]) as fp:
-        svg = parse(fp)
-
-    innerSVG = []
-    for node in svg.documentElement.childNodes:
-        innerSVG.append(node.toxml('utf-8'))
-
     print(TEMPLATE % {
       "name": sys.argv[1],
-      "svg": ''.join(innerSVG)}
-    )
+      "fn": sys.argv[2]
+    })
