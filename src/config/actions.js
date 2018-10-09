@@ -41,7 +41,6 @@ export function fetchConfigAndInitializeUser({id, scope, defaults, requiredScope
       // Inject OIDC always.
       config.oidc = Object.assign({
         iss: '', // If empty, current host is used.
-        clientID: `%{scope}-${id}-` + encodeURI([window.location.protocol, '//', window.location.host, window.location.pathname].join('')),
         scope: KPOP_OIDC_DEFAULT_SCOPE,
       }, config.oidc);
       // Allow override by app.
