@@ -11,6 +11,7 @@ function handleRetry(event) {
 
 function Loading(props) {
   if (props.error) {
+    console.error('Loading error', props.error); // eslint-disable-line no-console
     // When the loader has errored.
     return <div id="loader">
       <FormattedMessage
