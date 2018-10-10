@@ -14,12 +14,12 @@ from __future__ import print_function
 
 import sys
 
-TEMPLATE = b"""
+TEMPLATE = b"""\
 import React from 'react';
 import createSvgIcon from '../utils/createSvgIcon';
 
 /* eslint-disable max-len */
-import %(name)s from '%(fn)s';
+import { %(name)s } from '%(fn)s';
 
 export default createSvgIcon(
   <image
