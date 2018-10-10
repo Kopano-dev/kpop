@@ -19,12 +19,11 @@ import React from 'react';
 import createSvgIcon from '../utils/createSvgIcon';
 
 /* eslint-disable max-len */
-import { %(name)s } from '%(fn)s';
+import %(name)s from '%(fn)s';
 
 export default createSvgIcon(
   <image
     x="0" y="0" width="24" height="24"
-    preserveAspectRatio
     href={%(name)s}
   />
 );
