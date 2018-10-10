@@ -5,14 +5,12 @@ import { withStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 
-import {
-  KopanoCalendarIcon,
-  KopanoContactsIcon,
-  KopanoKonnectIcon,
-  KopanoMailIcon,
-  KopanoMeetIcon,
-  KopanoWebappIcon,
-} from '../icons';
+import KopanoCalendarIcon from '../icons/KopanoCalendarIcon';
+import KopanoContactsIcon from '../icons/KopanoContactsIcon';
+import KopanoKonnectIcon from '../icons/KopanoKonnectIcon';
+import KopanoMailIcon from '../icons/KopanoMailIcon';
+import KopanoMeetIcon from '../icons/KopanoMeetIcon';
+import KopanoWebappIcon from '../icons/KopanoWebappIcon';
 
 const styles = theme => ({
   root: {
