@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Hidden from '@material-ui/core/Hidden';
+import ButtonBase from '@material-ui/core/ButtonBase';
 
 import { KopanoLogo } from '../logos';
 import { userShape } from '../shapes';
@@ -24,10 +25,18 @@ export const styles = theme => {
       boxSizing: 'border-box',
       borderBottom: `1px solid ${theme.palette.divider}`,
     },
-    logo: {
-      height: 20,
+    title: {
       verticalAlign: 'middle',
+    },
+    kopanoLogo: {
+      height: 20,
+      verticalAlign: 'bottom',
       paddingRight: 10,
+    },
+    appLogo: {
+      height: 48,
+      paddingRight: 10,
+      cursor: 'default',
     },
     flex: {
       flex: 1,
@@ -56,6 +65,7 @@ function TopBar(props) {
     title,
     centerContent,
     user,
+    appLogo,
 
     ...other
   } = props;
@@ -82,6 +92,10 @@ function TopBar(props) {
     />
   ): null;
 
+  const logo = appLogo ?
+    <ButtonBase disableRipple className={classes.appLogo}>{appLogo}</ButtonBase> :
+    <Hidden smDown><img src={KopanoLogo} className={classes.kopanoLogo} alt="Kopano"/> </Hidden>;
+
   return (
     <AppBar
       className={className}
@@ -90,7 +104,7 @@ function TopBar(props) {
       <Toolbar>
         {anchor}
         <Typography variant="title" color="inherit" noWrap className={classes.flex}>
-          <Hidden smDown><img src={KopanoLogo} className={classes.logo} alt="Kopano"/> </Hidden>{title}
+          {logo}<span className={classes.title}>{title}</span>
         </Typography>
         <div className={classes.flex}>{centerContent}</div>
         {children}
@@ -148,6 +162,10 @@ TopBar.propTypes = {
    * a user profile section.
    */
   user: userShape,
+  /**
+   * The apps logo to show instead of Kopano logo.
+   */
+  appLogo: PropTypes.element,
 };
 
 TopBar.defaultProps = {

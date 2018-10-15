@@ -27,3 +27,10 @@ TopBar example with secondary color:
 ```js
 <TopBar title="App title" color="secondary" position="static"></TopBar>
 ```
+
+TopBar example with app logo:
+```js
+const KopanoMeetIcon = require('../icons/KopanoMeetIcon').default;
+
+<TopBar title="Meet" forceAnchor appLogo={<KopanoMeetIcon/>} position="static"></TopBar>
+```
