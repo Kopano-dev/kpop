@@ -12,6 +12,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import AppsIcon from '@material-ui/icons/Apps';
 
 import AppsGrid from './AppsGrid';
+import { withConfig } from '../BaseContainer/ConfigContext';
 
 const styles = () => {
   return {
@@ -36,7 +37,12 @@ class AppsSwitcherListItem extends React.PureComponent {
   };
 
   render() {
-    const { classes, label, AppsGridProps, ...other } = this.props;
+    const { classes, label, AppsGridProps, config, ...other } = this.props;
+
+    if (config && config.apps && config.apps.enabled && config.apps.enabled.length === 0) {
+      // Render nothing if no apps are enabled.
+      return null;
+    }
 
     const appsGridProps = {
       onAppClick: this.handleAppClick,
@@ -88,6 +94,12 @@ AppsSwitcherListItem.propTypes = {
    * Callback fired when the an app is clicked.
    */
   onAppClick: PropTypes.func,
+
+  /**
+   * The app configuration object. This value is made available by the
+   * integrated ConfigContext.
+   */
+  config: PropTypes.object,
 };
 
-export default withStyles(styles, { name: 'KpopAppsSwitcherListItem' })(AppsSwitcherListItem);
+export default withStyles(styles, { name: 'KpopAppsSwitcherListItem' })(withConfig(AppsSwitcherListItem));

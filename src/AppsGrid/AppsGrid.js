@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 
+import { withConfig } from '../BaseContainer/ConfigContext';
 import KopanoCalendarIcon from '../icons/KopanoCalendarIcon';
 import KopanoContactsIcon from '../icons/KopanoContactsIcon';
 import KopanoKonnectIcon from '../icons/KopanoKonnectIcon';
@@ -96,11 +97,13 @@ class AppsGrid extends React.PureComponent {
   }
 
   render() {
-    const { classes, apps, enabledApps, target, baseHref } = this.props;
+    const { classes, apps, enabledApps, target, baseHref, config } = this.props;
+
+    const enabled = enabledApps === undefined ? ((config && config.apps) ? config.apps.enabled : null) : enabledApps;
 
     const icons = [];
     for (let app of apps) {
-      if (enabledApps && !enabledApps.includes(app.name)) {
+      if (enabled && !enabled.includes(app.name)) {
         continue;
       }
       const href = `${baseHref}${app.href}`;
@@ -157,6 +160,12 @@ AppsGrid.propTypes = {
    * Callback fired when the an app is clicked.
    */
   onAppClick: PropTypes.func,
+
+  /**
+   * The app configuration object. This value is made available by the
+   * integrated ConfigContext.
+   */
+  config: PropTypes.object,
 };
 
-export default withStyles(styles, { name: 'KpopAppsGrid' })(AppsGrid);
+export default withStyles(styles, { name: 'KpopAppsGrid' })(withConfig(AppsGrid));

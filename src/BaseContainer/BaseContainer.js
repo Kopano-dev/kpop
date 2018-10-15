@@ -7,6 +7,8 @@ import renderIf from 'render-if';
 
 import FatalErrorDialog from './FatalErrorDialog';
 import UpdateAvailableSnack from './UpdateAvailableSnack';
+import { ConfigContext } from './ConfigContext';
+
 import errorShape from '../shapes/error';
 import A2HsAvailableSnack from '../pwa/A2HsAvailableSnack';
 import { triggerA2HsPrompt } from '../pwa/actions';
@@ -39,6 +41,7 @@ class BaseContainer extends React.PureComponent {
       error,
       updateAvailable,
       a2HsAvailable,
+      config,
     } = this.props;
 
     const readyAndNotFatalError = ready && (!error || !error.fatal);
@@ -48,9 +51,10 @@ class BaseContainer extends React.PureComponent {
     const ifFatalError = renderIf(error && error.fatal);
     const ifUpdateAvailable = renderIf(updateAvailable);
     const ifA2HsAvailable = renderIf(!updateAvailable && a2HsAvailable);
+    const cfg = config ? config : {};
 
     return (
-      <React.Fragment>
+      <ConfigContext.Provider value={cfg}>
         {ifReady(
           children
         )}
@@ -68,7 +72,7 @@ class BaseContainer extends React.PureComponent {
         {ifA2HsAvailable(
           <A2HsAvailableSnack onAddClick={this.handleA2Hs}/>
         )}
-      </React.Fragment>
+      </ConfigContext.Provider>
     );
   }
 }
@@ -99,6 +103,11 @@ BaseContainer.propTypes = {
    * to the home screen (Progressive web app app to home screen a2hs).
    */
   a2HsAvailable: PropTypes.bool,
+  /**
+   * The app configuration object. This value is made available by the
+   * integrated ConfigContext.
+   */
+  config: PropTypes.object,
 };
 
 export default BaseContainer;

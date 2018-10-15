@@ -9,6 +9,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
 import AppsGrid from './AppsGrid';
+import { withConfig } from '../BaseContainer/ConfigContext';
 
 const styles = theme => {
   return {
@@ -45,7 +46,12 @@ class AppsSwitcherButton extends React.PureComponent {
 
   render() {
     const { anchorEl } = this.state;
-    const { classes, AppsGridProps, ...other } = this.props;
+    const { classes, AppsGridProps, config, ...other } = this.props;
+
+    if (config && config.apps && config.apps.enabled && config.apps.enabled.length === 0) {
+      // Render nothing if no apps are enabled.
+      return null;
+    }
 
     const menuID = 'kpop-apps-switcher-menu';
 
@@ -105,6 +111,12 @@ AppsSwitcherButton.propTypes = {
    * Callback fired when the an app is clicked.
    */
   onAppClick: PropTypes.func,
+
+  /**
+   * The app configuration object. This value is made available by the
+   * integrated ConfigContext.
+   */
+  config: PropTypes.object,
 };
 
-export default withStyles(styles, { name: 'KpopAppsSwitcherButton' })(AppsSwitcherButton);
+export default withStyles(styles, { name: 'KpopAppsSwitcherButton' })(withConfig(AppsSwitcherButton));
