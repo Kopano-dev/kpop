@@ -3,6 +3,8 @@ export class UnexpectedNetworkResponseError extends Error {
 
   constructor(...args) {
     super(...args);
-    Error.captureStackTrace(this, UnexpectedNetworkResponseError);
+    if (Error.captureStackTrace !== undefined) {
+      Error.captureStackTrace(this, UnexpectedNetworkResponseError);
+    }
   }
 }
