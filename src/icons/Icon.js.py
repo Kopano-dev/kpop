@@ -14,6 +14,9 @@ from __future__ import print_function
 
 import sys
 
+# NOTE(longsleep): create SVG with xlink:href until browser support for href
+# without namespace is there. Currently (2018-10-16), Sarari 12.0 still cannot
+# do href and requires xlink namespace for the image to show. Meh!
 TEMPLATE = b"""\
 import React from 'react';
 import createSvgIcon from '../utils/createSvgIcon';
@@ -24,7 +27,7 @@ import %(name)s from '%(fn)s';
 export default createSvgIcon(
   <image
     x="0" y="0" width="24" height="24"
-    href={%(name)s}
+    xlinkHref={%(name)s}
   />
 );
 """
