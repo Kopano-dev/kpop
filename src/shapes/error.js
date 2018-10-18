@@ -2,6 +2,11 @@ import PropTypes from 'prop-types';
 
 export const errorPropTypes = {
   /**
+   * The id of the error. Can be used to trigger special action for individual
+   * errors. If empty it is a standard fatal error without special handling.
+   */
+  id: PropTypes.string,
+  /**
    * The error message.
    */
   message: PropTypes.string,

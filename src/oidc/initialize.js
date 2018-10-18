@@ -3,8 +3,9 @@
 // the very large oidc-client with its dependencies.
 
 import { showErrorInLoader } from '../utils';
-import { isSilentRefreshRequest } from './utils';
+import { isSilentRefreshRequest, isSigninPopupCallbackRequest, isPostSignoutPopupCallbackRequest } from './utils';
 import { setup } from './settings';
+import registerResolvers from './resolvers';
 
 export function initialize(appBaseURL=window.location.href, handleError=true) {
   return setup(appBaseURL).then(() => {
@@ -15,8 +16,32 @@ export function initialize(appBaseURL=window.location.href, handleError=true) {
         // OIDC silent refresh code - Dynaimically imported to keep the initial
         // javascript chunk size small. This is supported by webpack and the spec
         // can be found at https://github.com/tc39/proposal-dynamic-import.
-        import(/* webpackChunkName: "kpop-oidc-silent-refresh" */ './silent-refresh').then(m => {
+        import(/* webpackChunkName: "kpop-oidc-callbacks" */ './callbacks').then(m => {
           m.signinSilentCallback().catch(err => {
+            reject(err);
+          });
+        }).catch(err => {
+          reject(err);
+        });
+      } else if (isSigninPopupCallbackRequest()) {
+        // OIDC popup callback. Trigger our callback to notify opener. Dynamically
+        // imported to keep the initial javascript chunk size small. This is
+        // supported by webpack and the spec can be found at
+        // https://github.com/tc39/proposal-dynamic-import.
+        import(/* webpackChunkName: "kpop-oidc-callbacks" */ './callbacks').then(m => {
+          m.signinPopupCallback().catch(err => {
+            reject(err);
+          });
+        }).catch(err => {
+          reject(err);
+        });
+      } else if (isPostSignoutPopupCallbackRequest()) {
+        // OIDC popup callback. Trigger our callback to notify opener. Dynamically
+        // imported to keep the initial javascript chunk size small. This is
+        // supported by webpack and the spec can be found at
+        // https://github.com/tc39/proposal-dynamic-import.
+        import(/* webpackChunkName: "kpop-oidc-callbacks" */ './callbacks').then(m => {
+          m.signoutPopupCallback().catch(err => {
             reject(err);
           });
         }).catch(err => {
@@ -24,6 +49,7 @@ export function initialize(appBaseURL=window.location.href, handleError=true) {
         });
       } else {
         // Normal startup, set config and resolve promise so app can continue.
+        registerResolvers();
         resolve();
       }
     }).catch(err => {

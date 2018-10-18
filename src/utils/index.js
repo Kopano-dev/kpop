@@ -82,3 +82,11 @@ export function forceBase64StdEncoded(s) {
   // https://tools.ietf.org/html/rfc4648#section-5 for the specification.
   return s.replace(/-/g, '+').replace(/_/, '/');
 }
+
+export function isInStandaloneMode() {
+  // Checks if running as progressive web app in standalone mode.
+  return (
+    window.matchMedia('(display-mode: standalone)').matches || // Standard compliant https://w3c.github.io/manifest/#the-display-mode-media-feature
+    window.navigator.standalone // Safari meh :/
+  );
+}

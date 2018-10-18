@@ -8,6 +8,8 @@ import {
 
 import {
   KPOP_SET_ERROR,
+  KPOP_ERRORID_USER_REQUIRED,
+  KPOP_ERRORID_NETWORK_ERROR,
 } from './constants';
 import {
   UnexpectedNetworkResponseError,
@@ -18,10 +20,10 @@ export function setError(error) {
     if (error && error.resolution) {
       if (error.fatal) {
         error.resolver = async () => {
-          dispatch(resolveError(error));
+          await dispatch(resolveError(error));
         };
       } else {
-        dispatch(resolveError(error));
+        await dispatch(resolveError(error));
       }
     }
 
@@ -85,6 +87,7 @@ export function networkFetch(input, init, expectedStatus=200, expectJSON=true, d
 export function networkError(status, response, raisedError=null) {
   return async (dispatch) => {
     const error = {
+      id: KPOP_ERRORID_NETWORK_ERROR,
       status,
       fatal: false,
       resolution: null,
@@ -120,6 +123,7 @@ export function networkError(status, response, raisedError=null) {
 export function userRequiredError(fatal=true, raisedError=null) {
   return (dispatch) => {
     const error = {
+      id: KPOP_ERRORID_USER_REQUIRED,
       fatal,
       resolution: KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
       raisedError,

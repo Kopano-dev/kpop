@@ -1,6 +1,9 @@
 import {
   registerResolver,
 } from '../errors/resolver';
+import {
+  clearError,
+} from '../errors/actions';
 
 import {
   KPOP_RESET_USER,
@@ -8,7 +11,7 @@ import {
 } from './constants';
 import {
   getOrCreateUserManager,
-  signinRedirect,
+  startSignin,
 } from './actions';
 
 function resetUser() {
@@ -22,9 +25,10 @@ function resetUser() {
 function resetUserAndRedirectToSignin(error, prompt='select_account') {
   return async (dispatch) => {
     await dispatch(resetUser(error));
-    await dispatch(signinRedirect({
+    await dispatch(startSignin({
       prompt,
     }));
+    await dispatch(clearError(error));
   };
 }
 

@@ -6,12 +6,15 @@ import { FormattedMessage } from 'react-intl';
 import renderIf from 'render-if';
 
 import FatalErrorDialog from './FatalErrorDialog';
+import SigninDialog from './SigninDialog';
 import UpdateAvailableSnack from './UpdateAvailableSnack';
 import { ConfigContext } from './ConfigContext';
 
 import errorShape from '../shapes/error';
 import A2HsAvailableSnack from '../pwa/A2HsAvailableSnack';
 import { triggerA2HsPrompt } from '../pwa/actions';
+import { startSignin } from '../oidc/actions';
+import { KPOP_ERRORID_USER_REQUIRED } from '../common/constants';
 
 class BaseContainer extends React.PureComponent {
   handleReload = (error=null) => async (event) => {
@@ -31,6 +34,20 @@ class BaseContainer extends React.PureComponent {
 
     // Trigger system prompt.
     dispatch(triggerA2HsPrompt());
+  }
+
+  handleSignIn = (error=null) => async () => {
+    const { dispatch } = this.props;
+    if (error && error.resolver) {
+      // Special actions for error handling.
+      try {
+        await error.resolver();
+      } catch(err) {
+        console.warn('error while resolving sign-in', err); // eslint-disable-line no-console
+      }
+    } else {
+      await dispatch(startSignin());
+    }
   }
 
   render() {
@@ -59,12 +76,14 @@ class BaseContainer extends React.PureComponent {
           children
         )}
         {ifNotReady(
-          <div id="loader">
-            <FormattedMessage id="kpop.loader.initializing.message" defaultMessage="Initializing..."></FormattedMessage>
-          </div>
+          <React.Fragment>
+            <div id="loader">
+              <FormattedMessage id="kpop.loader.initializing.message" defaultMessage="Initializing..."></FormattedMessage>
+            </div>
+          </React.Fragment>
         )}
         {ifFatalError(
-          <FatalErrorDialog open error={error} onReloadClick={this.handleReload(error)}/>
+          this.fatalErrorDialog(error)
         )}
         {ifUpdateAvailable(
           <UpdateAvailableSnack onReloadClick={this.handleReload()}/>
@@ -74,6 +93,20 @@ class BaseContainer extends React.PureComponent {
         )}
       </ConfigContext.Provider>
     );
+  }
+
+  fatalErrorDialog = (error) => {
+    if (!error) {
+      return;
+    }
+
+    switch (error.id) {
+      case KPOP_ERRORID_USER_REQUIRED:
+        return <SigninDialog open fullWidth maxWidth="xs" disableBackdropClick disableEscapeKeyDown onSignInClick={this.handleSignIn(error)} PaperProps={{elevation: 2}}></SigninDialog>;
+
+      default:
+        return <FatalErrorDialog open error={error} onReloadClick={this.handleReload(error)}/>;
+    }
   }
 }
 

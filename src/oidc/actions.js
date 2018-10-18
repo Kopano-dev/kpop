@@ -8,7 +8,8 @@ import {
   KPOP_OIDC_TOKEN_EXPIRATION_NOTIFICATION_TIME,
 } from './constants';
 import { settings } from './settings';
-import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash, blockAsyncProgress } from './utils';
+import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash,
+  blockAsyncProgress, openPopupInAuthorityContext } from './utils';
 import { newUserManager, getUserManager, setUserManagerMetadata } from './usermanager';
 import { getOIDCState } from './state';
 
@@ -38,14 +39,75 @@ export function signinRedirect(params={}) {
   };
 }
 
-export function signoutRedirect() {
+export function signinRedirectWhenNotPopup(params={}) {
+  return async (dispatch) => {
+    if (!settings.popup) {
+      setTimeout(() => dispatch(signinRedirect(params)), 0);
+      return blockAsyncProgress(); // Block resolve since redirect is coming.
+    }
+  };
+}
+
+export function signinPopup(params={}) {
   return async (dispatch) => {
     const userManager = await dispatch(getOrCreateUserManager());
 
-    const args = {
+    const args = Object.assign({}, params, {
       state: await dispatch(getOIDCState()),
-    };
+    });
+
+    // Open popup in correct context.
+    openPopupInAuthorityContext(userManager);
+
+    return userManager.signinPopup(args);
+  };
+}
+
+export function startSignin(params={}) {
+  return (dispatch) => {
+    if (settings.popup) {
+      return dispatch(signinPopup(params));
+    } else {
+      setTimeout(() => dispatch(signinRedirect(params)), 0);
+      return blockAsyncProgress(); // Block resolve since redirect is coming.
+    }
+  };
+}
+
+export function signoutRedirect(params={}) {
+  return async (dispatch) => {
+    const userManager = await dispatch(getOrCreateUserManager());
+
+    const args = Object.assign({}, params, {
+      state: await dispatch(getOIDCState()),
+    });
     await userManager.signoutRedirect(args);
+  };
+}
+
+export function signoutPopup(params={}) {
+  return async (dispatch) => {
+    const userManager = await dispatch(getOrCreateUserManager());
+
+    const args = Object.assign({}, params, {
+      state: await dispatch(getOIDCState()),
+    });
+
+    // Open popup in correct context.
+    openPopupInAuthorityContext(userManager);
+
+    return userManager.signoutPopup(args);
+  };
+}
+
+export function startSignout(params={}) {
+  return (dispatch) => {
+    if (settings.popup) {
+      return dispatch(signoutPopup(params));
+    } else {
+      setTimeout(() => dispatch(signoutRedirect(params)), 0);
+      return blockAsyncProgress(); // Block resolve since redirect is coming.
+    }
   };
 }
 
@@ -123,14 +185,8 @@ export function fetchUser() {
         }).then(() => {
           // FIXME(longsleep): This relies on exclusive hash access.
           resetHash();
-          setTimeout(async () => {
-            // NOTE(longsleep): For now redirect ot sigin page after logout.
-            const args = {
-              state: await dispatch(getOIDCState()),
-            };
-            await userManager.signinRedirect(args);
-          }, 0);
-          return blockAsyncProgress(); // Block resolve since redirect is coming.
+          // NOTE(longsleep): For now redirect ot sigin page after logout.
+          return dispatch(signinRedirectWhenNotPopup());
         });
       } else {
         // Not a callback -> new request and we need auth.
@@ -149,11 +205,7 @@ export function fetchUser() {
         }
 
         // Having ended up here means that interactive sign in is required.
-        // FIXME(longsleep): Things fall into pieces here when running inside a
-        // PWA on iOS since the redirect leaves the PWA.
-        userManager.signinRedirect(args);
-
-        return blockAsyncProgress(); // Block resolve since redirect is coming.
+        return dispatch(signinRedirectWhenNotPopup());
       }
     }).then(async user => {
       await dispatch(receiveUser(user, userManager));
@@ -227,7 +279,9 @@ export function createUserManager() {
       authority: iss,
       client_id: config.oidc.clientID || 'kpop-' + encodeURI(settings.appBaseURL), // eslint-disable-line camelcase
       redirect_uri: settings.redirectURL, // eslint-disable-line camelcase
+      popup_redirect_uri: settings.popupRedirectURL, // eslint-disable-line camelcase
       post_logout_redirect_uri: settings.postLogoutRedirectURL, // eslint-disable-line camelcase
+      popup_post_logout_redirect_uri: settings.popupPostLogoutRedirectURL, // eslint-disable-line camelcase
       silent_redirect_uri: settings.silentRedirectURL,  // eslint-disable-line camelcase
       response_type: 'id_token token', // eslint-disable-line camelcase
       scope,
@@ -235,6 +289,8 @@ export function createUserManager() {
       accessTokenExpiringNotificationTime: KPOP_OIDC_TOKEN_EXPIRATION_NOTIFICATION_TIME,
       automaticSilentRenew: true,
       includeIdTokenInSilentRenew: true,
+      popupWindowFeatures: settings.popupWindowFeatures,
+      popupWindowTarget: settings.popupWindowTarget,
     });
     mgr.events.addAccessTokenExpiring(() => {
       console.debug('oidc token expiring'); // eslint-disable-line no-console
