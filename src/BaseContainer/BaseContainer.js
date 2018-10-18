@@ -9,6 +9,7 @@ import FatalErrorDialog from './FatalErrorDialog';
 import SigninDialog from './SigninDialog';
 import UpdateAvailableSnack from './UpdateAvailableSnack';
 import { ConfigContext } from './ConfigContext';
+import { SlideUpTransition } from './Transitions';
 
 import errorShape from '../shapes/error';
 import A2HsAvailableSnack from '../pwa/A2HsAvailableSnack';
@@ -102,7 +103,7 @@ class BaseContainer extends React.PureComponent {
 
     switch (error.id) {
       case KPOP_ERRORID_USER_REQUIRED:
-        return <SigninDialog open fullWidth maxWidth="xs" disableBackdropClick disableEscapeKeyDown onSignInClick={this.handleSignIn(error)} PaperProps={{elevation: 2}}></SigninDialog>;
+        return <SigninDialog open fullWidth maxWidth="xs" disableBackdropClick disableEscapeKeyDown onSignInClick={this.handleSignIn(error)} PaperProps={{elevation: 2}} TransitionComponent={SlideUpTransition}></SigninDialog>;
 
       default:
         return <FatalErrorDialog open error={error} onReloadClick={this.handleReload(error)}/>;
