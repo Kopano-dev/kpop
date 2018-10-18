@@ -83,10 +83,20 @@ export function forceBase64StdEncoded(s) {
   return s.replace(/-/g, '+').replace(/_/, '/');
 }
 
+export const isMobileSafari = (userAgent = window.navigator.userAgent) => {
+  return /iP(ad|od|hone)/i.test(userAgent) && /WebKit/i.test(userAgent);
+};
+
+export const isMobile = (userAgent = window.navigator.userAgent) => {
+  return /Mobi/.test(userAgent);
+};
+
 export function isInStandaloneMode() {
   // Checks if running as progressive web app in standalone mode.
-  return (
-    window.matchMedia('(display-mode: standalone)').matches || // Standard compliant https://w3c.github.io/manifest/#the-display-mode-media-feature
-    window.navigator.standalone // Safari meh :/
+  let standalone = (
+    window.matchMedia('(display-mode: standalone)').matches // Standard compliant https://w3c.github.io/manifest/#the-display-mode-media-feature
+    || window.navigator.standalone // Safari meh :/
   );
+
+  return standalone;
 }
