@@ -1,4 +1,4 @@
-import { isInStandaloneMode, isMobileSafari  } from '../utils';
+import { isInStandaloneMode, isMobileSafari, isAndroid  } from '../utils';
 
 export const AUTHORIZE_CALLBACK_MARKER = '#oidc-callback';
 export const AUTHORIZE_CALLBACK_POPUP_MARKER = '#oidc-popup-callback';
@@ -25,6 +25,14 @@ export async function setup(appBaseURL=window.location.href) {
       // Reference: https://forums.developer.apple.com/thread/100407
       standalone = false;
       console.warn('oidc ignoring standalone mode of Mobile Safari'); // eslint-disable-line no-console
+    } else if (isAndroid()) {
+      // Android can use redirect based flows just. Fine in any case the popup
+      // flow cannot be used since it suspends the app (because a popup is
+      // opened. As currently we first open the popup with a dummy url, the
+      // popup would be stuck there since the original app is suspended and
+      // cannot trigger the popup navigation to the authorize endpoint.
+      standalone = false;
+      console.warn('oidc ignoring standalone mode on Android'); // eslint-disable-line no-console
     }
   }
 

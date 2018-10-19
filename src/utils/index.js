@@ -87,6 +87,10 @@ export const isMobileSafari = (userAgent = window.navigator.userAgent) => {
   return /iP(ad|od|hone)/i.test(userAgent) && /WebKit/i.test(userAgent);
 };
 
+export const isAndroid = (userAgent = window.navigator.userAgent) => {
+  return /Android/i.test(userAgent);
+};
+
 export const isMobile = (userAgent = window.navigator.userAgent) => {
   return /Mobi/.test(userAgent);
 };
