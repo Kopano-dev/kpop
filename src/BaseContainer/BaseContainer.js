@@ -79,7 +79,10 @@ class BaseContainer extends React.PureComponent {
         {ifNotReady(
           <React.Fragment>
             <div id="loader">
-              <FormattedMessage id="kpop.loader.initializing.message" defaultMessage="Initializing..."></FormattedMessage>
+              <FormattedMessage
+                id="kpop.loader.initializing.message"
+                defaultMessage="Initializing...">
+              </FormattedMessage>
             </div>
           </React.Fragment>
         )}
@@ -103,7 +106,12 @@ class BaseContainer extends React.PureComponent {
 
     switch (error.id) {
       case KPOP_ERRORID_USER_REQUIRED:
-        return <SigninDialog open fullWidth maxWidth="xs" disableBackdropClick disableEscapeKeyDown onSignInClick={this.handleSignIn(error)} PaperProps={{elevation: 2}} TransitionComponent={SlideUpTransition}></SigninDialog>;
+        return <SigninDialog
+          open fullWidth maxWidth="xs" disableBackdropClick disableEscapeKeyDown
+          onSignInClick={this.handleSignIn(error)}
+          PaperProps={{elevation: 2}}
+          TransitionComponent={SlideUpTransition}>
+        </SigninDialog>;
 
       default:
         return <FatalErrorDialog open error={error} onReloadClick={this.handleReload(error)}/>;

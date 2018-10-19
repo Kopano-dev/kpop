@@ -376,7 +376,8 @@ export function insufficientScopeError(fatal=true, raisedError=null) {
       resolution: KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
       raisedError,
       message: 'No access to this app',
-      detail: 'You do not have permission to access this app. Please switch to another user or ask your administrator to grant you access.',
+      detail: 'You do not have permission to access this app. ' +
+        'Please switch to another user or ask your administrator to grant you access.',
       withoutFatalSuffix: true,
       reloadButtonText: 'Switch user',
     };

@@ -108,7 +108,8 @@ class AppsGrid extends React.PureComponent {
       }
       const href = `${baseHref}${app.href}`;
       icons.push(<li className={classes.app} key={app.name}>
-        <ButtonBase className={classes.button} target={target} href={href} onClick={this.handleClick(app)} aria-label={app.title} component="a">
+        <ButtonBase className={classes.button} target={target} href={href}
+          onClick={this.handleClick(app)} aria-label={app.title} component="a">
           <app.icon className={classes.icon} fontSize="inherit"/>
           <Typography className={classes.label}>{app.title}</Typography>
         </ButtonBase>

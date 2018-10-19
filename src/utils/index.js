@@ -98,7 +98,8 @@ export const isMobile = (userAgent = window.navigator.userAgent) => {
 export function isInStandaloneMode() {
   // Checks if running as progressive web app in standalone mode.
   let standalone = (
-    window.matchMedia('(display-mode: standalone)').matches // Standard compliant https://w3c.github.io/manifest/#the-display-mode-media-feature
+    // See https://w3c.github.io/manifest/#the-display-mode-media-feature.
+    window.matchMedia('(display-mode: standalone)').matches // Standard compliant.
     || window.navigator.standalone // Safari meh :/
   );
 

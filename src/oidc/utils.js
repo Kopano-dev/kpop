@@ -101,8 +101,10 @@ export function openPopupCentered(url, windowName, featuresString='width=600,hei
   // Compute shit.
   let screenX = typeof window.screenX !== 'undefined' ? window.screenX : window.screenLeft;
   let screenY = typeof window.screenY !== 'undefined' ? window.screenY : window.screenTop;
-  let outerWidth = typeof window.outerWidth !== 'undefined' ? window.outerWidth : document.documentElement.clientWidth;
-  let outerHeight = typeof window.outerHeight !== 'undefined' ? window.outerHeight : document.documentElement.clientHeight - 22;
+  let outerWidth = typeof window.outerWidth !== 'undefined' ?
+    window.outerWidth : document.documentElement.clientWidth;
+  let outerHeight = typeof window.outerHeight !== 'undefined' ?
+    window.outerHeight : document.documentElement.clientHeight - 22;
   let left = parseInt(screenX + (outerWidth - targetWidth) / 2, 10);
   let right = parseInt(screenY + (outerHeight - targetHeight) / 2.5, 10);
   features.push('left=' + left);
