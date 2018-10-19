@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
 
 import { KopanoLogo } from '../logos';
 
@@ -93,4 +92,4 @@ SigninDialog.propTypes = {
   open: PropTypes.bool.isRequired,
 };
 
-export default withMobileDialog()(withStyles(styles)(SigninDialog));
+export default withStyles(styles)(SigninDialog);
