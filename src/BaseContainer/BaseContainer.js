@@ -9,7 +9,6 @@ import FatalErrorDialog from './FatalErrorDialog';
 import SigninDialog from './SigninDialog';
 import UpdateAvailableSnack from './UpdateAvailableSnack';
 import { ConfigContext } from './ConfigContext';
-import { SlideUpTransition } from './Transitions';
 
 import errorShape from '../shapes/error';
 import A2HsAvailableSnack from '../pwa/A2HsAvailableSnack';
@@ -110,8 +109,7 @@ class BaseContainer extends React.PureComponent {
           open fullWidth maxWidth="xs" disableBackdropClick disableEscapeKeyDown
           onSignInClick={this.handleSignIn(error)}
           PaperProps={{elevation: 0}}
-          TransitionComponent={SlideUpTransition}>
-        </SigninDialog>;
+        />;
 
       default:
         return <FatalErrorDialog open error={error} onReloadClick={this.handleReload(error)}/>;
