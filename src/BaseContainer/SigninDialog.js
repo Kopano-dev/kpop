@@ -11,7 +11,8 @@ import { KopanoLogo } from '../logos';
 
 const styles = () => ({
   kopanoLogo: {
-    height: 22,
+    height: 48,
+    maxWidth: 160,
   },
   appLogo: {
     maxHeight: 160,

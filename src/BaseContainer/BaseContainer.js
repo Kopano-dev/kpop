@@ -109,7 +109,7 @@ class BaseContainer extends React.PureComponent {
         return <SigninDialog
           open fullWidth maxWidth="xs" disableBackdropClick disableEscapeKeyDown
           onSignInClick={this.handleSignIn(error)}
-          PaperProps={{elevation: 2}}
+          PaperProps={{elevation: 0}}
           TransitionComponent={SlideUpTransition}>
         </SigninDialog>;
 
