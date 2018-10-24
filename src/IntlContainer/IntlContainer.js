@@ -55,7 +55,7 @@ class IntlContainer extends React.PureComponent {
 
     if (!ready) {
       return (
-        <div id="loader">...</div>
+        <div id="loader">...</div> // eslint-disable-line react-intl-format/missing-formatted-message
       );
     }
 

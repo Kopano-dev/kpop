@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
+/* eslint-disable react-intl-format/missing-formatted-message */
+
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit,

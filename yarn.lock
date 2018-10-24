@@ -3429,6 +3429,13 @@ eslint-plugin-jest@^21.15.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.22.1.tgz#bc805e9b1c75c3bc92e47c44dd41370c1af7ebcc"
   integrity sha512-OcVizyXljSps3nVfuPomfK8RKt7jvDsIsDrO7l1ZA4bDbiO9bEGWpsdU/x5F0pymVDG7ME88VlTboxbYJumLGQ==
 
+eslint-plugin-react-intl-format@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-intl-format/-/eslint-plugin-react-intl-format-1.1.6.tgz#8e9a12cba3af1616f444225a1551dab42b0b5300"
+  integrity sha512-i38Y7Qi5pARzJ1Rf4sB+HWyCdiFdeUVAKbCxvdTBtSwCP2bvKU73zJymRv8JLdcCcVhUo6bQNYwal69kn0gjfQ==
+  dependencies:
+    requireindex "~1.1.0"
+
 eslint-plugin-react@^7.7.0:
   version "7.11.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.11.1.tgz#c01a7af6f17519457d6116aa94fc6d2ccad5443c"
@@ -8204,6 +8211,11 @@ require-uncached@^1.0.3:
   dependencies:
     caller-path "^0.1.0"
     resolve-from "^1.0.0"
+
+requireindex@~1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/requireindex/-/requireindex-1.1.0.tgz#e5404b81557ef75db6e49c5a72004893fe03e162"
+  integrity sha1-5UBLgVV+91225JxacgBIk/4D4WI=
 
 requires-port@^1.0.0:
   version "1.0.0"

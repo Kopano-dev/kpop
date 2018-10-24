@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { FormattedMessage } from 'react-intl';
+
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -57,7 +59,10 @@ class UserProfileButton extends React.PureComponent {
         color="primary"
         onClick={user.signoutHandler}
       >
-        Sign out
+        <FormattedMessage
+          id="kpop.userProfileButton.signOutButton.text"
+          defaultMessage="Sign out">
+        </FormattedMessage>
       </Button>
     ) : null;
 

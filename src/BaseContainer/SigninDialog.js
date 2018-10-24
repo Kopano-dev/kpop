@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { FormattedMessage } from 'react-intl';
+
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -66,7 +68,10 @@ function SigninDialog(props) {
       <DialogTitle id="kpop-sign-in-dialog-title" className={classes.title}>{logo}</DialogTitle>
       <DialogActions className={classes.actions}>
         <Button variant="outlined" onClick={onSignInClick} color="primary" autoFocus>
-          Sign in
+          <FormattedMessage
+            id="kpop.signinDialog.signInButton.text"
+            defaultMessage="Sign in">
+          </FormattedMessage>
         </Button>
       </DialogActions>
 

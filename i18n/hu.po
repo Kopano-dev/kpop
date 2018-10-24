@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-10-24T09:40:18.880Z\n"
+"POT-Creation-Date: 2018-10-24T11:26:46.433Z\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -70,6 +70,22 @@ msgstr ""
 #: i18n/src/BaseContainer/UpdateAvailableSnack.json
 msgctxt "kpop.updateAvailableSnack.reloadButton.text"
 msgid "Reload"
+msgstr ""
+
+#. [kpop.signinDialog.signInButton.text]
+#. defaultMessage is:
+#. Sign in
+#: i18n/src/BaseContainer/SigninDialog.json
+msgctxt "kpop.signinDialog.signInButton.text"
+msgid "Sign in"
+msgstr ""
+
+#. [kpop.userProfileButton.signOutButton.text]
+#. defaultMessage is:
+#. Sign out
+#: i18n/src/TopBar/UserProfileButton.json
+msgctxt "kpop.userProfileButton.signOutButton.text"
+msgid "Sign out"
 msgstr ""
 
 #. [kpop.loader.longtime.message]
