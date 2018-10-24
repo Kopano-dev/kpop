@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-04-23T17:47:38.202Z\n"
+"POT-Creation-Date: 2018-10-24T09:40:18.880Z\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -11,6 +11,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. [kpop.a2hsAvailableSnack.addButton.text]
+#. defaultMessage is:
+#. Add
+#: i18n/src/pwa/A2HsAvailableSnack.json
+msgctxt "kpop.a2hsAvailableSnack.addButton.text"
+msgid "Add"
+msgstr ""
 
 #. [kpop.loader.error.message]
 #. defaultMessage is:
@@ -28,6 +36,14 @@ msgctxt "kpop.loader.initializing.message"
 msgid "Initializing..."
 msgstr "Vorbereiten..."
 
+#. [kpop.a2hsAvailableSnack.message]
+#. defaultMessage is:
+#. Install as app
+#: i18n/src/pwa/A2HsAvailableSnack.json
+msgctxt "kpop.a2hsAvailableSnack.message"
+msgid "Install as app"
+msgstr ""
+
 #. [kpop.loader.loading.message]
 #. defaultMessage is:
 #. Loading...
@@ -39,7 +55,11 @@ msgstr "Lade..."
 #. [kpop.fatalErrorDialog.reloadButton.text]
 #. defaultMessage is:
 #. Reload
+#. [kpop.fatalErrorDialog.reloadButton.text]
+#. defaultMessage is:
+#. Reload
 #: i18n/src/BaseContainer/FatalErrorDialog.json
+#: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.reloadButton.text"
 msgid "Reload"
 msgstr "Neu laden"
@@ -63,7 +83,11 @@ msgstr "Das dauert länger als erwartet..."
 #. [kpop.fatalErrorDialog.message]
 #. defaultMessage is:
 #. This is a fatal error and the app needs to be reloaded.
+#. [kpop.fatalErrorDialog.message]
+#. defaultMessage is:
+#. This is a fatal error and the app needs to be reloaded.
 #: i18n/src/BaseContainer/FatalErrorDialog.json
+#: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.message"
 msgid "This is a fatal error and the app needs to be reloaded."
 msgstr "Das ist ein schwerwiegender Fehler und die App must neu geladen werden."
@@ -75,6 +99,22 @@ msgstr "Das ist ein schwerwiegender Fehler und die App must neu geladen werden."
 msgctxt "kpop.updateAvailableSnack.message"
 msgid "Update available"
 msgstr "Update verfügbar"
+
+#. [kpop.a2A2HsAvailableSnack.closeButton.ariaLabel]
+#. defaultMessage is:
+#. close
+#: i18n/src/pwa/A2HsAvailableSnack.json
+msgctxt "kpop.a2A2HsAvailableSnack.closeButton.ariaLabel"
+msgid "close"
+msgstr ""
+
+#. [kpop.loader.retry]
+#. defaultMessage is:
+#. retry
+#: i18n/src/Loading/Loading.json
+msgctxt "kpop.loader.retry"
+msgid "retry"
+msgstr ""
 
 #~ msgctxt "loading_message_error"
 #~ msgid "Error!"

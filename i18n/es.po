@@ -1,112 +1,117 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: \n"
 "POT-Creation-Date: 2018-10-24T09:40:18.880Z\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"MIME-Version: 1.0\n"
-"X-Generator: react-intl-po\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-
-#: ./i18n/src/pwa/A2HsAvailableSnack.json
 #. [kpop.a2hsAvailableSnack.addButton.text]
 #. defaultMessage is:
 #. Add
+#: i18n/src/pwa/A2HsAvailableSnack.json
 msgctxt "kpop.a2hsAvailableSnack.addButton.text"
 msgid "Add"
 msgstr ""
 
-#: ./i18n/src/Loading/Loading.json
 #. [kpop.loader.error.message]
 #. defaultMessage is:
 #. Error!
+#: i18n/src/Loading/Loading.json
 msgctxt "kpop.loader.error.message"
 msgid "Error!"
 msgstr ""
 
-#: ./i18n/src/BaseContainer/BaseContainer.json
 #. [kpop.loader.initializing.message]
 #. defaultMessage is:
 #. Initializing...
+#: i18n/src/BaseContainer/BaseContainer.json
 msgctxt "kpop.loader.initializing.message"
 msgid "Initializing..."
 msgstr ""
 
-#: ./i18n/src/pwa/A2HsAvailableSnack.json
 #. [kpop.a2hsAvailableSnack.message]
 #. defaultMessage is:
 #. Install as app
+#: i18n/src/pwa/A2HsAvailableSnack.json
 msgctxt "kpop.a2hsAvailableSnack.message"
 msgid "Install as app"
 msgstr ""
 
-#: ./i18n/src/Loading/Loading.json
 #. [kpop.loader.loading.message]
 #. defaultMessage is:
 #. Loading...
+#: i18n/src/Loading/Loading.json
 msgctxt "kpop.loader.loading.message"
 msgid "Loading..."
 msgstr ""
 
-#: ./i18n/src/BaseContainer/FatalErrorDialog.json
 #. [kpop.fatalErrorDialog.reloadButton.text]
 #. defaultMessage is:
 #. Reload
-#: ./i18n/src/BaseContainer/SignInDialog.json
 #. [kpop.fatalErrorDialog.reloadButton.text]
 #. defaultMessage is:
 #. Reload
+#: i18n/src/BaseContainer/FatalErrorDialog.json
+#: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.reloadButton.text"
 msgid "Reload"
 msgstr ""
 
-#: ./i18n/src/BaseContainer/UpdateAvailableSnack.json
 #. [kpop.updateAvailableSnack.reloadButton.text]
 #. defaultMessage is:
 #. Reload
+#: i18n/src/BaseContainer/UpdateAvailableSnack.json
 msgctxt "kpop.updateAvailableSnack.reloadButton.text"
 msgid "Reload"
 msgstr ""
 
-#: ./i18n/src/Loading/Loading.json
 #. [kpop.loader.longtime.message]
 #. defaultMessage is:
 #. Taking a long time...
+#: i18n/src/Loading/Loading.json
 msgctxt "kpop.loader.longtime.message"
 msgid "Taking a long time..."
 msgstr ""
 
-#: ./i18n/src/BaseContainer/FatalErrorDialog.json
 #. [kpop.fatalErrorDialog.message]
 #. defaultMessage is:
 #. This is a fatal error and the app needs to be reloaded.
-#: ./i18n/src/BaseContainer/SignInDialog.json
 #. [kpop.fatalErrorDialog.message]
 #. defaultMessage is:
 #. This is a fatal error and the app needs to be reloaded.
+#: i18n/src/BaseContainer/FatalErrorDialog.json
+#: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.message"
 msgid "This is a fatal error and the app needs to be reloaded."
 msgstr ""
 
-#: ./i18n/src/BaseContainer/UpdateAvailableSnack.json
 #. [kpop.updateAvailableSnack.message]
 #. defaultMessage is:
 #. Update available
+#: i18n/src/BaseContainer/UpdateAvailableSnack.json
 msgctxt "kpop.updateAvailableSnack.message"
 msgid "Update available"
 msgstr ""
 
-#: ./i18n/src/pwa/A2HsAvailableSnack.json
 #. [kpop.a2A2HsAvailableSnack.closeButton.ariaLabel]
 #. defaultMessage is:
 #. close
+#: i18n/src/pwa/A2HsAvailableSnack.json
 msgctxt "kpop.a2A2HsAvailableSnack.closeButton.ariaLabel"
 msgid "close"
 msgstr ""
 
-#: ./i18n/src/Loading/Loading.json
 #. [kpop.loader.retry]
 #. defaultMessage is:
 #. retry
+#: i18n/src/Loading/Loading.json
 msgctxt "kpop.loader.retry"
 msgid "retry"
 msgstr ""

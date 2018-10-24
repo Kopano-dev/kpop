@@ -3,6 +3,10 @@
 YARN ?= yarn
 MSGMERGE ?= msgmerge
 
+# Variables
+
+POS = $(wildcard *.po)
+
 # Translations
 
 .PHONY: build
@@ -25,13 +29,14 @@ json:
 		-c 'id' \
 		 --indentation=2
 
-
 .PHONY: merge
-merge: kpop.pot
+merge: $(POS)
+
+$(POS): kpop.pot
 	$(MSGMERGE) -U \
 		--backup=none \
 		--no-wrap \
-		*.po kpop.pot
+		$@ kpop.pot
 
 clean:
 	@rm -f *.mo
