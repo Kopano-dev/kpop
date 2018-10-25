@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2018-10-24T11:26:46.433Z\n"
-"PO-Revision-Date: 2018-10-25 11:42+0000\n"
+"PO-Revision-Date: 2018-10-25 12:11+0000\n"
 "Last-Translator: Felix <f.bartels@kopano.com>\n"
 "Language-Team: German <http://translate.kopano.io/projects/kopano/kpop/de/>\n"
 "Language: de\n"
@@ -42,7 +42,7 @@ msgstr "Vorbereiten..."
 #: i18n/src/pwa/A2HsAvailableSnack.json
 msgctxt "kpop.a2hsAvailableSnack.message"
 msgid "Install as app"
-msgstr ""
+msgstr "Als App installieren"
 
 #. [kpop.loader.loading.message]
 #. defaultMessage is:
@@ -78,7 +78,7 @@ msgstr "Neu laden"
 #: i18n/src/BaseContainer/SigninDialog.json
 msgctxt "kpop.signinDialog.signInButton.text"
 msgid "Sign in"
-msgstr ""
+msgstr "Anmelden"
 
 #. [kpop.userProfileButton.signOutButton.text]
 #. defaultMessage is:
@@ -86,7 +86,7 @@ msgstr ""
 #: i18n/src/TopBar/UserProfileButton.json
 msgctxt "kpop.userProfileButton.signOutButton.text"
 msgid "Sign out"
-msgstr ""
+msgstr "Ausloggen"
 
 #. [kpop.loader.longtime.message]
 #. defaultMessage is:
@@ -122,7 +122,7 @@ msgstr "Update verfügbar"
 #: i18n/src/pwa/A2HsAvailableSnack.json
 msgctxt "kpop.a2A2HsAvailableSnack.closeButton.ariaLabel"
 msgid "close"
-msgstr ""
+msgstr "schließen"
 
 #. [kpop.loader.retry]
 #. defaultMessage is:
@@ -130,7 +130,7 @@ msgstr ""
 #: i18n/src/Loading/Loading.json
 msgctxt "kpop.loader.retry"
 msgid "retry"
-msgstr ""
+msgstr "wiederholen"
 
 #~ msgctxt "loading_message_error"
 #~ msgid "Error!"
