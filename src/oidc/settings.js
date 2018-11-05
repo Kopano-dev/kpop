@@ -37,7 +37,7 @@ export async function setup(appBaseURL=window.location.href) {
   }
 
   // Use popups when in standalone mode.
-  settings.popup = !!standalone || true;
+  settings.popup = !!standalone;
 
   // Apply settings.
   settings.appBaseURL = appBaseURL;
