@@ -2,15 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2018-10-24T11:26:46.433Z\n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"PO-Revision-Date: 2018-11-08 16:12+0000\n"
+"Last-Translator: Klaus <klaus@linuxavdelingen.no>\n"
+"Language-Team: Norwegian Bokmål "
+"<http://translate.kopano.io/projects/kopano/kpop/nb/>\n"
 "Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.4\n"
 
 #. [kpop.a2hsAvailableSnack.addButton.text]
 #. defaultMessage is:
@@ -18,7 +19,7 @@ msgstr ""
 #: i18n/src/pwa/A2HsAvailableSnack.json
 msgctxt "kpop.a2hsAvailableSnack.addButton.text"
 msgid "Add"
-msgstr ""
+msgstr "Legg til"
 
 #. [kpop.loader.error.message]
 #. defaultMessage is:
@@ -26,7 +27,7 @@ msgstr ""
 #: i18n/src/Loading/Loading.json
 msgctxt "kpop.loader.error.message"
 msgid "Error!"
-msgstr ""
+msgstr "Feil!"
 
 #. [kpop.loader.initializing.message]
 #. defaultMessage is:
@@ -34,7 +35,7 @@ msgstr ""
 #: i18n/src/BaseContainer/BaseContainer.json
 msgctxt "kpop.loader.initializing.message"
 msgid "Initializing..."
-msgstr ""
+msgstr "Forbereder..."
 
 #. [kpop.a2hsAvailableSnack.message]
 #. defaultMessage is:
@@ -42,7 +43,7 @@ msgstr ""
 #: i18n/src/pwa/A2HsAvailableSnack.json
 msgctxt "kpop.a2hsAvailableSnack.message"
 msgid "Install as app"
-msgstr ""
+msgstr "Installer som en App"
 
 #. [kpop.loader.loading.message]
 #. defaultMessage is:
@@ -50,7 +51,7 @@ msgstr ""
 #: i18n/src/Loading/Loading.json
 msgctxt "kpop.loader.loading.message"
 msgid "Loading..."
-msgstr ""
+msgstr "Laster..."
 
 #. [kpop.fatalErrorDialog.reloadButton.text]
 #. defaultMessage is:
@@ -62,7 +63,7 @@ msgstr ""
 #: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.reloadButton.text"
 msgid "Reload"
-msgstr ""
+msgstr "Last pånytt"
 
 #. [kpop.updateAvailableSnack.reloadButton.text]
 #. defaultMessage is:
@@ -70,7 +71,7 @@ msgstr ""
 #: i18n/src/BaseContainer/UpdateAvailableSnack.json
 msgctxt "kpop.updateAvailableSnack.reloadButton.text"
 msgid "Reload"
-msgstr ""
+msgstr "Last pånytt"
 
 #. [kpop.signinDialog.signInButton.text]
 #. defaultMessage is:
@@ -78,7 +79,7 @@ msgstr ""
 #: i18n/src/BaseContainer/SigninDialog.json
 msgctxt "kpop.signinDialog.signInButton.text"
 msgid "Sign in"
-msgstr ""
+msgstr "Logg inn"
 
 #. [kpop.userProfileButton.signOutButton.text]
 #. defaultMessage is:
@@ -86,7 +87,7 @@ msgstr ""
 #: i18n/src/TopBar/UserProfileButton.json
 msgctxt "kpop.userProfileButton.signOutButton.text"
 msgid "Sign out"
-msgstr ""
+msgstr "Logg ut"
 
 #. [kpop.loader.longtime.message]
 #. defaultMessage is:
@@ -94,7 +95,7 @@ msgstr ""
 #: i18n/src/Loading/Loading.json
 msgctxt "kpop.loader.longtime.message"
 msgid "Taking a long time..."
-msgstr ""
+msgstr "Dette tok litt tid..."
 
 #. [kpop.fatalErrorDialog.message]
 #. defaultMessage is:
@@ -106,7 +107,7 @@ msgstr ""
 #: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.message"
 msgid "This is a fatal error and the app needs to be reloaded."
-msgstr ""
+msgstr "Dette er en kritisk feil, og appen må lastes på nytt."
 
 #. [kpop.updateAvailableSnack.message]
 #. defaultMessage is:
@@ -114,7 +115,7 @@ msgstr ""
 #: i18n/src/BaseContainer/UpdateAvailableSnack.json
 msgctxt "kpop.updateAvailableSnack.message"
 msgid "Update available"
-msgstr ""
+msgstr "Oppdatering tilgjengelig"
 
 #. [kpop.a2A2HsAvailableSnack.closeButton.ariaLabel]
 #. defaultMessage is:
@@ -122,7 +123,7 @@ msgstr ""
 #: i18n/src/pwa/A2HsAvailableSnack.json
 msgctxt "kpop.a2A2HsAvailableSnack.closeButton.ariaLabel"
 msgid "close"
-msgstr ""
+msgstr "lukk"
 
 #. [kpop.loader.retry]
 #. defaultMessage is:
@@ -130,4 +131,4 @@ msgstr ""
 #: i18n/src/Loading/Loading.json
 msgctxt "kpop.loader.retry"
 msgid "retry"
-msgstr ""
+msgstr "forsøk igjen"
