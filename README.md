@@ -9,7 +9,7 @@ apps. All components are located in the `src` directory.
 Kpop should be added from a release tarball with a fixed version.
 
 ```
-yarn add https://download.kopano.io/community/kapp:/kpop-${KPOP_RELEASE.tgz
+yarn add https://download.kopano.io/community/kapp:/kpop-${KPOP_RELEASE}.tgz
 ```
 
 
