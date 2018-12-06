@@ -44,11 +44,6 @@ export function fetchConfigAndInitializeUser(options) {
   }, options);
   return (dispatch) => {
     return dispatch(fetchConfigFromServer(id, scope)).then(async config => {
-      // Inject OIDC always.
-      config.oidc = Object.assign({
-        iss: '', // If empty, current host is used.
-        scope: KPOP_OIDC_DEFAULT_SCOPE,
-      }, config.oidc);
       // Allow override by app.
       if (defaults) {
         if (typeof defaults === 'function') {
@@ -57,6 +52,11 @@ export function fetchConfigAndInitializeUser(options) {
           config = Object.assign({}, defaults, config);
         }
       }
+      // Inject OIDC always.
+      config.oidc = Object.assign({}, {
+        iss: '', // If empty, current host is used.
+        scope: KPOP_OIDC_DEFAULT_SCOPE,
+      }, config.oidc);
       return config;
     }).then(async config => {
       await dispatch(receiveConfig(config));
