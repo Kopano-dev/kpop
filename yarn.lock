@@ -2752,7 +2752,12 @@ core-js@^1.0.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
   integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
 
-core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.3:
+core-js@^2.4.0, core-js@^2.5.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.0.tgz#1e30793e9ee5782b307e37ffa22da0eacddd84d4"
+  integrity sha512-kLRC6ncVpuEW/1kwrOXYX6KQASCVtrh1gQr/UiaVgFlf9WE5Vp+lNe5+h3LuMr5PAucWnnEXwH0nQHRH/gpGtw==
+
+core-js@^2.5.3:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
   integrity sha512-RszJCAxg/PP6uzXVXL6BsxSXx/B05oJAQ2vkJRjyjrEcNVycaqOmNb5OTxZPE3xa5gwZduqza6L9JOCenh/Ecw==
@@ -6687,9 +6692,9 @@ obuf@^1.0.0, obuf@^1.1.1:
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
 oidc-client@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/oidc-client/-/oidc-client-1.5.2.tgz#d2ade71ea592aff77d4fb895d61d4a2f9cdcdc6b"
-  integrity sha512-2w4TOraEf4PEbuo8mR8tSRhtgAHQaghBWgt2qpnwebsdW87BRMC7XKAytHcbZ1GYjFH9jJn30Cav64zbYdjiCQ==
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/oidc-client/-/oidc-client-1.5.4.tgz#5efb7464848e39926778ad96b155935282b9fe0b"
+  integrity sha512-ddom2rLs7xc6kAOOD7LMXQJTcoJxGLfIM/Up19/LiDYQQrSERGCtyuqjyDoR8T2XQtFhU5Y2HWs1O3WdvyYckA==
   dependencies:
     jsrsasign "^8.0.12"
   optionalDependencies:

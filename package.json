@@ -25,7 +25,7 @@
   "peerDependencies": {
     "@material-ui/core": "^1.5.1",
     "@material-ui/icons": "^1.1.1",
-    "oidc-client": "^1.5.2",
+    "oidc-client": "^1.5.4",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-intl": "^2.6.0",
