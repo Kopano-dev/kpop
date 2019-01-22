@@ -291,6 +291,7 @@ export function createUserManager() {
       includeIdTokenInSilentRenew: true,
       popupWindowFeatures: settings.popupWindowFeatures,
       popupWindowTarget: settings.popupWindowTarget,
+      extraQueryParams: config.oidc.eqp || undefined,
     });
     mgr.events.addAccessTokenExpiring(() => {
       console.debug('oidc token expiring'); // eslint-disable-line no-console
