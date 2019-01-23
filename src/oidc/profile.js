@@ -17,7 +17,7 @@ export function profileAsUserShape(profile, userManager) {
     surname: profile.family_name,
     mail: profile.email,
 
-    guid: `${metadata.issuer}/${profile.sub}`,
+    guid: profile.email ? profile.email : `${metadata.issuer}/${profile.sub}`,
   };
 
   // NOTE(longsleep): Sign out support is optional. Check if the issuer has
