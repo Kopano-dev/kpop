@@ -38,10 +38,11 @@ export class Persona extends React.Component {
     }
 
     const displayName = getDisplayName(user);
+    const guid = user.guid ? user.guid : user.mail ? user.mail : user.id;
     return {
       user,
       displayName,
-      backgroundColor: generateColorRGB(`${user.guid}-${displayName}`),
+      backgroundColor: generateColorRGB(`${guid}-${displayName}`),
       initials: getInitials(displayName, theme.direction === 'rtl', !!allowPhoneInitials),
     };
   }
