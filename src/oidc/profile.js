@@ -1,6 +1,7 @@
 import settings from './settings';
 import { getUserManagerMetadata } from './usermanager';
 import { openPopupInAuthorityContext } from './utils';
+import { makeOIDCState } from './state';
 
 /**
  * Converts OIDC profile object to match the requirements to work as userShape.
@@ -25,7 +26,9 @@ export function profileAsUserShape(profile, userManager) {
   if (metadata.end_session_endpoint) {
     r.signoutHandler = async () => {
       console.info('oidc user sign-out handler called'); // eslint-disable-line no-console
-      const args = {/* TODO(longsleep): Add state */};
+      const args = {
+        state: makeOIDCState(),
+      };
       if (settings.popup) {
         // Open popup in correct context.
         openPopupInAuthorityContext(userManager);

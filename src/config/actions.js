@@ -36,13 +36,14 @@ export function fetchConfigFromServer(id=defaultID, scope=defaultScope) {
 }
 
 export function fetchConfigAndInitializeUser(options) {
-  const {id, scope, defaults, requiredScopes, dispatchError} = Object.assign({}, {
-    id: defaultID,
-    scope: defaultScope,
-    defaults: null,
-    dispatchError: true,
-  }, options);
   return (dispatch) => {
+    const {id, scope, defaults, requiredScopes, dispatchError, args} = Object.assign({}, {
+      id: defaultID,
+      scope: defaultScope,
+      defaults: null,
+      dispatchError: true,
+      args: {},
+    }, options);
     return dispatch(fetchConfigFromServer(id, scope)).then(async config => {
       // Allow override by app.
       if (defaults) {
@@ -71,7 +72,7 @@ export function fetchConfigAndInitializeUser(options) {
           return config.user;
         });
       } else {
-        result.user = await dispatch(fetchUser());
+        result.user = await dispatch(fetchUser(args));
       }
       return result;
     }).then(async ({user, config}) => {
