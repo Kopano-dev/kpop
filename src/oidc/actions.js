@@ -2,7 +2,6 @@ import { setError } from '../common/actions';
 
 import {
   KPOP_RECEIVE_USER,
-  KPOP_RECEIVE_OIDC_STATE,
   KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
   KPOP_OIDC_DEFAULT_SCOPE,
   KPOP_OIDC_TOKEN_EXPIRATION_NOTIFICATION_TIME,
@@ -10,8 +9,8 @@ import {
 import { settings } from './settings';
 import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash,
   blockAsyncProgress, openPopupInAuthorityContext } from './utils';
-import { newUserManager, getUserManager, setUserManagerMetadata } from './usermanager';
-import { getOIDCState } from './state';
+import { newUserManager, getUserManager, setUserManagerMetadata, onBeforeSignin, onBeforeSignout } from './usermanager';
+import { makeOIDCState, restoreOIDCState, updateOIDCState } from './state';
 
 export function receiveUser(user, userManager) {
   return {
@@ -21,19 +20,12 @@ export function receiveUser(user, userManager) {
   };
 }
 
-export function receiveOIDCState(state) {
-  return {
-    type: KPOP_RECEIVE_OIDC_STATE,
-    state,
-  };
-}
-
 export function signinRedirect(params={}) {
   return async (dispatch) => {
     const userManager = await dispatch(getOrCreateUserManager());
 
     const args = Object.assign({}, params, {
-      state: await dispatch(getOIDCState()),
+      state: makeOIDCState(),
     });
     await userManager.signinRedirect(args);
   };
@@ -43,7 +35,7 @@ export function signinRedirectWhenNotPopup(params={}) {
   return async (dispatch) => {
     if (!settings.popup) {
       setTimeout(() => dispatch(signinRedirect(params)), 0);
-      return blockAsyncProgress(); // Block resolve since redirect is coming.
+      await blockAsyncProgress(); // Block resolve since redirect is coming.
     }
   };
 }
@@ -53,7 +45,7 @@ export function signinPopup(params={}) {
     const userManager = await dispatch(getOrCreateUserManager());
 
     const args = Object.assign({}, params, {
-      state: await dispatch(getOIDCState()),
+      state: makeOIDCState(),
     });
 
     // Open popup in correct context.
@@ -79,7 +71,7 @@ export function signoutRedirect(params={}) {
     const userManager = await dispatch(getOrCreateUserManager());
 
     const args = Object.assign({}, params, {
-      state: await dispatch(getOIDCState()),
+      state: makeOIDCState(),
     });
     await userManager.signoutRedirect(args);
   };
@@ -90,7 +82,7 @@ export function signoutPopup(params={}) {
     const userManager = await dispatch(getOrCreateUserManager());
 
     const args = Object.assign({}, params, {
-      state: await dispatch(getOIDCState()),
+      state: makeOIDCState(),
     });
 
     // Open popup in correct context.
@@ -137,9 +129,18 @@ export function ensureRequiredScopes(user, requiredScopes, dispatchError=true) {
   };
 }
 
-export function fetchUser() {
+export function fetchUser(options={}) {
   return async (dispatch) => {
+    const { removeUser } = options;
+
+    // Register hooks from options.
+    onBeforeSignin(options.onBeforeSignin);
+    onBeforeSignout(options.onBeforeSignout);
+
     const userManager = await dispatch(getOrCreateUserManager());
+    if (removeUser) {
+      await userManager.removeUser();
+    }
 
     return userManager.getUser().then(async user => {
       if (user !== null) {
@@ -148,6 +149,10 @@ export function fetchUser() {
 
       if (isSigninCallbackRequest()) {
         return userManager.signinRedirectCallback().then(user => {
+          // This is a redirect - restore options from state.
+          if (user && user.state && user.state.options) {
+            Object.assign(options, user.state.options);
+          }
           console.info('oidc completed authentication', user); // eslint-disable-line no-console
           return user;
         }).catch(async (err) => {
@@ -158,7 +163,7 @@ export function fetchUser() {
             // comes back after it was off/suspended.
             console.debug('oidc silently retrying after no matching state was found'); // eslint-disable-line no-console
             const args = {
-              state: await dispatch(getOIDCState()),
+              state: makeOIDCState(),
             };
             return userManager.signinSilent(args).catch((err) => {
               console.debug('oidc failed to silently recover after no matching state was found', err); // eslint-disable-line no-console, max-len
@@ -168,30 +173,39 @@ export function fetchUser() {
           console.error('oidc failed to complete authentication', err); // eslint-disable-line no-console
           return null;
         }).then(user => {
-          // FIXME(longsleep): This relies on exclusive hash access.
+          // FIXME(longsleep): This relies on exclusive hash access. Ensure that
+          // this reset happens before the state is restored.
           resetHash();
           return user;
         });
       } else if (isPostSignoutCallbackRequest()) {
-        return userManager.signoutRedirectCallback().then(async resp => {
+        return userManager.signoutRedirectCallback().then(resp => {
           console.info('oidc complete signout', resp); // eslint-disable-line no-console
-          if (resp && resp.state) {
-            await dispatch(receiveOIDCState(resp.state));
-          }
-          return null;
+          return resp;
         }).catch((err) => {
           console.error('oidc failed to complete signout', err); // eslint-disable-line no-console
           return null;
-        }).then(() => {
-          // FIXME(longsleep): This relies on exclusive hash access.
+        }).then(resp => {
+          // FIXME(longsleep): This relies on exclusive hash access. Ensure that
+          // this reset happens before the state is restored.
           resetHash();
+          // This is a redirect - restore options from state together with state.
+          if (resp && resp.state) {
+            if (resp.state.options) {
+              Object.assign(options, resp.state.options);
+            }
+            restoreOIDCState(resp.state);
+          }
           // NOTE(longsleep): For now redirect ot sigin page after logout.
-          return dispatch(signinRedirectWhenNotPopup());
+          return dispatch(signinRedirectWhenRequired(options));
         });
       } else {
         // Not a callback -> new request and we need auth.
+        // Store options in state, so they can be restored after a redirect.
+        updateOIDCState({options});
+
         const args = {
-          state: await dispatch(getOIDCState()),
+          state: makeOIDCState(),
         };
         try {
           // Try to retrieve user silently. This will fail with error when
@@ -205,16 +219,28 @@ export function fetchUser() {
         }
 
         // Having ended up here means that interactive sign in is required.
-        return dispatch(signinRedirectWhenNotPopup());
+        return dispatch(signinRedirectWhenRequired(options));
       }
     }).then(async user => {
       await dispatch(receiveUser(user, userManager));
       if (user && user.state !== undefined) {
-        await dispatch(receiveOIDCState(user.state));
+        restoreOIDCState(user.state);
       }
 
       return user;
     });
+  };
+}
+
+function signinRedirectWhenRequired(options={}, params={}) {
+  return async (dispatch) => {
+    const { noRedirect } = options;
+
+    if (noRedirect) {
+      return;
+    }
+
+    await dispatch(signinRedirectWhenNotPopup(params));
   };
 }
 
@@ -228,7 +254,7 @@ export function fetchUserSilent() {
       }
 
       const args = {
-        state: await dispatch(getOIDCState()),
+        state: makeOIDCState(),
       };
       try {
         // Try to retrieve user silently. This will fail with error when
@@ -242,7 +268,7 @@ export function fetchUserSilent() {
     }).then(async user => {
       await dispatch(receiveUser(user, userManager));
       if (user && user.state !== undefined) {
-        await dispatch(receiveOIDCState(user.state));
+        restoreOIDCState(user.state);
       }
 
       return user;
@@ -251,18 +277,28 @@ export function fetchUserSilent() {
 }
 
 export function getOrCreateUserManager() {
-  return async (dispatch) => {
+  return (dispatch) => {
     let userManager = getUserManager();
     if (userManager) {
       return userManager;
     }
 
-    return dispatch(createUserManager());
+    return dispatch(createUserManager()).then(async mgr => {
+      // Always clear up stale state stuff, when a new manager is created.
+      setTimeout(() => {
+        mgr._clearStaleState();
+      }, 0);
+
+      const metadata = await mgr._getMetadata();
+      setUserManagerMetadata(mgr, metadata);
+
+      return mgr;
+    });
   };
 }
 
 export function createUserManager() {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const { config } = getState().common;
 
     let iss = config.oidc.iss;
@@ -358,15 +394,7 @@ export function createUserManager() {
       mgr.removeUser();
     });
 
-    // Always clear up stale state stuff, when a new manager is created.
-    setTimeout(() => {
-      mgr.clearStaleState();
-    }, 0);
-
-    return mgr.metadataService.getMetadata().then(metadata => {
-      setUserManagerMetadata(metadata);
-      return mgr;
-    });
+    return mgr;
   };
 }
 
