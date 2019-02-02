@@ -45,7 +45,7 @@ export function fetchConfigAndInitializeUser(options) {
       args: {},
     }, options);
     return dispatch(fetchConfigFromServer(id, scope)).then(async config => {
-      // Allow override by app.
+      // Allow override of config by app.
       if (defaults) {
         if (typeof defaults === 'function') {
           config = await defaults(config);
@@ -72,7 +72,12 @@ export function fetchConfigAndInitializeUser(options) {
           return config.user;
         });
       } else {
-        result.user = await dispatch(fetchUser(args));
+        let fetchUserArgs = args;
+        if (typeof fetchUserArgs === 'function') {
+          // Allow app to define args with config.
+          fetchUserArgs = await args(config);
+        }
+        result.user = await dispatch(fetchUser(fetchUserArgs));
       }
       return result;
     }).then(async ({user, config}) => {
@@ -88,6 +93,11 @@ export function fetchConfigAndInitializeUser(options) {
       if (ensuredScopes === undefined) {
         // If not set, all requested scopes are required.
         ensuredScopes = config.oidc.scope.split(' ');
+      } else {
+        if (typeof ensuredScopes === 'function') {
+          // Allow app to define required scopes with config and user.
+          ensuredScopes = await ensuredScopes(config, user);
+        }
       }
       if (ensuredScopes) {
         await dispatch(ensureRequiredScopes(user, ensuredScopes, dispatchError));
