@@ -1,4 +1,4 @@
-import { isInStandaloneMode, isMobileSafari, isAndroid  } from '../utils';
+import { isInFrame, isInStandaloneMode, isMobileSafari, isAndroid  } from '../utils';
 
 export const AUTHORIZE_CALLBACK_MARKER = '#oidc-callback';
 export const AUTHORIZE_CALLBACK_POPUP_MARKER = '#oidc-popup-callback';
@@ -36,8 +36,10 @@ export async function setup(appBaseURL=window.location.href) {
     }
   }
 
+  let framed = isInFrame();
+
   // Use popups when in standalone mode.
-  settings.popup = !!standalone;
+  settings.popup = framed || !!standalone;
 
   // Apply settings.
   settings.appBaseURL = appBaseURL;
