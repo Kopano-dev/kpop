@@ -105,3 +105,12 @@ export function isInStandaloneMode() {
 
   return standalone;
 }
+
+export function isInFrame() {
+  // Check if running inside a frame.
+  try {
+    return window.self !== window.top;
+  } catch(e) {
+    return true;
+  }
+}
