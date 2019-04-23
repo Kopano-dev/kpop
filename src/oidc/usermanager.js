@@ -145,6 +145,14 @@ export class UserManager {
     return this._um.revokeAccessToken();
   }
 
+  startSlientRenew() {
+    return this._um.startSilentRenew();
+  }
+
+  stopSlientRenew() {
+    return this._um.stopSlientRenew();
+  }
+
   // Internal functions.
 
   _clearStaleState() {

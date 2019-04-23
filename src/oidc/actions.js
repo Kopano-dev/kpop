@@ -328,6 +328,7 @@ export function createUserManager() {
       popupWindowFeatures: settings.popupWindowFeatures,
       popupWindowTarget: settings.popupWindowTarget,
       extraQueryParams: config.oidc.eqp || undefined,
+      metadataUrl: config.oidc.metadataURL || undefined,
     });
     mgr.events.addAccessTokenExpiring(() => {
       console.debug('oidc token expiring'); // eslint-disable-line no-console
