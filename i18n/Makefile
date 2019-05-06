@@ -32,11 +32,13 @@ json:
 .PHONY: merge
 merge: $(POS)
 
-$(POS): kpop.pot
+$(POS): FORCE kpop.pot
 	$(MSGMERGE) -U \
 		--backup=none \
 		--no-wrap \
 		$@ kpop.pot
+
+FORCE:
 
 clean:
 	@rm -f *.mo
