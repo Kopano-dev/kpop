@@ -17,13 +17,13 @@ extract: pot
 
 .PHONY: pot
 pot: src/BaseContainer/BaseContainer.json
-	$(YARN) rip json2pot './i18n/src/**/*.json' \
+	cd .. && $(YARN) rip json2pot './i18n/src/**/*.json' \
 		-o ./i18n/kpop.pot \
 		-c 'id'
 
 .PHONY: json
-json:
-	$(YARN) rip po2json './i18n/*.po' \
+json: src/BaseContainer/BaseContainer.json
+	cd .. && $(YARN) rip po2json './i18n/*.po' \
 		-m './i18n/src/**/*.json' \
 		-o './i18n/locales/' \
 		-c 'id' \
