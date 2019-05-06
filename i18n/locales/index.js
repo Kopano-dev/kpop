@@ -13,7 +13,7 @@ import nl from './nl.json';
 import ptPT from './pt_PT.json';
 import ru from './ru.json';
 
-export default {
+const locales = {
   de,
   es,
   fr,
@@ -22,6 +22,35 @@ export default {
   ja,
   nb,
   nl,
-  ptPT,
+  pt: ptPT,
+  'pt-pt': ptPT,
   ru,
 };
+
+export default locales;
+
+/**
+ * Helper function to merge two locale objects into one. The function will
+ * return a new locales object, containing all keys from l1 and l2, having
+ * keys from l2 override keys from l1.
+ */
+export function mergeLocales(l1, l2) {
+  const l = {
+    ...l1,
+  };
+  for (let locale of Object.keys(l2)) {
+    l[locale] = {
+      ...l1[locale],
+      ...l2[locale],
+    };
+  }
+  return l;
+}
+
+/**
+ * Helper function to simplyfy initialization of app locales together with
+ * locales defined by kpop.
+ */
+export function defineLocales(appLocales) {
+  return mergeLocales(locales, appLocales);
+}
