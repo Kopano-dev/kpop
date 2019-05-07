@@ -1,24 +1,41 @@
-import {addLocaleData} from 'react-intl';
+import { addLocaleData } from 'react-intl';
 
-import de from 'react-intl/locale-data/de';
+// Always import english first.
 import en from 'react-intl/locale-data/en';
-import nl from 'react-intl/locale-data/nl';
-import fr from 'react-intl/locale-data/fr';
+
+// Please keep imports alphabetically sorted. These imports also need to be
+// kept in sync with the translations in i18n/locales.
+import de from 'react-intl/locale-data/de';
 import es from 'react-intl/locale-data/es';
+import fr from 'react-intl/locale-data/fr';
+import hu from 'react-intl/locale-data/hu';
+import it from 'react-intl/locale-data/it';
+import ja from 'react-intl/locale-data/ja';
+import nb from 'react-intl/locale-data/nb';
+import nl from 'react-intl/locale-data/nl';
+import pt from 'react-intl/locale-data/pt';
+import ru from 'react-intl/locale-data/ru';
 
 let initializedIntl = false;
-const initializeIntl = async () => {
+export const initializeIntl = async () => {
   if (initializedIntl) {
     return;
   }
 
   // NOTE(longsleep): Add all locales which we want to support here.
   addLocaleData([
-    ...de,
     ...en,
-    ...nl,
-    ...fr,
+
+    ...de,
     ...es,
+    ...fr,
+    ...hu,
+    ...it,
+    ...ja,
+    ...nb,
+    ...nl,
+    ...pt,
+    ...ru,
   ]);
 
   initializedIntl = true;

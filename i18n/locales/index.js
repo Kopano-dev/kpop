@@ -13,7 +13,7 @@ import nl from './nl.json';
 import ptPT from './pt_PT.json';
 import ru from './ru.json';
 
-const locales = {
+export const locales = {
   de,
   es,
   fr,
@@ -23,7 +23,6 @@ const locales = {
   nb,
   nl,
   pt: ptPT,
-  'pt-pt': ptPT,
   ru,
 };
 
@@ -48,7 +47,38 @@ export function mergeLocales(l1, l2) {
 }
 
 /**
- * Helper function to simplyfy initialization of app locales together with
+ * Helper function to merge two locale objects into one, returning only a
+ * single locale.
+ */
+export function mergeLocale(l1, l2, locale) {
+  l1 = l1 ? l1 : {};
+  l2 = l2 ? l2 : {};
+  const localeBase = locale.split('-', 1)[0];
+  if (localeBase !== locale) {
+    return {
+      ...l1[localeBase],
+      ...l1[locale],
+      ...l2[localeBase],
+      ...l2[locale],
+    };
+  } else {
+    return {
+      ...l1[locale],
+      ...l2[locale],
+    };
+  }
+}
+
+/**
+ * Helper function to simplify initialization of app locale together with
+ * locale defined by kpop.
+ */
+export function defineLocale(appLocales, locale) {
+  return mergeLocale(locales, appLocales, locale);
+}
+
+/**
+ * Helper function to simplify initialization of app locales together with
  * locales defined by kpop.
  */
 export function defineLocales(appLocales) {

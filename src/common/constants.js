@@ -1,6 +1,6 @@
 // Default locale to English Great Britain, so that weeks start on
 // Monday as that is what most Kopano customers would expect.
-export const defaultLocale = 'en-gb';
+export const defaultLocale = 'en-GB';
 
 // Well Kopano is a Dutch company.
 export const defaultTimezone = 'Europe/Amsterdam';
