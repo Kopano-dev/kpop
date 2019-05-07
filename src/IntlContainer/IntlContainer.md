@@ -5,8 +5,16 @@ const FormattedTime = require('react-intl').FormattedTime;
 const FormattedRelative = require('react-intl').FormattedRelative;
 const FormattedDate = require('react-intl').FormattedDate;
 
+const LocaleSelect = require('./LocaleSelect').default;
+const IfIntld = require('./IfIntld').default;
+
 const date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
 ;<div>
+<IfIntld>
+	<LocaleSelect afterChange={locale => {
+		console.debug('locale changed: ' + locale);
+	}}/>
+</IfIntld>
 <h3>Time formatting</h3>
 <ul>
 	<li><FormattedTime value={date}/></li>

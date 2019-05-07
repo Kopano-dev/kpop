@@ -13,8 +13,11 @@ import nl from './nl.json';
 import ptPT from './pt_PT.json';
 import ru from './ru.json';
 
+// Locales must follow BCP 47 format (https://tools.ietf.org/html/rfc5646).
 export const locales = {
   de,
+  'en-GB': {},
+  'en-US': {},
   es,
   fr,
   hu,
@@ -22,7 +25,7 @@ export const locales = {
   ja,
   nb,
   nl,
-  pt: ptPT,
+  'pt-PT': ptPT,
   ru,
 };
 

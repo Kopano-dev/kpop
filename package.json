@@ -21,15 +21,17 @@
     "styleguide:build": "styleguidist build"
   },
   "dependencies": {
+    "cldr": "^5.2.0",
     "crc32": "^0.2.2",
-    "hsv-rgb": "^1.0.0"
+    "hsv-rgb": "^1.0.0",
+    "iso-639-1": "^2.0.5"
   },
   "peerDependencies": {
     "@material-ui/core": "^1.5.1",
     "@material-ui/icons": "^1.1.1",
     "oidc-client": "^1.5.4",
-    "react": "^16.5.0",
-    "react-dom": "^16.5.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-intl": "^2.6.0",
     "render-if": "^0.1.1"
   },
