@@ -11,7 +11,7 @@
     "static",
     ".version",
     "LICENSE.txt",
-    "NOTICES.txt"
+    "NOTICE.txt"
   ],
   "scripts": {
     "start": "cross-env REACT_APP_KOPANO_BUILD=0.0.0-dev-env yarn babel src --out-dir es --verbose --watch",
