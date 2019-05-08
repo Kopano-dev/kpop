@@ -50,24 +50,23 @@ export function mergeLocales(l1, l2) {
 }
 
 /**
- * Helper function to merge two locale objects into one, returning only a
- * single locale.
+ * Helper function to merge a locale object with additional messages, returning
+ * only a single locale's messages.
  */
-export function mergeLocale(l1, l2, locale) {
-  l1 = l1 ? l1 : {};
-  l2 = l2 ? l2 : {};
+export function mergeLocaleWithMessages(locales, messages, locale) {
+  locales = locales ? locales : {};
+  messages = messages ? messages : {};
   const localeBase = locale.split('-', 1)[0];
   if (localeBase !== locale) {
     return {
-      ...l1[localeBase],
-      ...l1[locale],
-      ...l2[localeBase],
-      ...l2[locale],
+      ...locales[localeBase],
+      ...locales[locale],
+      ...messages,
     };
   } else {
     return {
-      ...l1[locale],
-      ...l2[locale],
+      ...locales[locale],
+      ...messages,
     };
   }
 }
@@ -76,8 +75,8 @@ export function mergeLocale(l1, l2, locale) {
  * Helper function to simplify initialization of app locale together with
  * locale defined by kpop.
  */
-export function defineLocale(appLocales, locale) {
-  return mergeLocale(locales, appLocales, locale);
+export function defineLocale(localeMessages, locale) {
+  return mergeLocaleWithMessages(locales, localeMessages, locale);
 }
 
 /**
