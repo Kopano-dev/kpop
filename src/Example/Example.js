@@ -33,19 +33,19 @@ class Example extends React.Component {
         </Button>
       </div>
       <div>
-        <Button variant="raised" className={classes.button}>
+        <Button variant="contained" className={classes.button}>
           Default
         </Button>
-        <Button variant="raised" color="primary" className={classes.button}>
+        <Button variant="contained" color="primary" className={classes.button}>
           Primary
         </Button>
-        <Button variant="raised" color="secondary" className={classes.button}>
+        <Button variant="contained" color="secondary" className={classes.button}>
           Secondary
         </Button>
-        <Button variant="raised" color="secondary" disabled className={classes.button}>
+        <Button variant="contained" color="secondary" disabled className={classes.button}>
           Disabled
         </Button>
-        <Button variant="raised" href="#raised-buttons" className={classes.button}>
+        <Button variant="contained" className={classes.button}>
           Link
         </Button>
       </div>
