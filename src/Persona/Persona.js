@@ -106,6 +106,10 @@ Persona.propTypes = {
    * @ignore
    */
   className: PropTypes.string,
+  /**
+   * @ignore
+   */
+  theme: PropTypes.object,
 
   /**
    * The user object. Will be used to consistently select the color and label.

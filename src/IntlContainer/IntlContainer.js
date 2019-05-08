@@ -162,7 +162,8 @@ class IntlContainer extends React.PureComponent {
 
   static getDerivedStateFromProps(props, state) {
     const { messages, locale: propsLocale, localeStorageKey, localeQueryKey } = props;
-    const requestedLocales = state.requestedLocale ? [state.requestedLocale] : getDefaultLocales(propsLocale, localeStorageKey, localeQueryKey);
+    const requestedLocales = state.requestedLocale ?
+      [state.requestedLocale] : getDefaultLocales(propsLocale, localeStorageKey, localeQueryKey);
 
     const [ locale, localeMessages ] = supportedLocale(requestedLocales, messages);
     if (locale === state.locale && messages === state.messages) {
