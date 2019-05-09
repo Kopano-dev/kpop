@@ -26,6 +26,7 @@ const defaultEmbedded = {
   enabled: undefined,
   mode: undefined,
   wait: false,
+  bound: false,
 };
 function getDefaultEmbedded() {
   const embedded = defaultEmbedded;

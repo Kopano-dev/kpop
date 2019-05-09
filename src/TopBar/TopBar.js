@@ -12,7 +12,9 @@ import Hidden from '@material-ui/core/Hidden';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
 import { KopanoLogo } from '../logos';
-import { userShape } from '../shapes';
+import { userShape, embeddedShape } from '../shapes';
+import { withBase } from '../BaseContainer/BaseContext';
+
 import UserProfileButton from './UserProfileButton';
 
 export const styles = theme => {
@@ -51,6 +53,9 @@ export const styles = theme => {
       fontSize: theme.typography.pxToRem(14),
       lineHeight: 1,
     },
+    embedded: {
+      minHeight: 64,
+    },
   };
 };
 
@@ -59,6 +64,7 @@ function TopBar(props) {
     children,
     classes,
     className: classNameProp,
+    embedded,
 
     forceAnchor,
     onAnchorClick,
@@ -78,7 +84,6 @@ function TopBar(props) {
   const anchor = onAnchorClick || forceAnchor ? (
     <IconButton
       color="inherit"
-      aria-label="open drawer"
       onClick={onAnchorClick}
       className={classes.anchor}
     >
@@ -86,7 +91,7 @@ function TopBar(props) {
     </IconButton>
   ) : null;
 
-  const userProfile = user ? (
+  const userProfile = (!embedded.bound && user) ? (
     <UserProfileButton
       user={user}
     />
@@ -101,7 +106,7 @@ function TopBar(props) {
       className={className}
       {...other}
     >
-      <Toolbar>
+      <Toolbar className={embedded.enabled ? classes.embedded : ''}>
         {anchor}
         <Typography variant="title" color="inherit" noWrap className={classes.flex}>
           {logo}<span className={classes.title}>{title}</span>
@@ -123,6 +128,12 @@ TopBar.propTypes = {
    * Useful to extend the style applied to components.
    */
   classes: PropTypes.object.isRequired,
+  /**
+   * The app embedded object. This value is made available by the integrated
+   * BaseContext and contains helpers and information if the app is running
+   * embedded within another app.
+   */
+  embedded: embeddedShape,
   /**
    * The color of the component. It supports those theme colors that make sense for this component.
    */
@@ -177,4 +188,4 @@ TopBar.defaultProps = {
 
 };
 
-export default withStyles(styles, { name: 'KpopTopBar' })(TopBar);
+export default withBase(withStyles(styles, { name: 'KpopTopBar' })(TopBar));
