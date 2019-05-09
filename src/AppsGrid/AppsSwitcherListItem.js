@@ -13,6 +13,7 @@ import AppsIcon from '@material-ui/icons/Apps';
 
 import AppsGrid from './AppsGrid';
 import { withBase } from '../BaseContainer/BaseContext';
+import { embeddedShape } from '../shapes';
 
 const styles = () => {
   return {
@@ -37,8 +38,12 @@ class AppsSwitcherListItem extends React.PureComponent {
   };
 
   render() {
-    const { classes, label, AppsGridProps, config, ...other } = this.props;
+    const { classes, label, AppsGridProps, config, embedded, ...other } = this.props;
 
+    if (embedded && embedded.enabled) {
+      // Render nothing if embedded.
+      return null;
+    }
     if (config && config.apps && config.apps.enabled && config.apps.enabled.length === 0) {
       // Render nothing if no apps are enabled.
       return null;
@@ -97,9 +102,14 @@ AppsSwitcherListItem.propTypes = {
 
   /**
    * The app configuration object. This value is made available by the
-   * integrated Baseontext.
+   * integrated BaseContext.
    */
   config: PropTypes.object,
+  /**
+   * The app embedded object. This value is made available by the
+   * integrated BaseContext.
+   */
+  embedded: embeddedShape,
 };
 
 export default withBase(withStyles(styles, { name: 'KpopAppsSwitcherListItem' })(AppsSwitcherListItem));

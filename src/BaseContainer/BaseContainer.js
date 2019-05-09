@@ -10,11 +10,38 @@ import SigninDialog from './SigninDialog';
 import UpdateAvailableSnack from './UpdateAvailableSnack';
 import { BaseContext } from './BaseContext';
 
-import errorShape from '../shapes/error';
 import A2HsAvailableSnack from '../pwa/A2HsAvailableSnack';
+import { errorShape, embeddedShape } from '../shapes';
+import { isInFrame } from '../utils';
 import { triggerA2HsPrompt } from '../pwa/actions';
 import { startSignin } from '../oidc/actions';
 import { KPOP_ERRORID_USER_REQUIRED } from '../common/constants';
+
+const defaultConfig = {};  // Default config is empty;
+function getDefaultConfig() {
+  return defaultConfig;
+}
+
+const defaultEmbedded = {
+  enabled: undefined,
+  mode: undefined,
+  wait: false,
+};
+function getDefaultEmbedded() {
+  const embedded = defaultEmbedded;
+  if (embedded.enabled !== undefined) {
+    // Already set up.
+    return embedded;
+  }
+  embedded.enabled = false;
+
+  if (isInFrame()) {
+    embedded.enabled = true;
+    embedded.mode = ''; // Empty string mode means the simplest of all modes which requires no initialization.
+  }
+
+  return embedded;
+}
 
 class BaseContainer extends React.PureComponent {
   handleReload = (error=null) => async (event) => {
@@ -59,20 +86,24 @@ class BaseContainer extends React.PureComponent {
       updateAvailable,
       a2HsAvailable,
       config,
+      embedded,
     } = this.props;
 
-    const readyAndNotFatalError = ready && (!error || !error.fatal);
+    const cfg = config ? config : getDefaultConfig();
+    const embdd = embedded ? embedded : getDefaultEmbedded();
+
+    const readyAndNotFatalError = ready && !embdd.wait && (!error || !error.fatal);
 
     const ifReady = renderIf(readyAndNotFatalError);
-    const ifNotReady = renderIf(!ready);
+    const ifNotReady = renderIf(!ready || embdd.wait);
     const ifFatalError = renderIf(error && error.fatal);
     const ifUpdateAvailable = renderIf(updateAvailable);
     const ifA2HsAvailable = renderIf(!updateAvailable && a2HsAvailable);
-    const cfg = config ? config : {};
 
     return (
       <BaseContext.Provider value={{
         config: cfg,
+        embedded: embdd,
       }}>
         {ifReady(
           children
@@ -147,9 +178,15 @@ BaseContainer.propTypes = {
   a2HsAvailable: PropTypes.bool,
   /**
    * The app configuration object. This value is made available by the
-   * integrated ConfigContext.
+   * integrated BaseContext.
    */
   config: PropTypes.object,
+  /**
+   * The app embedded object. This value is made available by the integrated
+   * BaseContext and contains helpers and information if the app is running
+   * embedded within another app.
+   */
+  embedded: embeddedShape,
 };
 
 export default BaseContainer;

@@ -10,6 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 
 import AppsGrid from './AppsGrid';
 import { withBase } from '../BaseContainer/BaseContext';
+import { embeddedShape } from '../shapes';
 
 const styles = theme => {
   return {
@@ -46,8 +47,12 @@ class AppsSwitcherButton extends React.PureComponent {
 
   render() {
     const { anchorEl } = this.state;
-    const { classes, AppsGridProps, config, ...other } = this.props;
+    const { classes, AppsGridProps, config, embedded, ...other } = this.props;
 
+    if (embedded && embedded.enabled) {
+      // Render nothing if embedded.
+      return null;
+    }
     if (config && config.apps && config.apps.enabled && config.apps.enabled.length === 0) {
       // Render nothing if no apps are enabled.
       return null;
@@ -117,6 +122,11 @@ AppsSwitcherButton.propTypes = {
    * integrated BaseContext.
    */
   config: PropTypes.object,
+  /**
+   * The app embedded object. This value is made available by the
+   * integrated BaseContext.
+   */
+  embedded: embeddedShape,
 };
 
 export default withBase(withStyles(styles, { name: 'KpopAppsSwitcherButton' })(AppsSwitcherButton));
