@@ -120,4 +120,4 @@ A2HsAvailableSnack.propTypes = {
   open: PropTypes.bool,
 };
 
-export default  withStyles(styles)(injectIntl(A2HsAvailableSnack));
+export default  injectIntl(withStyles(styles, { name: 'KpopA2HsAvailableSnack' })(A2HsAvailableSnack));

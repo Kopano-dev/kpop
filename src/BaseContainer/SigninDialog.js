@@ -98,4 +98,4 @@ SigninDialog.propTypes = {
   open: PropTypes.bool.isRequired,
 };
 
-export default withStyles(styles)(SigninDialog);
+export default withStyles(styles, { name: 'KpopSigninDialog' })(SigninDialog);

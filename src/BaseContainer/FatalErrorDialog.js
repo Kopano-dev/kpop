@@ -89,4 +89,4 @@ FatalErrorDialog.propTypes = {
 };
 
 
-export default withMobileDialog()(withStyles(styles)(FatalErrorDialog));
+export default withMobileDialog()(withStyles(styles, { name: 'KpopFatalErrorDialog' })(FatalErrorDialog));
