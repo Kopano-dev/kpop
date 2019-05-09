@@ -31,8 +31,9 @@ export const styles = theme => {
       verticalAlign: 'middle',
     },
     kopanoLogo: {
-      height: 20,
-      verticalAlign: 'bottom',
+      height: 18,
+      verticalAlign: 'middle',
+      marginTop: 3,
       paddingRight: 10,
     },
     appLogo: {
@@ -108,7 +109,7 @@ function TopBar(props) {
     >
       <Toolbar className={embedded.enabled ? classes.embedded : ''}>
         {anchor}
-        <Typography variant="title" color="inherit" noWrap className={classes.flex}>
+        <Typography variant="h6" color="inherit" noWrap className={classes.flex}>
           {logo}<span className={classes.title}>{title}</span>
         </Typography>
         <div className={classes.flex}>{centerContent}</div>

@@ -23,6 +23,9 @@ const theme = createMuiTheme({
     // E.g., shift from Red 500 to Red 300 or Red 700.
     tonalOffset: 0.9,
   },
+  typography: {
+    useNextVariants: true,
+  },
 });
 
 export default theme;
