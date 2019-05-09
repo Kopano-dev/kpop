@@ -1,3 +1,10 @@
+Kopano kpop
+Copyright 2017-2019 Kopano and its licensors
+
+This product includes software developed at
+Kopano (https://kopano.com/).
+
+
 src/utils/createComponentWithIntl.js
 Copyright 2014 Yahoo Inc.
 All rights reserved.
@@ -29,7 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 src/styled/styled.js
-Copyright (c) 2018 Kopano b.v.
+Copyright (c) 2018 Kopano
 Copyright (c) 2016-2018 Team Wertarbyte and contributors
 
 MIT License
@@ -54,7 +61,7 @@ SOFTWARE.
 
 
 src/utils/initials.js
-Copyright (c) Kopano b.v.
+Copyright (c) 2018 Kopano
 Copyright (c) Microsoft Corporation
 
 All rights reserved.
