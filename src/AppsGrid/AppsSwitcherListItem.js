@@ -12,7 +12,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import AppsIcon from '@material-ui/icons/Apps';
 
 import AppsGrid from './AppsGrid';
-import { withConfig } from '../BaseContainer/ConfigContext';
+import { withBase } from '../BaseContainer/BaseContext';
 
 const styles = () => {
   return {
@@ -97,9 +97,9 @@ AppsSwitcherListItem.propTypes = {
 
   /**
    * The app configuration object. This value is made available by the
-   * integrated ConfigContext.
+   * integrated Baseontext.
    */
   config: PropTypes.object,
 };
 
-export default withStyles(styles, { name: 'KpopAppsSwitcherListItem' })(withConfig(AppsSwitcherListItem));
+export default withBase(withStyles(styles, { name: 'KpopAppsSwitcherListItem' })(AppsSwitcherListItem));

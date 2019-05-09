@@ -9,7 +9,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
 import AppsGrid from './AppsGrid';
-import { withConfig } from '../BaseContainer/ConfigContext';
+import { withBase } from '../BaseContainer/BaseContext';
 
 const styles = theme => {
   return {
@@ -114,9 +114,9 @@ AppsSwitcherButton.propTypes = {
 
   /**
    * The app configuration object. This value is made available by the
-   * integrated ConfigContext.
+   * integrated BaseContext.
    */
   config: PropTypes.object,
 };
 
-export default withStyles(styles, { name: 'KpopAppsSwitcherButton' })(withConfig(AppsSwitcherButton));
+export default withBase(withStyles(styles, { name: 'KpopAppsSwitcherButton' })(AppsSwitcherButton));

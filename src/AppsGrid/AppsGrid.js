@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 
-import { withConfig } from '../BaseContainer/ConfigContext';
+import { withBase } from '../BaseContainer/BaseContext';
 import KopanoCalendarIcon from '../icons/KopanoCalendarIcon';
 import KopanoContactsIcon from '../icons/KopanoContactsIcon';
 import KopanoKonnectIcon from '../icons/KopanoKonnectIcon';
@@ -164,9 +164,9 @@ AppsGrid.propTypes = {
 
   /**
    * The app configuration object. This value is made available by the
-   * integrated ConfigContext.
+   * integrated BaseContext.
    */
   config: PropTypes.object,
 };
 
-export default withStyles(styles, { name: 'KpopAppsGrid' })(withConfig(AppsGrid));
+export default withBase(withStyles(styles, { name: 'KpopAppsGrid' })(AppsGrid));

@@ -8,7 +8,7 @@ import renderIf from 'render-if';
 import FatalErrorDialog from './FatalErrorDialog';
 import SigninDialog from './SigninDialog';
 import UpdateAvailableSnack from './UpdateAvailableSnack';
-import { ConfigContext } from './ConfigContext';
+import { BaseContext } from './BaseContext';
 
 import errorShape from '../shapes/error';
 import A2HsAvailableSnack from '../pwa/A2HsAvailableSnack';
@@ -71,7 +71,9 @@ class BaseContainer extends React.PureComponent {
     const cfg = config ? config : {};
 
     return (
-      <ConfigContext.Provider value={cfg}>
+      <BaseContext.Provider value={{
+        config: cfg,
+      }}>
         {ifReady(
           children
         )}
@@ -94,7 +96,7 @@ class BaseContainer extends React.PureComponent {
         {ifA2HsAvailable(
           <A2HsAvailableSnack onAddClick={this.handleA2Hs}/>
         )}
-      </ConfigContext.Provider>
+      </BaseContext.Provider>
     );
   }
 
