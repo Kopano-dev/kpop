@@ -22,11 +22,11 @@ export const styles = () => {
     colorRow: {
       '&> td': {
         padding: 10,
-        width: 155,
+        width: 90,
         textAlign: 'right',
       },
       '&> td:first-child': {
-        width: 90,
+        width: 60,
         textAlign: 'left',
       },
     },
