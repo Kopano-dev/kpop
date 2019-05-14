@@ -49,6 +49,11 @@ class Example extends React.Component {
           Link
         </Button>
       </div>
+      <div>
+        <Button variant="outlined" className={classes.button}>
+          Default
+        </Button>
+      </div>
     </div>;
   }
 }
