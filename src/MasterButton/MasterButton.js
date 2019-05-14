@@ -14,6 +14,7 @@ const styles = theme => {
   return {
     root: {
       lineHeight: 1.75, // To remove with v4.
+      ...theme.typography.button,
       boxSizing: 'border-box',
       minWidth: 64,
       padding: '6px 16px',
@@ -105,4 +106,4 @@ MasterButton.propTypes = {
 
 
 
-export default withStyles(styles)(MasterButton);
+export default withStyles(styles, { name: 'KpopMasterButton' })(MasterButton);
