@@ -1,5 +1,5 @@
 /*
- * debounce offers  promise based debouncer function with cancel support.
+ * debounce offers promise based debouncer function with cancel support.
  */
 export function debounce(callable, delay=250) {
   let t = null;
@@ -12,6 +12,9 @@ export function debounce(callable, delay=250) {
   };
 
   return (...args) => {
+    if (t) {
+      clearTimeout(t);
+    }
     t = setTimeout(() => {
       if (cancelled) {
         return;
