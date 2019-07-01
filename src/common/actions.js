@@ -40,7 +40,7 @@ export function networkFetch(input, init, expectedStatus=200, expectJSON=true, d
     return fetch(input, init).then(response => {
       // First check for response status.
       if (expectedStatus && response.status !== expectedStatus) {
-        const err = new UnexpectedNetworkResponseError(`unexpected status: ${response.status}`);
+        const err = new UnexpectedNetworkResponseError(`unexpected status: ${response.status}`, response.status);
         if (dispatchError) {
           err.handled = true;
           dispatch(networkError(response.status, response, err));
@@ -59,7 +59,7 @@ export function networkFetch(input, init, expectedStatus=200, expectJSON=true, d
       } else {
         // Return directly, if not JSON or raise error when expected.
         if (expectJSON) {
-          const err = new UnexpectedNetworkResponseError('unexpected Content-Type');
+          const err = new UnexpectedNetworkResponseError('unexpected Content-Type', response.status);
           if (dispatchError) {
             err.handled = true;
             dispatch(networkError(response.status, response, err));
