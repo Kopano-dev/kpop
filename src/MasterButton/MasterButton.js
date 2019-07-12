@@ -41,6 +41,8 @@ const styles = theme => {
     label: {
       marginLeft: theme.spacing.unit * 1.5,
     },
+    /* Pseudo-class applied to the root element if `disabled={true}`. */
+    disabled: {},
   };
 };
 
