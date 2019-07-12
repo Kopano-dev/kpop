@@ -94,7 +94,7 @@ class UserProfileButton extends React.PureComponent {
               avatar={
                 <Persona className={classes.persona} user={user}/>
               }
-              title={<Typography variant="subheading"><DisplayName user={user}/></Typography>}
+              title={<Typography variant="subtitle1"><DisplayName user={user}/></Typography>}
               subheader={user.mail}
             />
             <CardActions className={classes.actions} disableActionSpacing>
