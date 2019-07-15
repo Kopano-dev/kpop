@@ -12,6 +12,10 @@ const record = {
   onbeforeSignout: null,
 };
 
+export function setLogLevel(level=Log.WARN) {
+  Log.level = level;
+}
+
 export function newUserManager(config) {
   const userManager = record.userManager = new UserManager(config);
   return userManager;
@@ -161,6 +165,10 @@ export class UserManager {
 
   _getMetadata() {
     return this._um.metadataService.getMetadata();
+  }
+
+  _getCachedMetadata() {
+    return getUserManagerMetadata(this);
   }
 }
 

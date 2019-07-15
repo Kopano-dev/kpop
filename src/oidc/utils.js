@@ -72,7 +72,10 @@ export function openPopupInAuthorityContext(userManager) {
   // context like the URL used for sign-in, this pre-opens the popup so it
   // avoids the get a blank browsing context created by oidc-client-js. This
   // fixes popup blocker issues when running as a PWA.
-  const url = userManager.settings.authority + '/favicon.ico';
+  const md = userManager._getCachedMetadata();
+  const url = (md && md.check_session_iframe) ?
+    md.check_session_iframe : userManager.settings.authority + '/favicon.ico';
+
   return openPopupCentered(url, settings.popupWindowTarget, settings.popupWindowFeatures);
 }
 

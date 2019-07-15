@@ -30,12 +30,34 @@ export function profileAsUserShape(profile, userManager) {
         state: makeOIDCState(),
       };
       if (settings.popup) {
-        // Open popup in correct context.
-        openPopupInAuthorityContext(userManager);
-        return userManager.signoutPopup(args).catch(err => {
-          console.warn('oidc user sign-out failed', err); // eslint-disable-line no-console
-          return;
-        });
+        // Open popup in correct context, and wait for origin to change.
+        const popup = openPopupInAuthorityContext(userManager);
+        const checker = (force=false) => {
+          let ok = false;
+          try {
+            ok = popup.window.origin && false;
+          } catch(e) {
+            // Navigation has happend if origin cannot be accessed. This means
+            // the popup is ready to handle the sign-out request.
+            ok = true;
+          }
+          if (ok || force) {
+            return userManager.signoutPopup(args).catch(err => {
+              console.warn('oidc user sign-out failed', err); // eslint-disable-line no-console
+            });
+          }
+          return false;
+        };
+        // Run checker, wait for popup.
+        if (!checker()) {
+          let c = 0;
+          const i = setInterval(() => {
+            c++;
+            if (checker(c === 10)) {
+              clearInterval(i);
+            }
+          }, 50);
+        }
       } else {
         return userManager.signoutRedirect(args);
       }
