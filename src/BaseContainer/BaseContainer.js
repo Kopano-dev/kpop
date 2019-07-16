@@ -45,6 +45,25 @@ function getDefaultEmbedded() {
 }
 
 class BaseContainer extends React.PureComponent {
+  state = {
+    value: {},
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const { config, embedded } = props;
+
+    if (state.value.config === config) {
+      return null;
+    }
+
+    return {
+      value: {
+        config: config ? config : getDefaultConfig(),
+        embedded: embedded ? embedded : getDefaultEmbedded(),
+      },
+    };
+  }
+
   handleReload = (error=null) => async (event) => {
     if (event && event.preventDefault) {
       event.preventDefault();
@@ -86,26 +105,20 @@ class BaseContainer extends React.PureComponent {
       error,
       updateAvailable,
       a2HsAvailable,
-      config,
-      embedded,
     } = this.props;
 
-    const cfg = config ? config : getDefaultConfig();
-    const embdd = embedded ? embedded : getDefaultEmbedded();
+    const { embedded } = this.state.value;
 
-    const readyAndNotFatalError = ready && !embdd.wait && (!error || !error.fatal);
+    const readyAndNotFatalError = ready && !embedded.wait && (!error || !error.fatal);
 
     const ifReady = renderIf(readyAndNotFatalError);
-    const ifNotReady = renderIf(!ready || embdd.wait);
+    const ifNotReady = renderIf(!ready || embedded.wait);
     const ifFatalError = renderIf(error && error.fatal);
     const ifUpdateAvailable = renderIf(updateAvailable);
     const ifA2HsAvailable = renderIf(!updateAvailable && a2HsAvailable);
 
     return (
-      <BaseContext.Provider value={{
-        config: cfg,
-        embedded: embdd,
-      }}>
+      <BaseContext.Provider value={this.state.value}>
         {ifReady(
           children
         )}
