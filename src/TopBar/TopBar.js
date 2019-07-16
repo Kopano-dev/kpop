@@ -27,6 +27,13 @@ export const styles = theme => {
       boxSizing: 'border-box',
       borderBottom: `1px solid ${theme.palette.divider}`,
     },
+    bar: {
+      // Inherits from toolbar mixin, but we use a smaller height even for
+      // large screens.
+      [theme.breakpoints.up('sm')]: {
+        minHeight: 56,
+      },
+    },
     title: {
       verticalAlign: 'middle',
     },
@@ -107,7 +114,7 @@ function TopBar(props) {
       className={className}
       {...other}
     >
-      <Toolbar className={embedded.enabled ? classes.embedded : ''}>
+      <Toolbar className={classes.bar}>
         {anchor}
         <Typography variant="h6" color="inherit" noWrap className={classes.flex}>
           {logo}<span className={classes.title}>{title}</span>
@@ -185,7 +192,7 @@ TopBar.defaultProps = {
   title: 'Kopano',
 
   color: 'inherit',
-  position: 'fixed',
+  position: 'absolute',
 
 };
 
