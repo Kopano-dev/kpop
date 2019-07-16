@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import { withStyles } from '@material-ui/core/styles';
+import { capitalize } from '@material-ui/core/utils/helpers';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
+import { fade } from '@material-ui/core/styles/colorManipulator';
+import ExtensionIcon from '@material-ui/icons/Extension';
 
 import { withBase } from '../BaseContainer/BaseContext';
 import KopanoCalendarIcon from '../icons/KopanoCalendarIcon';
@@ -22,7 +26,9 @@ const styles = theme => ({
     padding: 0,
   },
   app: {
-    display: 'inline-block',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   button: {
     width: 84,
@@ -31,20 +37,36 @@ const styles = theme => ({
     display: 'inline-block',
     textAlign: 'center',
     boxSizing: 'border-box',
-    border: '1px solid transparent',
     '&:hover': {
       textDecoration: 'none',
-      borderColor: theme.palette.divider,
+      backgroundColor: fade(theme.palette.action.active, theme.palette.action.hoverOpacity),
+      // Reset on touch devices, it doesn't add specificity
+      '@media (hover: none)': {
+        backgroundColor: 'transparent',
+      },
     },
+    fontSize: theme.typography.pxToRem(54),
   },
   icon: {
-    fontSize: theme.typography.pxToRem(54),
     display: 'block',
     margin: '0 auto',
   },
   label: {
     display: 'block',
     padding: 2,
+  },
+  /* Styles applied to the button element if `size="small"`. */
+  sizeSmall: {
+    width: 32,
+    height: 32,
+    border: 'none',
+    fontSize: theme.typography.pxToRem(24),
+    display: 'flex',
+
+    '& $icon': {
+      maxHeight: 24,
+      maxWidth: 24,
+    },
   },
 });
 
@@ -86,37 +108,106 @@ export const kopanoApps = [
     href: '/signin/v1/welcome',
   },
 ];
+export const kopanoAppsTable = kopanoApps.reduce((t, v) => {
+  t[v.name] = v;
+  return t;
+}, {});
 
 class AppsGrid extends React.PureComponent {
-  handleClick = (app) => (event) => {
+  handleClick = (app, href) => (event) => {
     const { onAppClick } = this.props;
 
     if (onAppClick) {
-      onAppClick(event, app);
+      onAppClick(event, app, href);
     }
   }
 
-  render() {
-    const { classes, apps, enabledApps, target, baseHref, config } = this.props;
+  getIcon(app) {
+    const { classes } = this.props;
 
-    const enabled = enabledApps === undefined ? ((config && config.apps) ? config.apps.enabled : null) : enabledApps;
+    let Component;
+    const props = {
+      className: classes.icon,
+      fontSize: 'inherit',
+    };
+
+    if (app.icon) {
+      Component = app.icon;
+    } else if (app.iconURL) {
+      Component = 'img';
+      props.src = app.iconURL;
+      props.alt = '';
+    } else {
+      // Check if its a kopano app.
+      const kopanoApp = kopanoAppsTable[app.name];
+      if (kopanoApp) {
+        Component = kopanoApp.icon;
+      }
+    }
+
+    if (!Component) {
+      Component = ExtensionIcon;
+    }
+
+    return <Component {...props}/>;
+  }
+
+  getHref(app) {
+    const { baseHref } = this.props;
+
+    if (app.href) {
+      if (app.href.indexOf('http') === 0) {
+        return app.href;
+      }
+      return `${baseHref}${app.href}`;
+    } else {
+      // Check if its a kopano app.
+      const kopanoApp = kopanoAppsTable[app.name];
+      if (kopanoApp) {
+        return `${baseHref}${kopanoApp.href}`;
+      }
+    }
+
+    return '';
+  }
+
+  render() {
+    const {
+      classes,
+      className: classNameProp,
+      apps,
+      enabledApps,
+      target,
+      size,
+      config,
+    } = this.props;
+
+    const enabled = enabledApps === undefined ? ((config && config.apps && config.apps.enabled) ? config.apps.enabled : []) : enabledApps;
 
     const icons = [];
     for (let app of apps) {
-      if (enabled && !enabled.includes(app.name)) {
+      if (enabled.length > 0 && !enabled.includes(app.name)) {
         continue;
       }
-      const href = `${baseHref}${app.href}`;
+      const href = this.getHref(app);
+      const icon = this.getIcon(app);
       icons.push(<li className={classes.app} key={app.name}>
-        <ButtonBase className={classes.button} target={target} href={href}
-          onClick={this.handleClick(app)} aria-label={app.title} component="a">
-          <app.icon className={classes.icon} fontSize="inherit"/>
-          <Typography className={classes.label}>{app.title}</Typography>
+        <ButtonBase
+          className={classNames(
+            classes.button, {
+              [classes[`size${capitalize(size)}`]]: size !== 'medium',
+            }
+          )}
+          target={target} href={href}
+          onClick={this.handleClick(app, href)} aria-label={app.title} component="a"
+        >
+          { icon }
+          { size !== 'small' && <Typography className={classes.label}>{app.title}</Typography> }
         </ButtonBase>
       </li>);
     }
 
-    return <ul className={classes.root}>
+    return <ul className={classNames(classes.root, classNameProp)}>
       {icons}
     </ul>;
   }
@@ -126,6 +217,7 @@ AppsGrid.defaultProps = {
   apps: kopanoApps,
   target: '_blank',
   baseHref: '',
+  size: 'medium',
 };
 
 AppsGrid.propTypes = {
@@ -133,6 +225,10 @@ AppsGrid.propTypes = {
    * Useful to extend the style applied to components.
    */
   classes: PropTypes.object.isRequired,
+  /**
+   * @ignore
+   */
+  className: PropTypes.string,
 
   /**
    * By default Kopano apps are used. This property allows override of the
@@ -161,6 +257,12 @@ AppsGrid.propTypes = {
    * Callback fired when the an app is clicked.
    */
   onAppClick: PropTypes.func,
+
+  /**
+   * The size of the button.
+   * `small` is equivalent to the dense button styling.
+   */
+  size: PropTypes.oneOf(['small', 'medium']),
 
   /**
    * The app configuration object. This value is made available by the
