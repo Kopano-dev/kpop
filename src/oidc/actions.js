@@ -11,11 +11,15 @@ import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash,
   blockAsyncProgress, openPopupInAuthorityContext } from './utils';
 import { newUserManager, getUserManager, setUserManagerMetadata, onBeforeSignin, onBeforeSignout } from './usermanager';
 import { makeOIDCState, restoreOIDCState, updateOIDCState } from './state';
+import { profileAsUserShape } from './profile';
 
 export function receiveUser(user, userManager) {
+  const profile = user ? profileAsUserShape(user.profile, userManager) : null;
+
   return {
     type: KPOP_RECEIVE_USER,
     user,
+    profile,
     userManager,
   };
 }

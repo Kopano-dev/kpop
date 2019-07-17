@@ -24,6 +24,7 @@ const defaultState = {
   updateAvailable: false,
   config: null,
   user: null,
+  profile: null,
   error: null,
   offline: true,
   hidden: true,
@@ -55,6 +56,7 @@ function commonReducer(state = defaultState, action) {
     case KPOP_RECEIVE_USER:
       return Object.assign({}, state, {
         user: action.user,
+        profile: action.profile,
       });
 
     case KPOP_OFFLINE_ONLINE:
