@@ -182,7 +182,8 @@ class AppsGrid extends React.PureComponent {
       config,
     } = this.props;
 
-    const enabled = enabledApps === undefined ? ((config && config.apps && config.apps.enabled) ? config.apps.enabled : []) : enabledApps;
+    const enabled = enabledApps === undefined ?
+      ((config && config.apps && config.apps.enabled) ? config.apps.enabled : []) : enabledApps;
 
     const icons = [];
     for (let app of apps) {
