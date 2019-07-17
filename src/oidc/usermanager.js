@@ -149,7 +149,7 @@ export class UserManager {
     return this._um.revokeAccessToken();
   }
 
-  startSlientRenew() {
+  startSilentRenew() {
     return this._um.startSilentRenew();
   }
 
