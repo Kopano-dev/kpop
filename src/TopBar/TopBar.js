@@ -78,7 +78,7 @@ function TopBar(props) {
     onAnchorClick,
     title,
     centerContent,
-    user,
+    profile,
     appLogo,
 
     ...other
@@ -99,9 +99,9 @@ function TopBar(props) {
     </IconButton>
   ) : null;
 
-  const userProfile = (!embedded.bound && user) ? (
+  const userProfileButton = (!embedded.bound && profile) ? (
     <UserProfileButton
-      user={user}
+      profile={profile}
     />
   ): null;
 
@@ -121,7 +121,7 @@ function TopBar(props) {
         </Typography>
         <div className={classes.flex}>{centerContent}</div>
         {children}
-        {userProfile}
+        {userProfileButton}
       </Toolbar>
     </AppBar>
   );
@@ -180,7 +180,7 @@ TopBar.propTypes = {
    * The user defails. When used, the right part of the component includes
    * a user profile section.
    */
-  user: userShape,
+  profile: userShape,
   /**
    * The apps logo to show instead of Kopano logo.
    */

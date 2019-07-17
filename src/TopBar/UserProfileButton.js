@@ -49,15 +49,15 @@ class UserProfileButton extends React.PureComponent {
 
   render() {
     const { anchorEl } = this.state;
-    const { classes, user, theme } = this.props;
+    const { classes, profile, theme } = this.props;
 
     const menuID = 'kpop-user-profile-menu';
-    const signout = user.signoutHandler ? (
+    const signout = profile.signoutHandler ? (
       <Button
         className={classes.signout}
         size="small"
         color="primary"
-        onClick={user.signoutHandler}
+        onClick={profile.signoutHandler}
       >
         <FormattedMessage
           id="kpop.userProfileButton.signOutButton.text"
@@ -92,10 +92,10 @@ class UserProfileButton extends React.PureComponent {
           <Card className={classes.card}>
             <CardHeader
               avatar={
-                <Persona className={classes.persona} user={user}/>
+                <Persona className={classes.persona} user={profile}/>
               }
-              title={<Typography variant="subtitle1"><DisplayName user={user}/></Typography>}
-              subheader={user.mail}
+              title={<Typography variant="subtitle1"><DisplayName user={profile}/></Typography>}
+              subheader={profile.mail}
             />
             <CardActions className={classes.actions} disableActionSpacing>
               {signout}
@@ -117,10 +117,10 @@ UserProfileButton.propTypes = {
    */
   theme: PropTypes.object.isRequired,
   /**
-   * The user defails. When used, the right part of the component includes
-   * a user profile section.
+   * The user's profile defails. When used, the right part of the component
+   * includes a user profile section.
    */
-  user: userShape,
+  profile: userShape,
 };
 
 export default withStyles(styles, { name: 'KpopUserProfileButton', withTheme: true })(UserProfileButton);
