@@ -16,6 +16,7 @@ import { isInFrame } from '../utils';
 import { triggerA2HsPrompt } from '../pwa/actions';
 import { startSignin } from '../oidc/actions';
 import { KPOP_ERRORID_USER_REQUIRED } from '../common/constants';
+import SnackbarProvider from './SnackbarProvider';
 
 const defaultConfig = {};  // Default config is empty;
 function getDefaultConfig() {
@@ -105,6 +106,7 @@ class BaseContainer extends React.PureComponent {
       error,
       updateAvailable,
       a2HsAvailable,
+      withSnackbar,
     } = this.props;
 
     const { embedded } = this.state.value;
@@ -119,28 +121,30 @@ class BaseContainer extends React.PureComponent {
 
     return (
       <BaseContext.Provider value={this.state.value}>
-        {ifReady(
-          children
-        )}
-        {ifNotReady(
-          <React.Fragment>
-            <div id="loader">
-              <FormattedMessage
-                id="kpop.loader.initializing.message"
-                defaultMessage="Initializing...">
-              </FormattedMessage>
-            </div>
-          </React.Fragment>
-        )}
-        {ifFatalError(
-          this.fatalErrorDialog(error)
-        )}
-        {ifUpdateAvailable(
-          <UpdateAvailableSnack onReloadClick={this.handleReload()}/>
-        )}
-        {ifA2HsAvailable(
-          <A2HsAvailableSnack onAddClick={this.handleA2Hs}/>
-        )}
+        <SnackbarProvider withSnackbar={withSnackbar}>
+          {ifReady(
+            children
+          )}
+          {ifNotReady(
+            <React.Fragment>
+              <div id="loader">
+                <FormattedMessage
+                  id="kpop.loader.initializing.message"
+                  defaultMessage="Initializing...">
+                </FormattedMessage>
+              </div>
+            </React.Fragment>
+          )}
+          {ifFatalError(
+            this.fatalErrorDialog(error)
+          )}
+          {ifUpdateAvailable(
+            <UpdateAvailableSnack onReloadClick={this.handleReload()}/>
+          )}
+          {ifA2HsAvailable(
+            <A2HsAvailableSnack onAddClick={this.handleA2Hs}/>
+          )}
+        </SnackbarProvider>
       </BaseContext.Provider>
     );
   }
@@ -173,6 +177,10 @@ BaseContainer.propTypes = {
    * A dispatch function, for example from redux.
    */
   dispatch: PropTypes.func.isRequired,
+  /**
+   * If true the component with also be add a snackbar.
+   */
+  withSnackbar: PropTypes.bool,
   /**
    * If true the component will show its content.
    */
