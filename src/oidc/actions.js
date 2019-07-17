@@ -287,16 +287,16 @@ export function getOrCreateUserManager() {
       return userManager;
     }
 
-    return dispatch(createUserManager()).then(async mgr => {
+    return dispatch(createUserManager()).then(async userManager => {
       // Always clear up stale state stuff, when a new manager is created.
       setTimeout(() => {
-        mgr._clearStaleState();
+        userManager._clearStaleState();
       }, 0);
 
-      const metadata = await mgr._getMetadata();
-      setUserManagerMetadata(mgr, metadata);
+      const metadata = await userManager._getMetadata();
+      setUserManagerMetadata(userManager, metadata);
 
-      return mgr;
+      return userManager;
     });
   };
 }
@@ -315,7 +315,7 @@ export function createUserManager() {
       scope = KPOP_OIDC_DEFAULT_SCOPE;
     }
 
-    const mgr = newUserManager({
+    const userManager = newUserManager({
       authority: iss,
       client_id: config.oidc.clientID || 'kpop-' + encodeURI(settings.appBaseURL), // eslint-disable-line camelcase
       redirect_uri: settings.redirectURL, // eslint-disable-line camelcase
@@ -334,12 +334,12 @@ export function createUserManager() {
       extraQueryParams: config.oidc.eqp || undefined,
       metadataUrl: config.oidc.metadataURL || undefined,
     });
-    mgr.events.addAccessTokenExpiring(() => {
+    userManager.events.addAccessTokenExpiring(() => {
       console.debug('oidc token expiring'); // eslint-disable-line no-console
     });
-    mgr.events.addAccessTokenExpired(() => {
+    userManager.events.addAccessTokenExpired(() => {
       console.warn('oidc access token expired'); // eslint-disable-line no-console
-      mgr.removeUser();
+      userManager.removeUser();
       setTimeout(() => {
         // Try to fetch new user silently. This for example helps when the device
         // comes back after it was suspended or lost connection which led it to
@@ -347,31 +347,31 @@ export function createUserManager() {
         dispatch(fetchUserSilent());
       }, 0);
     });
-    mgr.events.addUserLoaded(async user => {
+    userManager.events.addUserLoaded(async user => {
       console.debug('oidc user loaded', user); // eslint-disable-line no-console
       const { user: oldUser } = getState().common;
       if (oldUser && oldUser.profile.sub !== user.profile.sub) {
         // Huh we received another user, this should not happen so lets clear
         // our local stuff and pretend nothing happened.
         console.warn('oidc remove user as the user has changed'); // eslint-disable-line no-console
-        await mgr.removeUser();
+        await userManager.removeUser();
         return;
       }
 
-      await dispatch(receiveUser(user, mgr));
+      await dispatch(receiveUser(user, userManager));
     });
-    mgr.events.addUserUnloaded(async () => {
+    userManager.events.addUserUnloaded(async () => {
       console.debug('oidc user unloaded'); // eslint-disable-line no-console
-      await dispatch(receiveUser(null, mgr));
+      await dispatch(receiveUser(null, userManager));
     });
-    mgr.events.addSilentRenewError(err => {
+    userManager.events.addSilentRenewError(err => {
       console.warn('oidc user silent renew error', err.error); // eslint-disable-line no-console
       if (err) {
         // Handle the hopeless.
         switch (err.error) {
           case 'interaction_required':
           case 'login_required':
-            mgr.removeUser();
+            userManager.removeUser();
             setTimeout(() => {
               // Try to fetch new user. This will redirect to login if unsuccessful.
               dispatch(fetchUser());
@@ -383,23 +383,23 @@ export function createUserManager() {
 
       setTimeout(() => {
         console.debug('oidc retrying silent renew'); // eslint-disable-line no-console
-        mgr.getUser().then(user => {
+        userManager.getUser().then(user => {
           console.debug('oidc retrying silent renew of user', user); // eslint-disable-line no-console
           if (user && !user.expired) {
-            mgr.startSilentRenew();
+            userManager.startSilentRenew();
           } else {
             console.warn('oidc remove user as silent renew has failed to renew in time'); // eslint-disable-line no-console, max-len
-            mgr.removeUser();
+            userManager.removeUser();
           }
         });
       }, 5000);
     });
-    mgr.events.addUserSignedOut(() => {
+    userManager.events.addUserSignedOut(() => {
       console.debug('oidc user signed out at OP'); // eslint-disable-line no-console
-      mgr.removeUser();
+      userManager.removeUser();
     });
 
-    return mgr;
+    return userManager;
   };
 }
 
