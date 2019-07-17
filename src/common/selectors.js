@@ -10,7 +10,9 @@
 import { scopeGuestOK } from '../oidc/scopes';
 
 export function hasScope(store, requiredScope) {
-  return store.user && store.user.scope.indexOf(requiredScope);
+  const { user } = store;
+
+  return user && user.scope.indexOf(requiredScope) >= 0;
 }
 
 export function isGuest(store) {
