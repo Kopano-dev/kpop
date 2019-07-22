@@ -1,9 +1,6 @@
 import {
   registerResolver,
 } from '../errors/resolver';
-import {
-  clearError,
-} from '../errors/actions';
 
 import {
   KPOP_RESET_USER,
@@ -28,7 +25,6 @@ function resetUserAndRedirectToSignin(error, prompt='select_account') {
     await dispatch(startSignin({
       prompt,
     }));
-    await dispatch(clearError(error));
   };
 }
 

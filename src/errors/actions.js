@@ -11,11 +11,29 @@ export function resolveError(error) {
   };
 }
 
-export function clearError(error) {
+export function clearError(error, matchField=null) {
   return async (dispatch, getState) => {
     const { error: currentError } = getState().common;
-    if (currentError === error) {
-      // Clear current error if resolving.
+    if (!currentError) {
+      return;
+    }
+
+    // Clear current error if resolving.
+    let action = currentError === error;
+    if (!action) {
+      switch (matchField) {
+        case 'id':
+          action = currentError.id === error.id;
+          break;
+        case 'resolution':
+          action = currentError.resolution === error.resolution;
+          break;
+
+        default:
+          break;
+      }
+    }
+    if (action) {
       await dispatch(setError(null));
     }
   };

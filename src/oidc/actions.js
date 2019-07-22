@@ -1,4 +1,6 @@
 import { setError } from '../common/actions';
+import { KPOP_ERRORID_USER_REQUIRED } from '../common/constants';
+import { clearError } from '../errors/actions';
 
 import {
   KPOP_RECEIVE_USER,
@@ -14,13 +16,21 @@ import { makeOIDCState, restoreOIDCState, updateOIDCState } from './state';
 import { profileAsUserShape } from './profile';
 
 export function receiveUser(user, userManager) {
-  const profile = user ? profileAsUserShape(user.profile, userManager) : null;
+  return async (dispatch) => {
+    const profile = user ? profileAsUserShape(user.profile, userManager) : null;
 
-  return {
-    type: KPOP_RECEIVE_USER,
-    user,
-    profile,
-    userManager,
+    await dispatch({
+      type: KPOP_RECEIVE_USER,
+      user,
+      profile,
+      userManager,
+    });
+    if (user) {
+      // Ensure to clear error, if the current error is a user required error.
+      dispatch(clearError({
+        id: KPOP_ERRORID_USER_REQUIRED,
+      }, 'id'));
+    }
   };
 }
 
