@@ -33,7 +33,10 @@ const defaultState = {
 function commonReducer(state = defaultState, action) {
   switch (action.type) {
     case KPOP_SET_ERROR:
-      action.error.fatal = true;
+      if (action.error) {
+        // NOTE(longsleep): Why do we make all set errors fatal?
+        action.error.fatal = true;
+      }
       return Object.assign({}, state, {
         error: action.error,
       });
