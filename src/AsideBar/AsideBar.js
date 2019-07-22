@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { withStyles } from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden';
 
 import AppsGrid from '../AppsGrid';
 import { withMain } from '../MainContainer/MainContext';
@@ -49,16 +50,18 @@ class AsideBar extends React.PureComponent {
       return null;
     }
 
-    return <div className={classNames(classes.root, classNameProp)} {...other}>
-      <AppsGrid
-        apps={apps}
-        enabledApps={[]}
-        className={classes.apps}
-        size="small"
-        onAppClick={this.handleAppClick}
-      />
-      {children}
-    </div>;
+    return <Hidden mdDown>
+      <div className={classNames(classes.root, classNameProp)} {...other}>
+        <AppsGrid
+          apps={apps}
+          enabledApps={[]}
+          className={classes.apps}
+          size="small"
+          onAppClick={this.handleAppClick}
+        />
+        {children}
+      </div>
+    </Hidden>;
   }
 }
 
