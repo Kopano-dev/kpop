@@ -84,6 +84,8 @@ function TopBar(props) {
     ...other
   } = props;
 
+  delete other.config; // comes from base, but not needed here.
+
   const className = classNames(
     classes.root,
     classNameProp,
