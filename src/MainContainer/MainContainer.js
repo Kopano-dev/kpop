@@ -104,6 +104,9 @@ class MainContainer extends React.PureComponent {
 
     const asideOpen = !!active;
 
+    // NOTE(longsleep): Render iframe for each embedded app. For now we
+    // hardcode the feature policy (https://w3c.github.io/webappsec-feature-policy/)
+    // to a sane value to allow cross domain apps to do stuff.
     return <MainContext.Provider value={this.state.value}>
       <div className={classes.root}>
         <div className={classes.main}>
@@ -122,6 +125,8 @@ class MainContainer extends React.PureComponent {
                     [classes.active]: app.name === active,
                   })}
                   src={app.src + '?embedded=4'}
+                  sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin"
+                  allow="animations; autoplay; camera; encrypted-media; fullscreen; geolocation; microphone; speaker; vr"
                 />;
               })}
             </div>
