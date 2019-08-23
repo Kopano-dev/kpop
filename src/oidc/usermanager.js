@@ -9,7 +9,7 @@ const record = {
   metadata: null,
 
   onBeforeSignin: null,
-  onbeforeSignout: null,
+  onBeforeSignout: null,
 };
 
 export function setLogLevel(level=Log.WARN) {
@@ -42,7 +42,7 @@ export function onBeforeSignin(handler) {
 }
 
 export function onBeforeSignout(handler) {
-  record.onbeforeSignout = handler;
+  record.onBeforeSignout = handler;
 }
 
 export class UserManager {
