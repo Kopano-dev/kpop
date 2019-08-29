@@ -1,0 +1,132 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2018-10-24T11:26:46.433Z\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"MIME-Version: 1.0\n"
+"X-Generator: react-intl-po\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2019-08-30 11:57+0200\n"
+"Last-Translator: root <root@transdoc.kopano.io>\n"
+"Language-Team: Icelandic\n"
+"Language: is\n"
+
+#. [kpop.a2hsAvailableSnack.addButton.text]
+#. defaultMessage is:
+#. Add
+#: i18n/src/pwa/A2HsAvailableSnack.json
+msgctxt "kpop.a2hsAvailableSnack.addButton.text"
+msgid "Add"
+msgstr ""
+
+#. [kpop.loader.error.message]
+#. defaultMessage is:
+#. Error!
+#: i18n/src/Loading/Loading.json
+msgctxt "kpop.loader.error.message"
+msgid "Error!"
+msgstr ""
+
+#. [kpop.loader.initializing.message]
+#. defaultMessage is:
+#. Initializing...
+#: i18n/src/BaseContainer/BaseContainer.json
+msgctxt "kpop.loader.initializing.message"
+msgid "Initializing..."
+msgstr ""
+
+#. [kpop.a2hsAvailableSnack.message]
+#. defaultMessage is:
+#. Install as app
+#: i18n/src/pwa/A2HsAvailableSnack.json
+msgctxt "kpop.a2hsAvailableSnack.message"
+msgid "Install as app"
+msgstr ""
+
+#. [kpop.loader.loading.message]
+#. defaultMessage is:
+#. Loading...
+#: i18n/src/Loading/Loading.json
+msgctxt "kpop.loader.loading.message"
+msgid "Loading..."
+msgstr ""
+
+#. [kpop.fatalErrorDialog.reloadButton.text]
+#. defaultMessage is:
+#. Reload
+#. [kpop.fatalErrorDialog.reloadButton.text]
+#. defaultMessage is:
+#. Reload
+#: i18n/src/BaseContainer/FatalErrorDialog.json
+#: i18n/src/BaseContainer/SignInDialog.json
+msgctxt "kpop.fatalErrorDialog.reloadButton.text"
+msgid "Reload"
+msgstr ""
+
+#. [kpop.updateAvailableSnack.reloadButton.text]
+#. defaultMessage is:
+#. Reload
+#: i18n/src/BaseContainer/UpdateAvailableSnack.json
+msgctxt "kpop.updateAvailableSnack.reloadButton.text"
+msgid "Reload"
+msgstr ""
+
+#. [kpop.signinDialog.signInButton.text]
+#. defaultMessage is:
+#. Sign in
+#: i18n/src/BaseContainer/SigninDialog.json
+msgctxt "kpop.signinDialog.signInButton.text"
+msgid "Sign in"
+msgstr ""
+
+#. [kpop.userProfileButton.signOutButton.text]
+#. defaultMessage is:
+#. Sign out
+#: i18n/src/TopBar/UserProfileButton.json
+msgctxt "kpop.userProfileButton.signOutButton.text"
+msgid "Sign out"
+msgstr ""
+
+#. [kpop.loader.longtime.message]
+#. defaultMessage is:
+#. Taking a long time...
+#: i18n/src/Loading/Loading.json
+msgctxt "kpop.loader.longtime.message"
+msgid "Taking a long time..."
+msgstr ""
+
+#. [kpop.fatalErrorDialog.message]
+#. defaultMessage is:
+#. This is a fatal error and the app needs to be reloaded.
+#. [kpop.fatalErrorDialog.message]
+#. defaultMessage is:
+#. This is a fatal error and the app needs to be reloaded.
+#: i18n/src/BaseContainer/FatalErrorDialog.json
+#: i18n/src/BaseContainer/SignInDialog.json
+msgctxt "kpop.fatalErrorDialog.message"
+msgid "This is a fatal error and the app needs to be reloaded."
+msgstr ""
+
+#. [kpop.updateAvailableSnack.message]
+#. defaultMessage is:
+#. Update available
+#: i18n/src/BaseContainer/UpdateAvailableSnack.json
+msgctxt "kpop.updateAvailableSnack.message"
+msgid "Update available"
+msgstr ""
+
+#. [kpop.a2A2HsAvailableSnack.closeButton.ariaLabel]
+#. defaultMessage is:
+#. close
+#: i18n/src/pwa/A2HsAvailableSnack.json
+msgctxt "kpop.a2A2HsAvailableSnack.closeButton.ariaLabel"
+msgid "close"
+msgstr ""
+
+#. [kpop.loader.retry]
+#. defaultMessage is:
+#. retry
+#: i18n/src/Loading/Loading.json
+msgctxt "kpop.loader.retry"
+msgid "retry"
+msgstr ""
