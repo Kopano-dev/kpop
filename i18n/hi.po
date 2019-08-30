@@ -50,7 +50,7 @@ msgstr "एप्लीकेशन के रूप में इंस्ट�
 #: i18n/src/Loading/Loading.json
 msgctxt "kpop.loader.loading.message"
 msgid "Loading..."
-msgstr "लोड हो रहा है"
+msgstr "लोड हो रहा है..."
 
 #. [kpop.fatalErrorDialog.reloadButton.text]
 #. defaultMessage is:
