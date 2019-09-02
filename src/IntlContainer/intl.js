@@ -6,11 +6,8 @@ import en from 'react-intl/locale-data/en';
 // Please keep imports alphabetically sorted. These imports also need to be
 // kept in sync with the translations in i18n/locales.
 import de from 'react-intl/locale-data/de';
-import es from 'react-intl/locale-data/es';
 import fr from 'react-intl/locale-data/fr';
-import hu from 'react-intl/locale-data/hu';
-import it from 'react-intl/locale-data/it';
-import ja from 'react-intl/locale-data/ja';
+import hi from 'react-intl/locale-data/hi';
 import nb from 'react-intl/locale-data/nb';
 import nl from 'react-intl/locale-data/nl';
 import pt from 'react-intl/locale-data/pt';
@@ -27,11 +24,8 @@ export const initializeIntl = async () => {
     ...en,
 
     ...de,
-    ...es,
     ...fr,
-    ...hu,
-    ...it,
-    ...ja,
+    ...hi,
     ...nb,
     ...nl,
     ...pt,

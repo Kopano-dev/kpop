@@ -3,11 +3,8 @@
 
 // Please keep imports and exports alphabetically sorted.
 import de from './de.json';
-import es from './es.json';
 import fr from './fr.json';
-import hu from './hu.json';
-import it from './it.json';
-import ja from './ja.json';
+import hi from './hi.json';
 import nb from './nb.json';
 import nl from './nl.json';
 import ptPT from './pt_PT.json';
@@ -18,11 +15,8 @@ export const locales = {
   de,
   'en-GB': {},
   'en-US': {},
-  es,
   fr,
-  hu,
-  it,
-  ja,
+  hi,
   nb,
   nl,
   'pt-PT': ptPT,
