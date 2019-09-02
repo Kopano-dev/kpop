@@ -2,6 +2,7 @@
 
 YARN ?= yarn
 MSGMERGE ?= msgmerge
+MSGFMT ?= msgfmt
 
 # Variables
 
@@ -31,6 +32,11 @@ json: src/BaseContainer/BaseContainer.json
 
 .PHONY: merge
 merge: $(POS)
+
+.PHONY: stats
+stats:
+	$(foreach po, $(POS), $(shell $(MSGFMT) -v --statistics $(po)))
+	@- true
 
 $(POS): FORCE kpop.pot
 	$(MSGMERGE) -U \
