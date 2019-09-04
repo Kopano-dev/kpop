@@ -5,6 +5,7 @@
 import de from './de.json';
 import fr from './fr.json';
 import hi from './hi.json';
+import is from './is.json';
 import nb from './nb.json';
 import nl from './nl.json';
 import ptPT from './pt_PT.json';
@@ -17,6 +18,7 @@ export const locales = {
   'en-US': {},
   fr,
   hi,
+  is,
   nb,
   nl,
   'pt-PT': ptPT,

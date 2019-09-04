@@ -8,6 +8,7 @@ import en from 'react-intl/locale-data/en';
 import de from 'react-intl/locale-data/de';
 import fr from 'react-intl/locale-data/fr';
 import hi from 'react-intl/locale-data/hi';
+import is from 'react-intl/locale-data/is';
 import nb from 'react-intl/locale-data/nb';
 import nl from 'react-intl/locale-data/nl';
 import pt from 'react-intl/locale-data/pt';
@@ -26,6 +27,7 @@ export const initializeIntl = async () => {
     ...de,
     ...fr,
     ...hi,
+    ...is,
     ...nb,
     ...nl,
     ...pt,
