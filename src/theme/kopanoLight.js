@@ -29,9 +29,10 @@ const theme = createMuiTheme({
   },
   typography: {
     useNextVariants: true,
-    /*button: {
+    button: {
       textTransform: 'none',
-    },*/
+      fontSize: '1rem',
+    },
   },
 });
 
