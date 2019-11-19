@@ -38,6 +38,9 @@ const styles = theme => {
         color: theme.palette.action.disabled,
       },
     },
+    fab: {
+      boxShadow: theme.shadows[4],
+    },
     label: {
       marginLeft: theme.spacing.unit * 1.5,
     },
@@ -66,7 +69,7 @@ class MasterButton extends React.PureComponent {
 
     return (
       <ButtonBase className={className} disabled={disabled} {...other}>
-        <Fab size="small" color={color} component="div" disabled={disabled} >
+        <Fab size="small" color={color} component="div" disabled={disabled} className={classes.fab}>
           {icon}
         </Fab>
         <Typography variant="subtitle2" color="inherit" className={classes.label}>{children}</Typography>
