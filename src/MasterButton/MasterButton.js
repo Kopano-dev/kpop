@@ -43,6 +43,7 @@ const styles = theme => {
     },
     label: {
       marginLeft: theme.spacing.unit * 1.5,
+      fontWeight: 400,
     },
     /* Pseudo-class applied to the root element if `disabled={true}`. */
     disabled: {},
@@ -72,7 +73,7 @@ class MasterButton extends React.PureComponent {
         <Fab size="small" color={color} component="div" disabled={disabled} className={classes.fab}>
           {icon}
         </Fab>
-        <Typography variant="subtitle2" color="inherit" className={classes.label}>{children}</Typography>
+        <Typography variant="button" color="inherit" className={classes.label}>{children}</Typography>
       </ButtonBase>
     );
   }
