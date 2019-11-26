@@ -1,6 +1,7 @@
 import {
   KPOP_SERVICE_WORKER_NEW_CONTENT,
   KPOP_SERVICE_WORKER_READY,
+  KPOP_SERVICE_WORKER_REGISTRATION,
   KPOP_SERVICE_WORKER_ERROR,
   KPOP_SERVICE_WORKER_OFFLINE,
 }  from './constants';
@@ -14,6 +15,13 @@ export function newContent() {
 export function readyForOfflineUse() {
   return {
     type: KPOP_SERVICE_WORKER_READY,
+  };
+}
+
+export function registrationSuccess(registration) {
+  return {
+    type: KPOP_SERVICE_WORKER_REGISTRATION,
+    registration,
   };
 }
 

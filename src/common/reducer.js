@@ -4,6 +4,7 @@ import {
 } from '../config/constants';
 import {
   KPOP_SERVICE_WORKER_NEW_CONTENT,
+  KPOP_SERVICE_WORKER_REGISTRATION,
 } from '../serviceWorker/constants';
 import {
   KPOP_RECEIVE_USER,
@@ -22,6 +23,7 @@ import {
 
 const defaultState = {
   updateAvailable: false,
+  registration: null,
   config: null,
   user: null,
   profile: null,
@@ -40,6 +42,11 @@ function commonReducer(state = defaultState, action) {
     case KPOP_SERVICE_WORKER_NEW_CONTENT:
       return Object.assign({}, state, {
         updateAvailable: true,
+      });
+
+    case KPOP_SERVICE_WORKER_REGISTRATION:
+      return Object.assign({}, state, {
+        registration: action.registration,
       });
 
     case KPOP_RESET_CONFIG:

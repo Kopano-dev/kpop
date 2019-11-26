@@ -18,6 +18,7 @@ import {
   newContent,
   readyForOfflineUse,
   registrationError,
+  registrationSuccess,
   isOfflineMode,
 } from './actions';
 
@@ -40,47 +41,50 @@ const defaultOptions = {
 };
 
 export default function register(store, options=defaultOptions) {
-  if (options.env === undefined || options.publicUrl === undefined) {
-    throw new Error('invalid service worker invocation, missing env and publicUrl options');
-  }
-
-  if (!options.noInstallPrompt) {
-    registerBeforeinstallPrompt(store);
-  }
-
-  if (options.env === 'production' && 'serviceWorker' in navigator) {
-    // The URL constructor is available in all browsers that support SW.
-    const publicUrl = new URL(options.publicUrl, window.location);
-    if (publicUrl.origin !== window.location.origin) {
-      // Our service worker won't work if PUBLIC_URL is on a different origin
-      // from what our page is served on.
-      console.warn('This web app has a service worker, but it is disabled as the origin is different.');
-      return;
+  return new Promise(resolve => {
+    if (options.env === undefined || options.publicUrl === undefined) {
+      throw new Error('invalid service worker invocation, missing env and publicUrl options');
     }
 
-    window.addEventListener('load', () => {
-      const swUrl = `${options.publicUrl}/service-worker.js`;
+    if (!options.noInstallPrompt) {
+      registerBeforeinstallPrompt(store);
+    }
 
-      if (isLocalhost) {
-        // This is running on localhost. Lets check if a service worker still exists or not.
-        checkValidServiceWorker(swUrl, store);
-
-        // Add some additional logging to localhost,
-        navigator.serviceWorker.ready.then(() => {
-          console.info('This web app is being served cache-first by a service worker.');
-        });
-      } else {
-        // Is not local host. Just register service worker
-        registerValidSW(swUrl, store);
+    if ('serviceWorker' in navigator) {
+      // The URL constructor is available in all browsers that support SW.
+      const publicUrl = new URL(options.publicUrl, window.location);
+      if (publicUrl.origin !== window.location.origin) {
+        // Our service worker won't work if PUBLIC_URL is on a different origin
+        // from what our page is served on.
+        console.warn('This web app has a service worker, but it is disabled as the origin is different.');
+        resolve(null);
+        return;
       }
-    });
-  }
+
+      window.addEventListener('load', () => {
+        const swUrl = `${options.publicUrl}/service-worker.js`;
+
+        if (isLocalhost) {
+          // This is running on localhost. Lets check if a service worker still exists or not.
+          resolve(checkValidServiceWorker(swUrl, store));
+
+          // Add some additional logging to localhost,
+          navigator.serviceWorker.ready.then(() => {
+            console.info('This web app is being served cache-first by a service worker.');
+          });
+        } else {
+          // Is not local host. Just register service worker
+          resolve(registerValidSW(swUrl, store));
+        }
+      });
+    }
+  });
 }
 
 function registerValidSW(swUrl, store) {
-  navigator.serviceWorker
+  return navigator.serviceWorker
     .register(swUrl)
-    .then(registration => {
+    .then(async registration => {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         installingWorker.onstatechange = () => {
@@ -102,6 +106,8 @@ function registerValidSW(swUrl, store) {
           }
         };
       };
+      await store.dispatch(registrationSuccess(registration));
+      return registration;
     })
     .catch(error => {
       console.error('Error during service worker registration:', error);
@@ -111,7 +117,7 @@ function registerValidSW(swUrl, store) {
 
 function checkValidServiceWorker(swUrl, store) {
   // Check if the service worker can be found. If it can't reload the page.
-  fetch(swUrl)
+  return fetch(swUrl)
     .then(response => {
       // Ensure service worker exists, and that we really are getting a JS file.
       if (
@@ -126,7 +132,7 @@ function checkValidServiceWorker(swUrl, store) {
         });
       } else {
         // Service worker found. Proceed as normal.
-        registerValidSW(swUrl, store);
+        return registerValidSW(swUrl, store);
       }
     })
     .catch(() => {
@@ -135,9 +141,9 @@ function checkValidServiceWorker(swUrl, store) {
     });
 }
 
-export function unregister() {
+export async function unregister() {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.ready.then(registration => {
+    return navigator.serviceWorker.ready.then(registration => {
       registration.unregister();
     });
   }
