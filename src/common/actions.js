@@ -8,6 +8,7 @@ import {
 
 import {
   KPOP_SET_ERROR,
+  KPOP_GLUE_GLUED,
   KPOP_ERRORID_USER_REQUIRED,
   KPOP_ERRORID_NETWORK_ERROR,
 } from './constants';
@@ -31,6 +32,13 @@ export function setError(error) {
       type: KPOP_SET_ERROR,
       error,
     });
+  };
+}
+
+export function glueGlued(glue) {
+  return {
+    type: KPOP_GLUE_GLUED,
+    glue,
   };
 }
 

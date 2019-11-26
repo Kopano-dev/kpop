@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import renderIf from 'render-if';
+import * as Glue from '@longsleep/glue';
 
 import FatalErrorDialog from './FatalErrorDialog';
 import SigninDialog from './SigninDialog';
@@ -16,6 +17,7 @@ import { isInFrame } from '../utils';
 import { triggerA2HsPrompt } from '../pwa/actions';
 import { startSignin } from '../oidc/actions';
 import { KPOP_ERRORID_USER_REQUIRED } from '../common/constants';
+import { glueGlued } from '../common/actions';
 import SnackbarProvider from './SnackbarProvider';
 
 const defaultConfig = {};  // Default config is empty;
@@ -24,19 +26,19 @@ function getDefaultConfig() {
 }
 
 const defaultEmbedded = {
-  enabled: undefined,
+  enabled: false,
   mode: undefined,
-  wait: false,
+  wait: true,
   bound: false,
 };
-function getDefaultEmbedded() {
-  const embedded = defaultEmbedded;
-  if (embedded.enabled !== undefined) {
+function getDefaultEmbedded(embedded) {
+  if (embedded !== undefined) {
     // Already set up.
     return embedded;
   }
-  embedded.enabled = false;
-
+  embedded = {
+    ...defaultEmbedded,
+  };
   if (isInFrame()) {
     embedded.enabled = true;
     embedded.mode = ''; // Empty string mode means the simplest of all modes which requires no initialization.
@@ -60,9 +62,56 @@ class BaseContainer extends React.PureComponent {
     return {
       value: {
         config: config ? config : getDefaultConfig(),
-        embedded: embedded ? embedded : getDefaultEmbedded(),
+        embedded: embedded ? embedded : getDefaultEmbedded(state.value.embedded),
       },
     };
+  }
+
+  componentDidMount() {
+    this.initialize();
+  }
+
+  initialize = () => {
+    const { value } = this.state;
+    const { dispatch, events, features } = this.props;
+
+    if (!value.embedded.wait) {
+      return;
+    }
+
+    Glue.enable(window.parent, {
+      events,
+      features,
+      origins: ['*'], // TODO(longsleep): Add origin white list to configuration.
+      onBeforeReady: (glue) => {
+        // Glue is ready, set to state, this continues and renders the app.
+        dispatch(glueGlued(glue));
+        this.setState({
+          value: {
+            ...value,
+            embedded: {
+              ...value.embedded,
+              enabled: true,
+              mode: glue.mode,
+              wait: false,
+            },
+          },
+        });
+      },
+    }).then(glue => {
+      if (glue.mode === undefined) {
+        // When no Glue, continue just normal.
+        this.setState({
+          value: {
+            ...value,
+            embedded: {
+              ...value.embedded,
+              wait: false,
+            },
+          },
+        });
+      }
+    });
   }
 
   handleReload = (error=null) => async (event) => {
@@ -209,6 +258,14 @@ BaseContainer.propTypes = {
    * embedded within another app.
    */
   embedded: embeddedShape,
+  /**
+   * Feature function to expose to apps via Glue.
+   */
+  features: PropTypes.object,
+  /**
+   * The events available for apps via Glue.
+   */
+  events: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default BaseContainer;

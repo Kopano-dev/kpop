@@ -19,11 +19,13 @@ import {
 
 import {
   KPOP_SET_ERROR,
+  KPOP_GLUE_GLUED,
 } from './constants';
 
 const defaultState = {
   updateAvailable: false,
   registration: null,
+  glue: null,
   config: null,
   user: null,
   profile: null,
@@ -37,6 +39,11 @@ function commonReducer(state = defaultState, action) {
     case KPOP_SET_ERROR:
       return Object.assign({}, state, {
         error: action.error,
+      });
+
+    case KPOP_GLUE_GLUED:
+      return Object.assign({}, state, {
+        glue: action.glue,
       });
 
     case KPOP_SERVICE_WORKER_NEW_CONTENT:

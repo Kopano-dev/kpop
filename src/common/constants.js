@@ -7,6 +7,7 @@ export const defaultTimezone = 'Europe/Amsterdam';
 
 // Redux actions.
 export const KPOP_SET_ERROR = 'KPOP_SET_ERROR';
+export const KPOP_GLUE_GLUED = 'KPOP_GLUE_GLUED';
 
 // Error ids.
 export const KPOP_ERRORID_USER_REQUIRED = 'kpop_user_required_error';
