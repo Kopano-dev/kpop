@@ -18,6 +18,8 @@ import { triggerA2HsPrompt } from '../pwa/actions';
 import { startSignin } from '../oidc/actions';
 import { KPOP_ERRORID_USER_REQUIRED } from '../common/constants';
 import { glueGlued } from '../common/actions';
+import { initialize as initializeVisibility } from '../visibility/actions';
+import { initialize as initializeOffline } from '../offline/actions';
 import SnackbarProvider from './SnackbarProvider';
 
 const defaultConfig = {};  // Default config is empty;
@@ -50,6 +52,7 @@ function getDefaultEmbedded(embedded) {
 class BaseContainer extends React.PureComponent {
   state = {
     value: {},
+    initialized: false,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -68,10 +71,25 @@ class BaseContainer extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.initialize();
+    Promise.all([
+      this.initializeGlue().then(glue => this.initializeVisibility(glue)),
+      this.initializeOffline(),
+    ]).then(() => {
+      this.setState({
+        initialized: true,
+      });
+    });
   }
 
-  initialize = () => {
+  initializeOffline = async () => {
+    const { dispatch, withOffline } = this.props;
+
+    if (withOffline) {
+      await dispatch(initializeOffline());
+    }
+  }
+
+  initializeGlue = async () => {
     const { value } = this.state;
     const { dispatch, events, features } = this.props;
 
@@ -79,39 +97,54 @@ class BaseContainer extends React.PureComponent {
       return;
     }
 
-    Glue.enable(window.parent, {
-      events,
-      features,
-      origins: ['*'], // TODO(longsleep): Add origin white list to configuration.
-      onBeforeReady: (glue) => {
-        // Glue is ready, set to state, this continues and renders the app.
-        dispatch(glueGlued(glue));
-        this.setState({
-          value: {
-            ...value,
-            embedded: {
-              ...value.embedded,
-              enabled: true,
-              mode: glue.mode,
-              wait: false,
+    return new Promise(resolve => {
+      Glue.enable(window.parent, {
+        events,
+        features,
+        origins: ['*'], // TODO(longsleep): Add origin white list to configuration.
+        onBeforeReady: (glue) => {
+          // Glue is ready, set to state, this continues and renders the app.
+          dispatch(glueGlued(glue));
+          this.setState({
+            value: {
+              ...value,
+              embedded: {
+                ...value.embedded,
+                enabled: true,
+                mode: glue.mode,
+                wait: false,
+              },
             },
-          },
-        });
-      },
-    }).then(glue => {
-      if (glue.mode === undefined) {
-        // When no Glue, continue just normal.
-        this.setState({
-          value: {
-            ...value,
-            embedded: {
-              ...value.embedded,
-              wait: false,
+          });
+          resolve(glue);
+        },
+      }).then(glue => {
+        if (glue.mode === undefined) {
+          // When no Glue, continue just normal.
+          this.setState({
+            value: {
+              ...value,
+              embedded: {
+                ...value.embedded,
+                wait: false,
+              },
             },
-          },
-        });
-      }
+          });
+        }
+        resolve(glue);
+      }).catch(err => {
+        console.error('error while Glue enable', err); // eslint-disable-line no-console
+        resolve(undefined);
+      });
     });
+  };
+
+  initializeVisibility = async (glue) => {
+    const { dispatch, withVisibility } = this.props;
+
+    if (withVisibility) {
+      await dispatch(initializeVisibility(glue));
+    }
   }
 
   handleReload = (error=null) => async (event) => {
@@ -158,12 +191,13 @@ class BaseContainer extends React.PureComponent {
       withSnackbar,
     } = this.props;
 
+    const { initialized } = this.state;
     const { embedded } = this.state.value;
 
-    const readyAndNotFatalError = ready && !embedded.wait && (!error || !error.fatal);
+    const readyAndNotFatalError = initialized && ready && !embedded.wait && (!error || !error.fatal);
 
     const ifReady = renderIf(readyAndNotFatalError);
-    const ifNotReady = renderIf(!ready || embedded.wait);
+    const ifNotReady = renderIf(!initialized || !ready || embedded.wait);
     const ifFatalError = renderIf(error && error.fatal);
     const ifUpdateAvailable = renderIf(updateAvailable);
     const ifA2HsAvailable = renderIf(!updateAvailable && a2HsAvailable);
@@ -217,6 +251,11 @@ class BaseContainer extends React.PureComponent {
   }
 }
 
+BaseContainer.defaultProps = {
+  withVisibility: true,
+  withOffline: true,
+};
+
 BaseContainer.propTypes = {
   /**
    * The content of the component.
@@ -266,6 +305,14 @@ BaseContainer.propTypes = {
    * The events available for apps via Glue.
    */
   events: PropTypes.arrayOf(PropTypes.string),
+  /**
+   * Wether or not to initialize the visibility manager.
+   */
+  withVisibility: PropTypes.bool,
+  /**
+   * Wether or not to initialize the offline manager.
+   */
+  withOffline: PropTypes.bool,
 };
 
 export default BaseContainer;
