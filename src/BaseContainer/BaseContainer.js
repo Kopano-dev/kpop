@@ -91,9 +91,9 @@ class BaseContainer extends React.PureComponent {
 
   initializeGlue = async () => {
     const { value } = this.state;
-    const { dispatch, events, features } = this.props;
+    const { dispatch, withGlue, events, features } = this.props;
 
-    if (!value.embedded.wait) {
+    if (!withGlue || !value.embedded.wait) {
       return;
     }
 
@@ -252,6 +252,7 @@ class BaseContainer extends React.PureComponent {
 }
 
 BaseContainer.defaultProps = {
+  withGlue: true,
   withVisibility: true,
   withOffline: true,
 };
@@ -305,6 +306,10 @@ BaseContainer.propTypes = {
    * The events available for apps via Glue.
    */
   events: PropTypes.arrayOf(PropTypes.string),
+  /**
+   * Wether or not to initialize Glue.
+   */
+  withGlue: PropTypes.bool,
   /**
    * Wether or not to initialize the visibility manager.
    */
