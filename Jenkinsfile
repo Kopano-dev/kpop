@@ -6,9 +6,9 @@ pipeline {
 			image 'node:12'
 		}
 	}
-	// Set CI enabled for jest
 	environment {
 		CI = 'true'
+		YARN_CACHE_FOLDER = '/tmp/.yarn-cache'
 	}
 	stages {
 		stage('Lint') {

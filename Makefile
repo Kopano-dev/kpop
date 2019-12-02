@@ -45,12 +45,12 @@ test: vendor | src ; $(info running jest tests ...) @
 
 .PHONY: test-coverage
 test-coverage: vendor | src ; $(info running jest tests with coverage ...) @
-	@mkdir -p ../test
+	@mkdir -p ./test
 	REACT_APP_KOPANO_BUILD="${VERSION}" BABEL_ENV=test JEST_JUNIT_OUTPUT=./test/jest-test-results.xml $(YARN) jest --coverage --coverageDirectory=coverage --testResultsProcessor="jest-junit"
 
 .PHONY: test-xml
 test-xml: vendor | src ; $(info running jest tests ...) @
-	@mkdir -p ../test
+	@mkdir -p ./test
 	REACT_APP_KOPANO_BUILD="${VERSION}" BABEL_ENV=test JEST_JUNIT_OUTPUT=./test/jest-test-results.xml $(YARN) jest --verbose --testResultsProcessor="jest-junit"
 
 # Documentation
