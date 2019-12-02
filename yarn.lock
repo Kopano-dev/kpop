@@ -1018,10 +1018,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@longsleep/glue@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@longsleep/glue/-/glue-0.1.0.tgz#560371a2400c3beb9cc3333aa8670c3e9eeda212"
-  integrity sha512-ZT6wmmHiaI3y1A9NrfSY/rm85MGLssTJxvv3I2Wuw/JhqgwyptT4OZFLeivVfPtoO88EA09xWtLxT4o4Y25sgA==
+"@longsleep/glue@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@longsleep/glue/-/glue-0.2.0.tgz#fc99cde00978ba10e65691e7c71acdbaf6081ea8"
+  integrity sha512-mxbxjudEe2DqKCGRxAE5zVefECnq1gBfuUJJdTic5DLOzGwzlC2Pypit0UnNGtL/KcOD4DIZe3vUSe5mpMX9KA==
 
 "@material-ui/core@^3.9.3":
   version "3.9.3"

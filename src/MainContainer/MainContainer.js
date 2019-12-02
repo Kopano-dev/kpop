@@ -8,6 +8,7 @@ import Hidden from '@material-ui/core/Hidden';
 import { MainContext } from './MainContext';
 import { withBase } from '../BaseContainer/BaseContext';
 import { embeddedShape } from '../shapes';
+import GlueEmbed from './GlueEmbed';
 
 const asideWidth = 300;
 
@@ -104,9 +105,7 @@ class MainContainer extends React.PureComponent {
 
     const asideOpen = !!active;
 
-    // NOTE(longsleep): Render iframe for each embedded app. For now we
-    // hardcode the feature policy (https://w3c.github.io/webappsec-feature-policy/)
-    // to a sane value to allow cross domain apps to do stuff.
+    // NOTE(longsleep): Embed apps using Glue.
     return <MainContext.Provider value={this.state.value}>
       <div className={classes.root}>
         <div className={classes.main}>
@@ -118,15 +117,16 @@ class MainContainer extends React.PureComponent {
               [classes.asideShift]: !asideOpen,
             })}>
               {Object.values(apps).map(app => {
-                return <iframe
+                const hidden = app.name !== active;
+                return <GlueEmbed
                   key={app.name}
-                  title={app.title}
                   className={classNames(classes.asideFrame, {
-                    [classes.active]: app.name === active,
+                    [classes.active]: !hidden,
                   })}
-                  src={app.src + '?embedded=4'}
-                  sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin"
-                  allow="animations; autoplay; camera; encrypted-media; fullscreen; geolocation; microphone; speaker; vr"
+                  url={app.src}
+                  hidden={hidden}
+                  timeout={30000}
+                  GlueOptions={app.options}
                 />;
               })}
             </div>

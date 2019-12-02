@@ -28,7 +28,7 @@
     "iso-639-1": "^2.0.5"
   },
   "peerDependencies": {
-    "@longsleep/glue": "^0.1.0",
+    "@longsleep/glue": "^0.2.0",
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "notistack": "^0.8.8",
@@ -62,7 +62,7 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.0.0",
-    "@longsleep/glue": "^0.1.0",
+    "@longsleep/glue": "^0.2.0",
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "babel-core": "^7.0.0-bridge.0",
