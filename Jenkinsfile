@@ -3,7 +3,7 @@
 pipeline {
 	agent {
 		docker {
-			image 'node:10'
+			image 'node:12'
 		}
 	}
 	// Set CI enabled for jest
