@@ -1,12 +1,6 @@
 // In production, we register a service worker to serve assets from local cache.
-
 // This lets the app load faster on subsequent visits in production, and gives
-// it offline capabilities. However, it also means that developers (and users)
-// will only see deployed updates on the "N+1" visit to a page, since previously
-// cached resources are updated in the background.
-
-// To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
-// This link also includes instructions on opting out of this behavior.
+// it offline capabilities.
 
 /*eslint-disable no-console*/
 
@@ -87,13 +81,19 @@ function registerValidSW(swUrl, store) {
     .then(async registration => {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
+        if (installingWorker === null) {
+          return;
+        }
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              // At this point, the old content will have been purged and
-              // the fresh content will have been added to the cache.
-              // It's the perfect time to display a "New content is
-              // available; please refresh." message in your web app.
+              // At this point, the updated precached content has been fetched,
+              // but the previous service worker will still serve the older
+              // content until all client tabs are closed or after it has
+              // triggered skipWaiting.
+              installingWorker.postMessage({
+                type: 'SKIP_WAITING',
+              });
               console.debug('New content is available; please refresh.');
               store.dispatch(newContent());
             } else {
@@ -120,9 +120,10 @@ function checkValidServiceWorker(swUrl, store) {
   return fetch(swUrl)
     .then(response => {
       // Ensure service worker exists, and that we really are getting a JS file.
+      const contentType = response.headers.get('content-type');
       if (
         response.status === 404 ||
-        response.headers.get('content-type').indexOf('javascript') === -1
+        (contentType !== null && contentType.indexOf('javascript') === -1)
       ) {
         // No service worker found. Probably a different app. Reload the page.
         navigator.serviceWorker.ready.then(registration => {
