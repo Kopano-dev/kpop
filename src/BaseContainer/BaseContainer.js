@@ -33,13 +33,14 @@ const defaultEmbedded = {
   wait: true,
   bound: false,
 };
-function getDefaultEmbedded(embedded) {
+function getDefaultEmbedded(embedded, options={}) {
   if (embedded !== undefined) {
     // Already set up.
     return embedded;
   }
   embedded = {
     ...defaultEmbedded,
+    ...options,
   };
   if (isInFrame()) {
     embedded.enabled = true;
@@ -56,7 +57,7 @@ class BaseContainer extends React.PureComponent {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { config, embedded } = props;
+    const { config, withGlue, embedded } = props;
 
     if (state.value.config === config) {
       return null;
@@ -65,7 +66,9 @@ class BaseContainer extends React.PureComponent {
     return {
       value: {
         config: config ? config : getDefaultConfig(),
-        embedded: embedded ? embedded : getDefaultEmbedded(state.value.embedded),
+        embedded: embedded ? embedded : getDefaultEmbedded(state.value.embedded, {
+          wait: !!withGlue,
+        }),
       },
     };
   }
@@ -91,9 +94,9 @@ class BaseContainer extends React.PureComponent {
 
   initializeGlue = async () => {
     const { value } = this.state;
-    const { dispatch, withGlue, events, features } = this.props;
+    const { dispatch, events, features } = this.props;
 
-    if (!withGlue || !value.embedded.wait) {
+    if (!value.embedded.wait) {
       return;
     }
 
