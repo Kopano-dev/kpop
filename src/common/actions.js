@@ -11,9 +11,14 @@ import {
 import {
   KPOP_SET_ERROR,
   KPOP_GLUE_GLUED,
+  KPOP_SNACKBAR_ENQUEUE,
+  KPOP_SNACKBAR_REMOVE,
+  KPOP_SNACKBAR_CLOSE,
   KPOP_ERRORID_USER_REQUIRED,
   KPOP_ERRORID_NETWORK_ERROR,
   KPOP_ERRORID_APP_INITIALIZATION_ERROR,
+
+
 } from './constants';
 import {
   UnexpectedNetworkResponseError,
@@ -56,6 +61,8 @@ export function setError(error) {
       } else {
         await dispatch(resolveError(error));
       }
+    } else if (error && !error.fatal) {
+      dispatch(enqueueErrorSnackbar(error));
     }
 
     dispatch({
@@ -190,5 +197,44 @@ export function appInitializationError(fatal=true, {raisedError, detail} = {}) {
     };
 
     return dispatch(setError(error));
+  };
+}
+
+export function enqueueErrorSnackbar(error) {
+  return (dispatch) => {
+    return dispatch(enqueueSnackbar({
+      message: error.message,
+      options: {
+        variant: 'error',
+      },
+      values: error.values,
+    }));
+  };
+}
+
+export function enqueueSnackbar(notification) {
+  const key = notification.options && notification.options.key;
+
+  return {
+    type: KPOP_SNACKBAR_ENQUEUE,
+    notification: {
+      ...notification,
+      key: key ? key : String(new Date().getTime() + Math.random()),
+    },
+  };
+}
+
+export function removeSnackbar(key) {
+  return {
+    type: KPOP_SNACKBAR_REMOVE,
+    key,
+  };
+}
+
+export function closeSnackbar(key) {
+  return {
+    type: KPOP_SNACKBAR_CLOSE,
+    dismissAll: !key,
+    key,
   };
 }

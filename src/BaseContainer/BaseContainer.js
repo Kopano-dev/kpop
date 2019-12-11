@@ -21,6 +21,7 @@ import { glueGlued } from '../common/actions';
 import { initialize as initializeVisibility } from '../visibility/actions';
 import { initialize as initializeOffline } from '../offline/actions';
 import SnackbarProvider from './SnackbarProvider';
+import Notifier from './Notifier';
 
 const defaultConfig = {};  // Default config is empty;
 function getDefaultConfig() {
@@ -185,6 +186,7 @@ class BaseContainer extends React.PureComponent {
 
   render() {
     const {
+      dispatch,
       children,
 
       ready,
@@ -192,6 +194,7 @@ class BaseContainer extends React.PureComponent {
       updateAvailable,
       a2HsAvailable,
       withSnackbar,
+      notifications,
     } = this.props;
 
     const { initialized } = this.state;
@@ -204,10 +207,14 @@ class BaseContainer extends React.PureComponent {
     const ifFatalError = renderIf(error && error.fatal);
     const ifUpdateAvailable = renderIf(updateAvailable);
     const ifA2HsAvailable = renderIf(!updateAvailable && a2HsAvailable);
+    const ifNotifications = renderIf(notifications !== undefined);
 
     return (
       <BaseContext.Provider value={this.state.value}>
         <SnackbarProvider withSnackbar={withSnackbar}>
+          {ifNotifications(
+            <Notifier dispatch={dispatch} notifications={notifications}/>
+          )}
           {ifReady(
             children
           )}
@@ -309,6 +316,10 @@ BaseContainer.propTypes = {
    * The events available for apps via Glue.
    */
   events: PropTypes.arrayOf(PropTypes.string),
+  /**
+   * Notifications array. If this is set, automatically creates a Notifier.
+   */
+  notifications: PropTypes.array,
   /**
    * Wether or not to initialize Glue.
    */

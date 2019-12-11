@@ -20,6 +20,9 @@ import {
 import {
   KPOP_SET_ERROR,
   KPOP_GLUE_GLUED,
+  KPOP_SNACKBAR_ENQUEUE,
+  KPOP_SNACKBAR_REMOVE,
+  KPOP_SNACKBAR_CLOSE,
 } from './constants';
 
 const defaultState = {
@@ -32,6 +35,7 @@ const defaultState = {
   error: null,
   offline: true,
   hidden: true,
+  notifications: [],
 };
 
 function commonReducer(state = defaultState, action) {
@@ -82,6 +86,34 @@ function commonReducer(state = defaultState, action) {
       return Object.assign({}, state, {
         hidden: action.hidden,
       });
+
+    case KPOP_SNACKBAR_ENQUEUE:
+      return {
+        ...state,
+        notifications: [
+          ...state.notifications,
+          {
+            key: action.key,
+            ...action.notification,
+          },
+        ],
+      };
+    case KPOP_SNACKBAR_REMOVE:
+      return {
+        ...state,
+        notifications: state.notifications.filter(
+          notification => notification.key !== action.key
+        ),
+      };
+    case KPOP_SNACKBAR_CLOSE:
+      return {
+        ...state,
+        notifications: state.notifications.map(notification => (
+          (action.dismissAll || notification.key === action.key)
+            ? { ...notification, dismissed: true }
+            : { ...notification }
+        )),
+      };
 
     default:
       return state;

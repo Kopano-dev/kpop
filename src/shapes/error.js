@@ -15,6 +15,10 @@ export const errorPropTypes = {
    */
   detail: PropTypes.string,
   /**
+   * Values mapping for placeholders in text.
+   */
+  values: PropTypes.object,
+  /**
    * Flag indicating that the error is fatal and that the app cannot continue.
    */
   fatal: PropTypes.bool,
