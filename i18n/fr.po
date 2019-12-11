@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-10-24T11:26:46.433Z\n"
+"POT-Creation-Date: 2019-12-13T14:02:14.999Z\n"
 "PO-Revision-Date: 2019-08-26 15:22+0000\n"
 "Last-Translator: Dominique <dperessoni@alternatiq.com>\n"
 "Language-Team: French <http://translate.kopano.io/projects/kopano/kpop/fr/>\n"
@@ -20,6 +20,14 @@ msgctxt "kpop.a2hsAvailableSnack.addButton.text"
 msgid "Add"
 msgstr "Ajouter"
 
+#. [kpop.common.errorMessage.appInitializationError.message]
+#. defaultMessage is:
+#. App start failed with error!
+#: i18n/src/common/actions.json
+msgctxt "kpop.common.errorMessage.appInitializationError.message"
+msgid "App start failed with error!"
+msgstr ""
+
 #. [kpop.loader.error.message]
 #. defaultMessage is:
 #. Error!
@@ -27,6 +35,22 @@ msgstr "Ajouter"
 msgctxt "kpop.loader.error.message"
 msgid "Error!"
 msgstr "Erreur !"
+
+#. [kpop.common.errorMessage.networkRequestFailed.message]
+#. defaultMessage is:
+#. Error: network request failed: {status}
+#: i18n/src/common/actions.json
+msgctxt "kpop.common.errorMessage.networkRequestFailed.message"
+msgid "Error: network request failed: {status}"
+msgstr ""
+
+#. [kpop.common.errorMessage.networkRequestForbidden.message]
+#. defaultMessage is:
+#. Error: network request forbidden: {status}
+#: i18n/src/common/actions.json
+msgctxt "kpop.common.errorMessage.networkRequestForbidden.message"
+msgid "Error: network request forbidden: {status}"
+msgstr ""
 
 #. [kpop.loader.initializing.message]
 #. defaultMessage is:
@@ -51,6 +75,22 @@ msgstr "Installer comme une app"
 msgctxt "kpop.loader.loading.message"
 msgid "Loading..."
 msgstr "Chargement..."
+
+#. [kpop.oidc.errorMessage.insufficientScopeError.message]
+#. defaultMessage is:
+#. No access!
+#: i18n/src/oidc/actions.json
+msgctxt "kpop.oidc.errorMessage.insufficientScopeError.message"
+msgid "No access!"
+msgstr ""
+
+#. [kpop.common.errorMessage.noActiveUserSession.message]
+#. defaultMessage is:
+#. No active user session.
+#: i18n/src/common/actions.json
+msgctxt "kpop.common.errorMessage.noActiveUserSession.message"
+msgid "No active user session."
+msgstr ""
 
 #. [kpop.fatalErrorDialog.reloadButton.text]
 #. defaultMessage is:
@@ -80,6 +120,15 @@ msgctxt "kpop.signinDialog.signInButton.text"
 msgid "Sign in"
 msgstr "S'authentifier"
 
+#. [kpop.common.actions.signInButton.label]
+#. defaultMessage is:
+#. Sign in
+#: i18n/src/common/actions.json
+#, fuzzy
+msgctxt "kpop.common.actions.signInButton.label"
+msgid "Sign in"
+msgstr "S'authentifier"
+
 #. [kpop.userProfileButton.signOutButton.text]
 #. defaultMessage is:
 #. Sign out
@@ -87,6 +136,14 @@ msgstr "S'authentifier"
 msgctxt "kpop.userProfileButton.signOutButton.text"
 msgid "Sign out"
 msgstr "Quitter"
+
+#. [kpop.oidc.swichUserButton.label]
+#. defaultMessage is:
+#. Switch user
+#: i18n/src/oidc/actions.json
+msgctxt "kpop.oidc.swichUserButton.label"
+msgid "Switch user"
+msgstr ""
 
 #. [kpop.loader.longtime.message]
 #. defaultMessage is:
@@ -108,6 +165,14 @@ msgctxt "kpop.fatalErrorDialog.message"
 msgid "This is a fatal error and the app needs to be reloaded."
 msgstr "Ceci est une erreur irreversible, l'app doit être rechargé."
 
+#. [kpop.common.errorMessage.noActiveUserSession.detail]
+#. defaultMessage is:
+#. To use this app you must be signed in, but your active session could not be validated or is expired.
+#: i18n/src/common/actions.json
+msgctxt "kpop.common.errorMessage.noActiveUserSession.detail"
+msgid "To use this app you must be signed in, but your active session could not be validated or is expired."
+msgstr ""
+
 #. [kpop.updateAvailableSnack.message]
 #. defaultMessage is:
 #. Update available
@@ -115,6 +180,14 @@ msgstr "Ceci est une erreur irreversible, l'app doit être rechargé."
 msgctxt "kpop.updateAvailableSnack.message"
 msgid "Update available"
 msgstr "Mise à jour disponible"
+
+#. [kpop.oidc.errorMessage.insufficientScopeError.detail]
+#. defaultMessage is:
+#. You do not have permission to access this app. Please switch to another user or ask your administrator to grant you access.
+#: i18n/src/oidc/actions.json
+msgctxt "kpop.oidc.errorMessage.insufficientScopeError.detail"
+msgid "You do not have permission to access this app. Please switch to another user or ask your administrator to grant you access."
+msgstr ""
 
 #. [kpop.a2A2HsAvailableSnack.closeButton.ariaLabel]
 #. defaultMessage is:
