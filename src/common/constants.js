@@ -12,3 +12,4 @@ export const KPOP_GLUE_GLUED = 'KPOP_GLUE_GLUED';
 // Error ids.
 export const KPOP_ERRORID_USER_REQUIRED = 'kpop_user_required_error';
 export const KPOP_ERRORID_NETWORK_ERROR = 'kpop_network_error';
+export const KPOP_ERRORID_APP_INITIALIZATION_ERROR = 'kpop_app_initialization_error';

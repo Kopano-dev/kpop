@@ -1,3 +1,5 @@
+import { defineMessages } from 'react-intl';
+
 import {
   resolveError,
 } from '../errors/actions';
@@ -11,10 +13,38 @@ import {
   KPOP_GLUE_GLUED,
   KPOP_ERRORID_USER_REQUIRED,
   KPOP_ERRORID_NETWORK_ERROR,
+  KPOP_ERRORID_APP_INITIALIZATION_ERROR,
 } from './constants';
 import {
   UnexpectedNetworkResponseError,
 } from './errors';
+
+const translations = defineMessages({
+  signInButtonText: {
+    id: 'kpop.common.actions.signInButton.label',
+    defaultMessage: 'Sign in',
+  },
+  noActiveUserSessionMessage: {
+    id: 'kpop.common.errorMessage.noActiveUserSession.message',
+    defaultMessage: 'No active user session',
+  },
+  noActiveUserSessionDetail: {
+    id: 'kpop.common.errorMessage.noActiveUserSession.detail',
+    defaultMessage: 'To use this app you must be signed in, but your active session could not be validated or is expired.',
+  },
+  networkRequestFailed: {
+    id: 'kpop.common.errorMessage.networkRequestFailed.message',
+    defaultMessage: 'Error: network request failed ({status})',
+  },
+  networkRequestForbidden: {
+    id: 'kpop.common.errorMessage.networkRequestForbidden.message',
+    defaultMessage: 'Error: network request forbidden ({status})',
+  },
+  appInitializationError: {
+    id: 'kpop.common.errorMessage.appInitializationError.message',
+    defaultMessage: 'App start failed with error',
+  },
+});
 
 export function setError(error) {
   return async (dispatch) => {
@@ -114,15 +144,19 @@ export function networkError(status, response, raisedError=null) {
     switch (status) {
       case 403:
         // Forbidden.
-        error.message = `Error: network request forbidden (${status})`;
+        error.message = translations.networkRequestForbidden;
         error.fatal = true;
         error.resolution = KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN;
         break;
 
       default:
-        error.message = `Error: network request failed with status ${status}`;
+        error.message = translations.networkRequestFailed;
         break;
     }
+
+    error.values = {
+      status,
+    };
 
     return dispatch(setError(error));
   };
@@ -135,10 +169,24 @@ export function userRequiredError(fatal=true, raisedError=null) {
       fatal,
       resolution: KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
       raisedError,
-      message: 'No active user session',
-      detail: 'To use this app you must be signed in, but your active session could not be validated or is expired.',
+      message: translations.noActiveUserSessionMessage,
+      detail: translations.noActiveUserSessionDetail,
       withoutFatalSuffix: true,
-      reloadButtonText: 'Sign in',
+      reloadButtonText: translations.signInButtonText,
+    };
+
+    return dispatch(setError(error));
+  };
+}
+
+export function appInitializationError(fatal=true, {raisedError, detail} = {}) {
+  return (dispatch) => {
+    const error = {
+      id: KPOP_ERRORID_APP_INITIALIZATION_ERROR,
+      fatal,
+      raisedError,
+      message: translations.appInitializationError,
+      detail,
     };
 
     return dispatch(setError(error));

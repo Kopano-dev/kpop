@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {FormattedMessage} from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -19,6 +19,7 @@ const styles = () => ({
 
 function FatalErrorDialog(props) {
   const {
+    intl,
     onReloadClick,
     fullScreen,
     error,
@@ -36,12 +37,25 @@ function FatalErrorDialog(props) {
       </DialogContentText>
     );
   }
-  const reloadButtonText = error.reloadButtonText ?
-    error.reloadButtonText :
-    <FormattedMessage
+
+  // Translation support.
+  let { message, detail, values, reloadButtonText } = error;
+  if (reloadButtonText && typeof reloadButtonText !== 'string') {
+    reloadButtonText = intl.formatMessage(reloadButtonText, values);
+  }
+  if (!reloadButtonText) {
+    reloadButtonText = <FormattedMessage
       id="kpop.fatalErrorDialog.reloadButton.text"
       defaultMessage="Reload"
+      values={values}
     ></FormattedMessage>;
+  }
+  if (message && typeof message !== 'string') {
+    message = intl.formatMessage(message, values);
+  }
+  if (detail && typeof detail !== 'string') {
+    detail = intl.formatMessage(detail, values);
+  }
 
   return (
     <Dialog
@@ -49,10 +63,10 @@ function FatalErrorDialog(props) {
       {...other}
       aria-labelledby="kpop-fatal-error-dialog-title"
     >
-      <DialogTitle id="kpop-fatal-error-dialog-title">{error.message}</DialogTitle>
+      <DialogTitle id="kpop-fatal-error-dialog-title">{message}</DialogTitle>
       <DialogContent>
         <DialogContentText gutterBottom>
-          {error.detail}
+          {detail}
         </DialogContentText>
         {suffixes}
       </DialogContent>
@@ -70,6 +84,10 @@ FatalErrorDialog.propTypes = {
    * Useful to extend the style applied to components.
    */
   classes: PropTypes.object.isRequired,
+  /**
+   * Internationalization support.
+   */
+  intl: intlShape.isRequired,
   /**
    * The error what will be shown.
    */
@@ -89,4 +107,4 @@ FatalErrorDialog.propTypes = {
 };
 
 
-export default withMobileDialog()(withStyles(styles, { name: 'KpopFatalErrorDialog' })(FatalErrorDialog));
+export default withMobileDialog()(withStyles(styles, { name: 'KpopFatalErrorDialog' })(injectIntl(FatalErrorDialog)));
