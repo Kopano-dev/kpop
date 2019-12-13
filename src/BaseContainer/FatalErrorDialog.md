@@ -12,8 +12,8 @@ const onReloadClick = () => {
 }
 
 const error = {
-	message: 'Error message',
-	detail: 'Error detail',
+	message: 'Error message!',
+	detail: 'Error detail.',
 }
 
 ;<div>

@@ -31,7 +31,7 @@ const translations = defineMessages({
   },
   noActiveUserSessionMessage: {
     id: 'kpop.common.errorMessage.noActiveUserSession.message',
-    defaultMessage: 'No active user session',
+    defaultMessage: 'No active user session.',
   },
   noActiveUserSessionDetail: {
     id: 'kpop.common.errorMessage.noActiveUserSession.detail',
@@ -39,15 +39,15 @@ const translations = defineMessages({
   },
   networkRequestFailed: {
     id: 'kpop.common.errorMessage.networkRequestFailed.message',
-    defaultMessage: 'Error: network request failed ({status})',
+    defaultMessage: 'Error: network request failed: {status}',
   },
   networkRequestForbidden: {
     id: 'kpop.common.errorMessage.networkRequestForbidden.message',
-    defaultMessage: 'Error: network request forbidden ({status})',
+    defaultMessage: 'Error: network request forbidden: {status}',
   },
   appInitializationError: {
     id: 'kpop.common.errorMessage.appInitializationError.message',
-    defaultMessage: 'App start failed with error',
+    defaultMessage: 'App start failed with error!',
   },
 });
 

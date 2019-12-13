@@ -1,3 +1,5 @@
+import { defineMessages } from 'react-intl';
+
 import { setError } from '../common/actions';
 import { KPOP_ERRORID_USER_REQUIRED } from '../common/constants';
 import { clearError } from '../errors/actions';
@@ -14,6 +16,22 @@ import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash,
 import { newUserManager, getUserManager, setUserManagerMetadata, onBeforeSignin, onBeforeSignout } from './usermanager';
 import { makeOIDCState, restoreOIDCState, updateOIDCState } from './state';
 import { profileAsUserShape } from './profile';
+
+const translations = defineMessages({
+  insufficientScopeErrorMessage: {
+    id: 'kpop.oidc.errorMessage.insufficientScopeError.message',
+    defaultMessage: 'No access!',
+  },
+  insufficientScopeErrorDetail: {
+    id: 'kpop.oidc.errorMessage.insufficientScopeError.detail',
+    defaultMessage: 'You do not have permission to access this app. ' +
+      'Please switch to another user or ask your administrator to grant you access.',
+  },
+  switchUserButtonText: {
+    id: 'kpop.oidc.swichUserButton.label',
+    defaultMessage: 'Switch user',
+  },
+});
 
 export function receiveUser(user, userManager) {
   return async (dispatch) => {
@@ -419,11 +437,10 @@ export function insufficientScopeError(fatal=true, raisedError=null) {
       fatal,
       resolution: KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
       raisedError,
-      message: 'No access to this app',
-      detail: 'You do not have permission to access this app. ' +
-        'Please switch to another user or ask your administrator to grant you access.',
+      message: translations.insufficientScopeErrorMessage,
+      detail: translations.insufficientScopeErrorDetail,
       withoutFatalSuffix: true,
-      reloadButtonText: 'Switch user',
+      reloadButtonText: translations.switchUserButtonText,
     };
 
     return dispatch(setError(error));

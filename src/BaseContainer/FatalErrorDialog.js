@@ -15,10 +15,14 @@ import withMobileDialog from '@material-ui/core/withMobileDialog';
 import errorShape from '../shapes/error';
 
 const styles = () => ({
+  paper: {
+    minWidth: 'max(300px, 30%)',
+  },
 });
 
 function FatalErrorDialog(props) {
   const {
+    classes,
     intl,
     onReloadClick,
     fullScreen,
@@ -60,6 +64,9 @@ function FatalErrorDialog(props) {
   return (
     <Dialog
       fullScreen={fullScreen}
+      PaperProps={{
+        className: classes.paper,
+      }}
       {...other}
       aria-labelledby="kpop-fatal-error-dialog-title"
     >
