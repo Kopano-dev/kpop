@@ -35,6 +35,10 @@ export const errorPropTypes = {
    * Action ID for a potentially registered error resultion for this error.
    */
   resolution: PropTypes.string,
+  /**
+   * Additional options attached for this error.
+   */
+  options: PropTypes.object,
 };
 
 const errorShape = PropTypes.shape({

@@ -205,6 +205,7 @@ export function enqueueErrorSnackbar(error) {
     return dispatch(enqueueSnackbar({
       message: error.message,
       options: {
+        ...error.options,
         variant: 'error',
       },
       values: error.values,
