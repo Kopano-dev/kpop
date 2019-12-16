@@ -175,7 +175,8 @@ export function fetchUser(options={}) {
     }
 
     return userManager.getUser().then(async user => {
-      if (user !== null) {
+      if (user && !user.expired) {
+        // NOTE(longsleep): Only return user here when it is not expired.
         return user;
       }
 
