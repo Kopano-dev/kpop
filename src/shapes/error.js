@@ -10,12 +10,12 @@ export const errorPropTypes = {
    * The error message. This is either a plain string, or an object which
    * can be used as react-intl MessageDescriptor.
    */
-  message: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
+  message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   /**
    * Detailed error message.  This is either a plain string, or an object which
    * can be used as react-intl MessageDescriptor.
    */
-  detail: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
+  detail: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   /**
    * Values mapping for string placeholders to primitive text values.
    */
