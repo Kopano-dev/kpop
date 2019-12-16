@@ -60,7 +60,7 @@ class BaseContainer extends React.PureComponent {
   static getDerivedStateFromProps(props, state) {
     const { config, withGlue, embedded } = props;
 
-    if (state.value.config === config) {
+    if (config !== undefined && state.value.config === config) {
       return null;
     }
 
