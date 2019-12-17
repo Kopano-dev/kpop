@@ -6,13 +6,14 @@ import { FormattedMessage } from 'react-intl';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 
-function UpdateAvailableSnack(props) {
+const UpdateAvailableSnack = React.forwardRef(function UpdateAvailableSnack(props, ref) {
   const { anchorOrigin, onReloadClick, open } = props;
 
   return (
     <Snackbar
       anchorOrigin={anchorOrigin}
       open={open}
+      ref={ref}
       action={<Button color="primary" size="small" onClick={onReloadClick}>
         <FormattedMessage
           id="kpop.updateAvailableSnack.reloadButton.text"
@@ -31,7 +32,7 @@ function UpdateAvailableSnack(props) {
         </span>}
     />
   );
-}
+});
 
 UpdateAvailableSnack.defaultProps = {
   open: true,

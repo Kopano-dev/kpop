@@ -67,7 +67,7 @@ export const styles = theme => {
   };
 };
 
-function TopBar(props) {
+const TopBar = React.forwardRef(function TopBar(props, ref) {
   const {
     children,
     classes,
@@ -114,6 +114,7 @@ function TopBar(props) {
   return (
     <AppBar
       className={className}
+      ref={ref}
       {...other}
     >
       <Toolbar className={classes.bar}>
@@ -127,7 +128,7 @@ function TopBar(props) {
       </Toolbar>
     </AppBar>
   );
-}
+});
 
 TopBar.propTypes = {
   /**

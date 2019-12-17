@@ -20,7 +20,7 @@ const styles = () => ({
   },
 });
 
-function FatalErrorDialog(props) {
+const FatalErrorDialog = React.forwardRef(function FatalErrorDialog(props, ref) {
   const {
     classes,
     intl,
@@ -67,6 +67,7 @@ function FatalErrorDialog(props) {
       PaperProps={{
         className: classes.paper,
       }}
+      ref={ref}
       {...other}
       aria-labelledby="kpop-fatal-error-dialog-title"
     >
@@ -84,7 +85,7 @@ function FatalErrorDialog(props) {
       </DialogActions>
     </Dialog>
   );
-}
+});
 
 FatalErrorDialog.propTypes = {
   /**

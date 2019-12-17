@@ -18,7 +18,7 @@ const styles = theme => {
   };
 };
 
-function TopBarBound(props) {
+const TopBarBound = React.forwardRef(function TopBarBound(props, ref) {
   const {
     children,
     classes,
@@ -26,10 +26,10 @@ function TopBarBound(props) {
     ...other
   } = props;
 
-  return <div className={classNames(classes.root, classNameProp)} {...other}>
+  return <div className={classNames(classes.root, classNameProp)} ref={ref} {...other}>
     {children}
   </div>;
-}
+});
 
 TopBarBound.propTypes = {
 /**

@@ -32,7 +32,7 @@ const styles = () => ({
   },
 });
 
-function SigninDialog(props) {
+const SigninDialog = React.forwardRef(function SigninDialog(props, ref) {
   const {
     classes,
     onSignInClick,
@@ -62,6 +62,7 @@ function SigninDialog(props) {
       BackdropProps={{
         className: classes.backdrop,
       }}
+      ref={ref}
       {...other}
       aria-labelledby="kpop-sign-in-dialog-title"
     >
@@ -77,7 +78,7 @@ function SigninDialog(props) {
 
     </Dialog>
   );
-}
+});
 
 SigninDialog.propTypes = {
   /**
