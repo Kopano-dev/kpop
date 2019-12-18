@@ -32,7 +32,7 @@ export const errorPropTypes = {
   /**
    * Text label to be show on the button when an error dialog is shown.
    */
-  reloadButtonText: PropTypes.string,
+  reloadButtonText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   /**
    * Action ID for a potentially registered error resultion for this error.
    */
