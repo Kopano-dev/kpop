@@ -17,3 +17,5 @@ export function withBase(Component) {
     );
   };
 }
+
+export default BaseContext;
