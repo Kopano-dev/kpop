@@ -265,6 +265,15 @@ export function fetchUser(options={}) {
   };
 }
 
+export function removeUser() {
+  return async () => {
+    let userManager = getUserManager();
+    if (userManager) {
+      await userManager.removeUser();
+    }
+  }
+}
+
 function signinRedirectWhenRequired(options={}, params={}) {
   return async (dispatch) => {
     const { noRedirect } = options;

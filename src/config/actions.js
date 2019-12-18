@@ -8,6 +8,8 @@ const basePrefix = '';
 const defaultID = 'general';
 const defaultScope = 'kopano';
 
+const statefulOptions = {};
+
 export function receiveConfig(config) {
   return {
     type: KPOP_RECEIVE_CONFIG,
@@ -63,20 +65,28 @@ export function fetchConfigAndInitializeUser(options) {
       await dispatch(receiveConfig(config));
       return config;
     }).then(config => {
-      const action = () => dispatch(initializeUserWithConfig(config, {
+      Object.assign(statefulOptions, {
         requiredScopes,
-        dispatchError,
         args,
-      }));
+      });
+      const action = (opts) => dispatch(initializeUserWithConfig(config, opts));
       if (withUserLazy) {
-        config.continue = async () => {
+        config.continue = async (opts={}) => {
           delete config.continue;
           try {
-            await action();
+            return await action(opts);
           } catch(err) {
-            // Always dispatch when continue actions fails.
-            console.error('failed to continue config initialization', err); // eslint-disable-line no-console
-            await dispatch(userRequiredError());
+            if (opts.dispatchError || opts.dispatchError === undefined) {
+              // Dispatch by default, when continue actions fails.
+              console.error('failed to continue config initialization', err); // eslint-disable-line no-console
+              await dispatch(userRequiredError());
+              return {
+                config,
+                user: undefined,
+              }
+            } else {
+              throw err;
+            }
           }
         };
         return {
@@ -84,13 +94,20 @@ export function fetchConfigAndInitializeUser(options) {
           user: undefined,
         };
       }
-      return action();
+      return action({
+        dispatchError,
+      });
     });
   };
 }
 
-export function initializeUserWithConfig(config, { args, dispatchError, requiredScopes }) {
+export function initializeUserWithConfig(config, options={}) {
   return async (dispatch) => {
+    const {args, dispatchError, requiredScopes, ...other} = Object.assign({}, {
+      args: {},
+      dispatchError: true,
+    }, statefulOptions, options);
+
     let user = null;
 
     if (config.user) {
@@ -101,7 +118,7 @@ export function initializeUserWithConfig(config, { args, dispatchError, required
       let fetchUserArgs = args;
       if (typeof fetchUserArgs === 'function') {
         // Allow app to define args with config.
-        fetchUserArgs = await args(config);
+        fetchUserArgs = await args(config, other);
       }
       user = await dispatch(fetchUser(fetchUserArgs));
     }
