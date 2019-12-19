@@ -20,6 +20,13 @@ export function isPostSignoutPopupCallbackRequest() {
   return window.location.href.indexOf(settings.popupPostLogoutRedirectURL) === 0;
 }
 
+export function isCallbackRequest() {
+  return isSigninCallbackRequest() ||
+    isSigninPopupCallbackRequest() ||
+    isPostSignoutCallbackRequest() ||
+    isPostSignoutPopupCallbackRequest();
+}
+
 export async function resetHash() {
   const { location } = window;
   history.replaceState('', document.title, location.pathname + location.search);

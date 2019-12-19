@@ -1,8 +1,10 @@
-import { getHeadersFromConfig } from './utils';
 import { networkFetch, userRequiredError } from '../common/actions';
 import { fetchUser, receiveUser, ensureRequiredScopes } from '../oidc/actions';
-import { KPOP_RECEIVE_CONFIG, KPOP_RESET_CONFIG } from './constants';
+import { isCallbackRequest } from '../oidc/utils';
 import { KPOP_OIDC_DEFAULT_SCOPE } from '../oidc/constants';
+
+import { getHeadersFromConfig } from './utils';
+import { KPOP_RECEIVE_CONFIG, KPOP_RESET_CONFIG } from './constants';
 
 const basePrefix = '';
 const defaultID = 'general';
@@ -70,7 +72,7 @@ export function fetchConfigAndInitializeUser(options) {
         args,
       });
       const action = (opts) => dispatch(initializeUserWithConfig(config, opts));
-      if (withUserLazy) {
+      if (withUserLazy && !isCallbackRequest()) {
         config.continue = async (opts={}) => {
           delete config.continue;
           try {
@@ -125,6 +127,7 @@ export function initializeUserWithConfig(config, options={}) {
 
     if (!user || user.expired) {
       if (dispatchError) {
+        // TODO(longsleep): Add hook for a custom error dispatcher handler.
         await dispatch(userRequiredError());
         return {user, config};
       } else{

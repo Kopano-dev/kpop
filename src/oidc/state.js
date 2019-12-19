@@ -9,7 +9,7 @@ function getCurrentRoute() {
 
 export function restoreOIDCState(s) {
   if (s.route) {
-    history.replaceState('', document.title, s.route);
+    history.replaceState(s.state ? s.state : null, document.title, s.route);
   }
 
   state.state = s;
@@ -30,6 +30,7 @@ export function makeOIDCState() {
   const s = {
     id: ++state.idx,
     route: getCurrentRoute(),
+    state: history.state,
   };
 
   Object.assign(s, state.state);
