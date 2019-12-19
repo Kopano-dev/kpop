@@ -1,3 +1,5 @@
+import { getHistory } from '../config/history';
+
 import settings from './settings';
 
 export function isSilentRefreshRequest() {
@@ -27,9 +29,10 @@ export function isCallbackRequest() {
     isPostSignoutPopupCallbackRequest();
 }
 
-export async function resetHash() {
-  const { location } = window;
-  history.replaceState('', document.title, location.pathname + location.search);
+export function resetHash() {
+  const h = getHistory();
+  const l = h.location || window.location;
+  h.replaceState(null, '', l.pathname + l.search);
 }
 
 export function blockAsyncProgress() {

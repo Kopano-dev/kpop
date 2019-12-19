@@ -5,6 +5,7 @@ import { KPOP_OIDC_DEFAULT_SCOPE } from '../oidc/constants';
 
 import { getHeadersFromConfig } from './utils';
 import { KPOP_RECEIVE_CONFIG, KPOP_RESET_CONFIG } from './constants';
+import { setHistory } from './history';
 
 const basePrefix = '';
 const defaultID = 'general';
@@ -41,13 +42,18 @@ export function fetchConfigFromServer(id=defaultID, scope=defaultScope) {
 
 export function fetchConfigAndInitializeUser(options) {
   return (dispatch) => {
-    const {id, scope, defaults, requiredScopes, dispatchError, args, withUserLazy} = Object.assign({}, {
+    const {id, scope, defaults, requiredScopes, dispatchError, args, withUserLazy, history} = Object.assign({}, {
       id: defaultID,
       scope: defaultScope,
       defaults: null,
       dispatchError: true,
       args: {},
     }, options);
+
+    if (history) {
+      setHistory(history);
+    }
+
     return dispatch(fetchConfigFromServer(id, scope)).then(async config => {
       // Allow override of config by app.
       if (defaults) {

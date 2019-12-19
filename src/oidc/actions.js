@@ -175,11 +175,6 @@ export function fetchUser(options={}) {
     }
 
     return userManager.getUser().then(async user => {
-      if (user && !user.expired) {
-        // NOTE(longsleep): Only return user here when it is not expired.
-        return user;
-      }
-
       if (isSigninCallbackRequest()) {
         return userManager.signinRedirectCallback().then(user => {
           // This is a redirect - restore options from state.
@@ -233,6 +228,11 @@ export function fetchUser(options={}) {
           return dispatch(signinRedirectWhenRequired(options));
         });
       } else {
+        if (user && !user.expired) {
+          // NOTE(longsleep): Only return user here when it is not expired.
+          return user;
+        }
+
         // Not a callback -> new request and we need auth.
         // Store options in state, so they can be restored after a redirect.
         updateOIDCState({options});
