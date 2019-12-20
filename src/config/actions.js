@@ -77,12 +77,18 @@ export function fetchConfigAndInitializeUser(options) {
         requiredScopes,
         args,
       });
+
+      // Callback support with lazy user logon trigger.
       const action = (opts) => dispatch(initializeUserWithConfig(config, opts));
-      if (withUserLazy && !isCallbackRequest()) {
+      if (withUserLazy) {
         config.continue = async (opts={}) => {
           delete config.continue;
           try {
-            return await action(opts);
+            const user = await action(opts);
+            return {
+              config,
+              user,
+            };
           } catch(err) {
             if (opts.dispatchError || opts.dispatchError === undefined) {
               // Dispatch by default, when continue actions fails.
@@ -91,19 +97,42 @@ export function fetchConfigAndInitializeUser(options) {
               return {
                 config,
                 user: undefined,
-              }
+              };
             } else {
               throw err;
             }
           }
         };
-        return {
-          config,
-          user: undefined,
-        };
+        if (!isCallbackRequest()) {
+          // Fast path, lazy user outside of callbacl.
+          return {
+            config,
+            user: undefined,
+          };
+        }
       }
+      // Either not lazy or in callback.
       return action({
         dispatchError,
+      }).then(user => {
+        if (user && withUserLazy) {
+          // Done already, remove callback.
+          delete config.continue;
+        }
+        return {
+          config,
+          user,
+        };
+      }).catch(reason => {
+        if (withUserLazy && config.continue) {
+          // Ignore error when lazy and with continue callback trigger.
+          console.debug('failed to initialize user (but lazy): ' + reason); // eslint-disable-line no-console
+          return {
+            config,
+            user: undefined,
+          };
+        }
+        throw new Error('failed to initialize user: ' + reason);
       });
     });
   };
@@ -117,13 +146,13 @@ export function initializeUserWithConfig(config, options={}) {
     }, statefulOptions, options);
 
     let user = null;
+    let fetchUserArgs = args;
 
     if (config.user) {
       user = await dispatch(receiveUser(config.user)).then(() => {
         return config.user;
       });
     } else {
-      let fetchUserArgs = args;
       if (typeof fetchUserArgs === 'function') {
         // Allow app to define args with config.
         fetchUserArgs = await args(config, other);
@@ -132,10 +161,17 @@ export function initializeUserWithConfig(config, options={}) {
     }
 
     if (!user || user.expired) {
-      if (dispatchError) {
+      const { dispatchError: reallyDispatchError } = {
+        // NOTE(longsleep): This is complicated shit, since fetchUserArgs can
+        // contain additional options when coming from an OIDC callbacl request,
+        // this are applied here as well.
+        dispatchError,
+        ...fetchUserArgs,
+      };
+      if (reallyDispatchError) {
         // TODO(longsleep): Add hook for a custom error dispatcher handler.
         await dispatch(userRequiredError());
-        return {user, config};
+        return user;
       } else{
         throw new Error('no user or user expired');
       }
@@ -153,6 +189,6 @@ export function initializeUserWithConfig(config, options={}) {
     if (ensuredScopes) {
       await dispatch(ensureRequiredScopes(user, ensuredScopes, dispatchError));
     }
-    return {user, config};
+    return user;
   }
 }
