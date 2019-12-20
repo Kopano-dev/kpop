@@ -190,5 +190,5 @@ export function initializeUserWithConfig(config, options={}) {
       await dispatch(ensureRequiredScopes(user, ensuredScopes, dispatchError));
     }
     return user;
-  }
+  };
 }

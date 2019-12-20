@@ -271,7 +271,7 @@ export function removeUser() {
     if (userManager) {
       await userManager.removeUser();
     }
-  }
+  };
 }
 
 function signinRedirectWhenRequired(options={}, params={}) {

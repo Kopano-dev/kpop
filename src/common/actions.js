@@ -35,7 +35,8 @@ const translations = defineMessages({
   },
   noActiveUserSessionDetail: {
     id: 'kpop.common.errorMessage.noActiveUserSession.detail',
-    defaultMessage: 'To use this app you must be signed in, but your active session could not be validated or is expired.',
+    defaultMessage:
+      'To use this app you must be signed in, but your active session could not be validated or is expired.',
   },
   networkRequestFailed: {
     id: 'kpop.common.errorMessage.networkRequestFailed.message',
