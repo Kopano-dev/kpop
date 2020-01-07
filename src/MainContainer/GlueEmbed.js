@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Fade from '@material-ui/core/Fade';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import * as Glue from '@longsleep/glue';
+import * as Glue from '@gluejs/glue';
 
 const styles = theme => {
   return {

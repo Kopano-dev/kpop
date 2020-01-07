@@ -1040,10 +1040,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.7.3.tgz#a166882c81c0c6040975dd30df24fae8549bd96f"
   integrity sha512-14ZVlsB9akwvydAdaEnVnvqu6J2P6ySv39hYyl/aoB6w/V+bXX0tay8cF6paqbgZsN2n5Xh15uF4pE+GvE+itw==
 
-"@longsleep/glue@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@longsleep/glue/-/glue-0.2.0.tgz#fc99cde00978ba10e65691e7c71acdbaf6081ea8"
-  integrity sha512-mxbxjudEe2DqKCGRxAE5zVefECnq1gBfuUJJdTic5DLOzGwzlC2Pypit0UnNGtL/KcOD4DIZe3vUSe5mpMX9KA==
+"@gluejs/glue@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@gluejs/glue/-/glue-0.3.0.tgz#2c3d11250f6c0c570d485ed49206564dcfe45925"
+  integrity sha512-byvFoZCbZW+A3Pg8JUU+8FjoPuF5l1v7mDeLJQP/YSeEcEDiD/YdUKLBUapPrcuyxclrtS8+peX4cxkh6awwTw==
 
 "@material-ui/core@^4.8.0":
   version "4.8.0"

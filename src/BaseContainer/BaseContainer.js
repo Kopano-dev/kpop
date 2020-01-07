@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import renderIf from 'render-if';
-import * as Glue from '@longsleep/glue';
+import * as Glue from '@gluejs/glue';
 
 import FatalErrorDialog from './FatalErrorDialog';
 import SigninDialog from './SigninDialog';
