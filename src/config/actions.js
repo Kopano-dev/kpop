@@ -2,6 +2,7 @@ import { networkFetch, userRequiredError } from '../common/actions';
 import { fetchUser, receiveUser, ensureRequiredScopes } from '../oidc/actions';
 import { isCallbackRequest } from '../oidc/utils';
 import { KPOP_OIDC_DEFAULT_SCOPE } from '../oidc/constants';
+import { sleep } from '../utils/sleep';
 
 import { getHeadersFromConfig } from './utils';
 import { KPOP_RECEIVE_CONFIG, KPOP_RESET_CONFIG } from './constants';
@@ -26,17 +27,38 @@ export function resetConfig() {
   };
 }
 
-export function fetchConfigFromServer(id=defaultID, scope=defaultScope) {
+export function fetchConfigFromServer(id=defaultID, scope=defaultScope, retry=false) {
   return (dispatch) => {
-    return dispatch(networkFetch(
-      `${basePrefix}/api/config/v1/${scope}/${id}/config.json`, {
-        method: 'GET',
-        headers: getHeadersFromConfig(),
-      },
-      200,
-      true,
-      false,
-    ));
+    const f = () => {
+      return dispatch(networkFetch(
+        `${basePrefix}/api/config/v1/${scope}/${id}/config.json`, {
+          method: 'GET',
+          headers: getHeadersFromConfig(),
+        },
+        200,
+        true,
+        false,
+      ));
+    }
+
+    return new Promise(async (resolve, reject) => {
+      let delay = 200;
+      while(true) {
+        try {
+          const config = await f();
+          resolve(config);
+          break;
+        } catch(err) {
+          if (!retry) {
+            reject(err);
+            break;
+          }
+          delay = delay >= 3200 ? 5000 : delay * 2;
+          console.warn('failed to fetch config: ' + err + ', retrying in ' + delay + 'ms'); // eslint-disable-line no-console
+          await sleep(delay);
+        }
+      }
+    });
   };
 }
 
@@ -54,7 +76,7 @@ export function fetchConfigAndInitializeUser(options) {
       setHistory(history);
     }
 
-    return dispatch(fetchConfigFromServer(id, scope)).then(async config => {
+    return dispatch(fetchConfigFromServer(id, scope, true)).then(async config => {
       // Allow override of config by app.
       if (defaults) {
         if (typeof defaults === 'function') {
