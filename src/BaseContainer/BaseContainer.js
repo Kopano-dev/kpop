@@ -6,20 +6,19 @@ import { FormattedMessage } from 'react-intl';
 import renderIf from 'render-if';
 import * as Glue from '@gluejs/glue';
 
-import FatalErrorDialog from './FatalErrorDialog';
-import SigninDialog from './SigninDialog';
-import UpdateAvailableSnack from './UpdateAvailableSnack';
-import { BaseContext } from './BaseContext';
-
 import A2HsAvailableSnack from '../pwa/A2HsAvailableSnack';
 import { errorShape, embeddedShape } from '../shapes';
 import { isInFrame } from '../utils';
 import { triggerA2HsPrompt } from '../pwa/actions';
 import { startSignin } from '../oidc/actions';
-import { KPOP_ERRORID_USER_REQUIRED } from '../common/constants';
 import { glueGlued } from '../common/actions';
 import { initialize as initializeVisibility } from '../visibility/actions';
 import { initialize as initializeOffline } from '../offline/actions';
+
+import BaseErrorDialog from './BaseErrorDialog';
+import UpdateRequiredDialog from './UpdateRequiredDialog';
+import UpdateAvailableSnack from './UpdateAvailableSnack';
+import { BaseContext } from './BaseContext';
 import SnackbarProvider from './SnackbarProvider';
 import Notifier from './Notifier';
 
@@ -55,16 +54,18 @@ class BaseContainer extends React.PureComponent {
   state = {
     value: {},
     initialized: false,
+    updateRequired: false,
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { config, withGlue, embedded } = props;
+    const { config, withGlue, embedded, currentVersion } = props;
 
     if (config !== undefined && state.value.config === config) {
       return null;
     }
 
     return {
+      updateRequired: config && config.minimumVersion && config.minimumVersion > currentVersion,
       value: {
         config: config ? config : getDefaultConfig(),
         embedded: embedded ? embedded : getDefaultEmbedded(state.value.embedded, {
@@ -151,7 +152,7 @@ class BaseContainer extends React.PureComponent {
     }
   }
 
-  handleReload = (error=null) => async (event) => {
+  handleReloadClick = (error=null) => async (event) => {
     if (event && event.preventDefault) {
       event.preventDefault();
     }
@@ -163,14 +164,14 @@ class BaseContainer extends React.PureComponent {
     window.location.reload();
   };
 
-  handleA2Hs = () => {
+  handleA2HsClick = () => {
     const { dispatch } = this.props;
 
     // Trigger system prompt.
     dispatch(triggerA2HsPrompt());
   }
 
-  handleSignIn = (error=null) => async () => {
+  handleSigninClick = (error=null) => async () => {
     const { dispatch } = this.props;
     if (error && error.resolver) {
       // Special actions for error handling.
@@ -189,24 +190,29 @@ class BaseContainer extends React.PureComponent {
       dispatch,
       children,
 
-      ready,
+      config,
+      ready: readyProp,
       error,
       updateAvailable,
+      updateRequired: updateRequiredProp,
       a2HsAvailable,
       withSnackbar,
       notifications,
     } = this.props;
 
-    const { initialized } = this.state;
+    const { initialized, updateRequired: updateRequiredState } = this.state;
     const { embedded } = this.state.value;
 
-    const readyAndNotFatalError = initialized && ready && !embedded.wait && (!error || !error.fatal);
+    const updateRequired = updateRequiredProp || updateRequiredState;
+    const ready = readyProp && initialized && !embedded.wait && !updateRequired && config;
+    const readyAndNotFatalError = ready && (!error || !error.fatal);
 
     const ifReady = renderIf(readyAndNotFatalError);
-    const ifNotReady = renderIf(!initialized || !ready || embedded.wait);
+    const ifNotReady = renderIf(!ready);
     const ifFatalError = renderIf(error && error.fatal);
-    const ifUpdateAvailable = renderIf(updateAvailable);
-    const ifA2HsAvailable = renderIf(!updateAvailable && a2HsAvailable);
+    const ifUpdateAvailable = renderIf(updateAvailable && !updateRequired);
+    const ifUpdateRequired = renderIf(updateRequired);
+    const ifA2HsAvailable = renderIf(a2HsAvailable && !updateAvailable && !updateRequired);
     const ifNotifications = renderIf(notifications !== undefined);
 
     return (
@@ -229,35 +235,33 @@ class BaseContainer extends React.PureComponent {
             </React.Fragment>
           )}
           {ifFatalError(
-            this.fatalErrorDialog(error)
+            <BaseErrorDialog
+              error={error}
+              onSigninClick={this.handleSigninClick(error)}
+              onReloadClick={this.handleReloadClick(error)}
+            />
           )}
           {ifUpdateAvailable(
-            <UpdateAvailableSnack onReloadClick={this.handleReload()}/>
+            <UpdateAvailableSnack onReloadClick={this.handleReloadClick()}/>
+          )}
+          {ifUpdateRequired(
+            <UpdateRequiredDialog
+              open
+              fullWidth
+              maxWidth={false}
+              disableBackdropClick
+              disableEscapeKeyDown
+              PaperProps={{elevation: 0}}
+              onReloadClick={this.handleReloadClick()}
+              updateAvailable={updateAvailable}
+            />
           )}
           {ifA2HsAvailable(
-            <A2HsAvailableSnack onAddClick={this.handleA2Hs}/>
+            <A2HsAvailableSnack onAddClick={this.handleA2HsClick}/>
           )}
         </SnackbarProvider>
       </BaseContext.Provider>
     );
-  }
-
-  fatalErrorDialog = (error) => {
-    if (!error) {
-      return;
-    }
-
-    switch (error.id) {
-      case KPOP_ERRORID_USER_REQUIRED:
-        return <SigninDialog
-          open fullWidth maxWidth="xs" disableBackdropClick disableEscapeKeyDown
-          onSignInClick={this.handleSignIn(error)}
-          PaperProps={{elevation: 0}}
-        />;
-
-      default:
-        return <FatalErrorDialog open error={error} onReloadClick={this.handleReload(error)}/>;
-    }
   }
 }
 
@@ -265,6 +269,7 @@ BaseContainer.defaultProps = {
   withGlue: true,
   withVisibility: true,
   withOffline: true,
+  currentVersion: 1,
 };
 
 BaseContainer.propTypes = {
@@ -292,6 +297,15 @@ BaseContainer.propTypes = {
    * If true the component will show a notification that an update is available.
    */
   updateAvailable: PropTypes.bool,
+  /**
+   * If true the component will show a update required message.
+   */
+  updateRequired: PropTypes.bool,
+  /**
+   * A numeric version which is used to force automatic app update when a
+   * higher number is set as config.minimumVersion.
+   */
+  currentVersion: PropTypes.number.isRequired,
   /**
    * If true the component will showa notification that the app can be installed
    * to the home screen (Progressive web app app to home screen a2hs).
