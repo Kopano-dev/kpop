@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-12-13T14:02:14.999Z\n"
+"POT-Creation-Date: 2020-01-22T11:58:06.118Z\n"
 "PO-Revision-Date: 2019-08-30 13:24+0000\n"
 "Last-Translator: Mayank <m.dabhi@kopano.com>\n"
 "Language-Team: Hindi <http://translate.kopano.io/projects/kopano/kpop/hi/>\n"
@@ -92,14 +92,18 @@ msgctxt "kpop.common.errorMessage.noActiveUserSession.message"
 msgid "No active user session."
 msgstr ""
 
-#. [kpop.fatalErrorDialog.reloadButton.text]
+#. [kpop.updateRequiredDialog.message.appIsUpdating]
 #. defaultMessage is:
-#. Reload
+#. Please wait while the app is updating ...
+#: i18n/src/BaseContainer/UpdateRequiredDialog.json
+msgctxt "kpop.updateRequiredDialog.message.appIsUpdating"
+msgid "Please wait while the app is updating ..."
+msgstr ""
+
 #. [kpop.fatalErrorDialog.reloadButton.text]
 #. defaultMessage is:
 #. Reload
 #: i18n/src/BaseContainer/FatalErrorDialog.json
-#: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.reloadButton.text"
 msgid "Reload"
 msgstr "पुनः लोड करें"
@@ -156,11 +160,7 @@ msgstr "थोड़ा ज्यादा समय लग रहा है..."
 #. [kpop.fatalErrorDialog.message]
 #. defaultMessage is:
 #. This is a fatal error and the app needs to be reloaded.
-#. [kpop.fatalErrorDialog.message]
-#. defaultMessage is:
-#. This is a fatal error and the app needs to be reloaded.
 #: i18n/src/BaseContainer/FatalErrorDialog.json
-#: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.message"
 msgid "This is a fatal error and the app needs to be reloaded."
 msgstr "यह एक घातक त्रुटि है और ऐप को फिर से लोड करने की आवश्यकता है।"
@@ -204,3 +204,8 @@ msgstr "बंद करे"
 msgctxt "kpop.loader.retry"
 msgid "retry"
 msgstr "पुन: प्रयास"
+
+#, fuzzy
+#~ msgctxt "kpop.updateRequiredDialog.reloadButton.text"
+#~ msgid "Reload"
+#~ msgstr "पुनः लोड करें"

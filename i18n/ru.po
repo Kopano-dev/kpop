@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-12-13T14:02:14.999Z\n"
+"POT-Creation-Date: 2020-01-22T11:58:06.118Z\n"
 "PO-Revision-Date: 2018-10-30 20:26+0000\n"
 "Last-Translator: Sotneo <kerovsot@gmail.com>\n"
 "Language-Team: Russian <http://translate.kopano.io/projects/kopano/kpop/ru/>\n"
@@ -92,14 +92,18 @@ msgctxt "kpop.common.errorMessage.noActiveUserSession.message"
 msgid "No active user session."
 msgstr ""
 
-#. [kpop.fatalErrorDialog.reloadButton.text]
+#. [kpop.updateRequiredDialog.message.appIsUpdating]
 #. defaultMessage is:
-#. Reload
+#. Please wait while the app is updating ...
+#: i18n/src/BaseContainer/UpdateRequiredDialog.json
+msgctxt "kpop.updateRequiredDialog.message.appIsUpdating"
+msgid "Please wait while the app is updating ..."
+msgstr ""
+
 #. [kpop.fatalErrorDialog.reloadButton.text]
 #. defaultMessage is:
 #. Reload
 #: i18n/src/BaseContainer/FatalErrorDialog.json
-#: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.reloadButton.text"
 msgid "Reload"
 msgstr "Перезагрузить"
@@ -156,11 +160,7 @@ msgstr "Займёт долгое время..."
 #. [kpop.fatalErrorDialog.message]
 #. defaultMessage is:
 #. This is a fatal error and the app needs to be reloaded.
-#. [kpop.fatalErrorDialog.message]
-#. defaultMessage is:
-#. This is a fatal error and the app needs to be reloaded.
 #: i18n/src/BaseContainer/FatalErrorDialog.json
-#: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.message"
 msgid "This is a fatal error and the app needs to be reloaded."
 msgstr "Это критическая ошибка и приложение должно быть перезагружено."
@@ -204,3 +204,8 @@ msgstr "закрыть"
 msgctxt "kpop.loader.retry"
 msgid "retry"
 msgstr "повторить"
+
+#, fuzzy
+#~ msgctxt "kpop.updateRequiredDialog.reloadButton.text"
+#~ msgid "Reload"
+#~ msgstr "Перезагрузить"

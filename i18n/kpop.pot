@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2019-12-13T14:02:14.999Z\n"
+"POT-Creation-Date: 2020-01-22T11:58:06.118Z\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "MIME-Version: 1.0\n"
@@ -87,11 +87,15 @@ msgctxt "kpop.common.errorMessage.noActiveUserSession.message"
 msgid "No active user session."
 msgstr ""
 
-#: ./i18n/src/BaseContainer/FatalErrorDialog.json
-#. [kpop.fatalErrorDialog.reloadButton.text]
+#: ./i18n/src/BaseContainer/UpdateRequiredDialog.json
+#. [kpop.updateRequiredDialog.message.appIsUpdating]
 #. defaultMessage is:
-#. Reload
-#: ./i18n/src/BaseContainer/SignInDialog.json
+#. Please wait while the app is updating ...
+msgctxt "kpop.updateRequiredDialog.message.appIsUpdating"
+msgid "Please wait while the app is updating ..."
+msgstr ""
+
+#: ./i18n/src/BaseContainer/FatalErrorDialog.json
 #. [kpop.fatalErrorDialog.reloadButton.text]
 #. defaultMessage is:
 #. Reload
@@ -148,10 +152,6 @@ msgid "Taking a long time..."
 msgstr ""
 
 #: ./i18n/src/BaseContainer/FatalErrorDialog.json
-#. [kpop.fatalErrorDialog.message]
-#. defaultMessage is:
-#. This is a fatal error and the app needs to be reloaded.
-#: ./i18n/src/BaseContainer/SignInDialog.json
 #. [kpop.fatalErrorDialog.message]
 #. defaultMessage is:
 #. This is a fatal error and the app needs to be reloaded.

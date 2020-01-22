@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-12-13T14:02:14.999Z\n"
-"PO-Revision-Date: 2019-12-13 15:04+0100\n"
+"POT-Creation-Date: 2020-01-22T11:58:06.118Z\n"
+"PO-Revision-Date: 2020-01-22 13:02+0100\n"
 "Last-Translator: Simon Eisenmann <simon@longsleep.org>\n"
 "Language-Team: German <http://translate.kopano.io/projects/kopano/kpop/de/>\n"
 "Language: de\n"
@@ -92,14 +92,18 @@ msgctxt "kpop.common.errorMessage.noActiveUserSession.message"
 msgid "No active user session."
 msgstr "Keine aktive Benutzersitzung."
 
-#. [kpop.fatalErrorDialog.reloadButton.text]
+#. [kpop.updateRequiredDialog.message.appIsUpdating]
 #. defaultMessage is:
-#. Reload
+#. Please wait while the app is updating ...
+#: i18n/src/BaseContainer/UpdateRequiredDialog.json
+msgctxt "kpop.updateRequiredDialog.message.appIsUpdating"
+msgid "Please wait while the app is updating ..."
+msgstr "Bitte warten, ein Update wird eingespielt ..."
+
 #. [kpop.fatalErrorDialog.reloadButton.text]
 #. defaultMessage is:
 #. Reload
 #: i18n/src/BaseContainer/FatalErrorDialog.json
-#: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.reloadButton.text"
 msgid "Reload"
 msgstr "Neu laden"
@@ -155,11 +159,7 @@ msgstr "Das dauert länger als erwartet..."
 #. [kpop.fatalErrorDialog.message]
 #. defaultMessage is:
 #. This is a fatal error and the app needs to be reloaded.
-#. [kpop.fatalErrorDialog.message]
-#. defaultMessage is:
-#. This is a fatal error and the app needs to be reloaded.
 #: i18n/src/BaseContainer/FatalErrorDialog.json
-#: i18n/src/BaseContainer/SignInDialog.json
 msgctxt "kpop.fatalErrorDialog.message"
 msgid "This is a fatal error and the app needs to be reloaded."
 msgstr "Das ist ein schwerwiegender Fehler und die App muss neu geladen werden."
@@ -203,6 +203,11 @@ msgstr "schließen"
 msgctxt "kpop.loader.retry"
 msgid "retry"
 msgstr "wiederholen"
+
+#, fuzzy
+#~ msgctxt "kpop.updateRequiredDialog.reloadButton.text"
+#~ msgid "Reload"
+#~ msgstr "Neu laden"
 
 #~ msgctxt "loading_message_error"
 #~ msgid "Error!"
