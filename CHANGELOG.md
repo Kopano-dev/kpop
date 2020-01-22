@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+
+
+## v2.2.0 (2020-01-22)
+
 - Bump version to 2.2.0
 - Switch OIDC from implicit to code with pkce
 - Update translations and translate to German
