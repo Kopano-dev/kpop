@@ -42,7 +42,7 @@ const styles = theme => {
       boxShadow: theme.shadows[4],
     },
     label: {
-      marginLeft: theme.spacing.unit * 1.5,
+      marginLeft: theme.spacing(1.5),
       fontWeight: 400,
     },
     /* Pseudo-class applied to the root element if `disabled={true}`. */

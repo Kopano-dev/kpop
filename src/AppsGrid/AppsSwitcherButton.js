@@ -15,7 +15,7 @@ import { embeddedShape } from '../shapes';
 const styles = theme => {
   return {
     card: {
-      paddingTop: theme.spacing.unit,
+      paddingTop: theme.spacing(1),
     },
   };
 };
