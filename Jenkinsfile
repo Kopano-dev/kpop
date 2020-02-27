@@ -38,6 +38,8 @@ pipeline {
 		stage('Dist') {
 			steps {
 				sh 'make dist'
+				sh '$(git diff --stat)'
+				sh 'test -z "$(git diff --shortstat 2>/dev/null |tail -n1)" && echo "Clean check passed."'
 				archiveArtifacts artifacts: 'dist/*.tgz', fingerprint: true
 			}
 		}
