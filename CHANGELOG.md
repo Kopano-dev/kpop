@@ -4,6 +4,13 @@
 
 
 
+## v2.2.1 (2020-02-27)
+
+- Add dedicated classes to topbar to allow override
+- Update styleguidist
+- Migrate kpop to newly introduced theme.spacing api
+
+
 ## v2.2.0 (2020-01-22)
 
 - Bump version to 2.2.0
