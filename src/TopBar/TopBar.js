@@ -34,6 +34,14 @@ export const styles = theme => {
         minHeight: 56,
       },
     },
+    left: {
+      flex: 1,
+    },
+    center: {
+      flex: 1,
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
+    },
     title: {
       verticalAlign: 'middle',
     },
@@ -47,9 +55,6 @@ export const styles = theme => {
       height: 48,
       paddingRight: 10,
       cursor: 'default',
-    },
-    flex: {
-      flex: 1,
     },
     anchor: {
       marginLeft: -12,
@@ -119,10 +124,10 @@ const TopBar = React.forwardRef(function TopBar(props, ref) {
     >
       <Toolbar className={classes.bar}>
         {anchor}
-        <Typography variant="h6" color="inherit" noWrap className={classes.flex}>
+        <Typography variant="h6" color="inherit" noWrap className={classes.left}>
           {logo}<span className={classes.title}>{title}</span>
         </Typography>
-        <div className={classes.flex}>{centerContent}</div>
+        <div className={classes.center}>{centerContent}</div>
         {children}
         {userProfileButton}
       </Toolbar>
