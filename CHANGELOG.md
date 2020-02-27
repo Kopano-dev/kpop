@@ -4,6 +4,11 @@
 
 
 
+## v2.2.2 (2020-02-27)
+
+- Deduplicate dependencies and check dirty in CI
+
+
 ## v2.2.1 (2020-02-27)
 
 - Add dedicated classes to topbar to allow override
