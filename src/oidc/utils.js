@@ -2,24 +2,30 @@ import { getHistory } from '../config/history';
 
 import settings from './settings';
 
+const initialURL = (() => {
+  const u = new URL(window.location.href);
+  u.search = ''; // Strip query, only include path and hash.
+  return u.href;
+})();
+
 export function isSilentRefreshRequest() {
-  return window.location.href.indexOf(settings.silentRedirectURL) === 0;
+  return initialURL.indexOf(settings.silentRedirectURL) === 0;
 }
 
 export function isSigninCallbackRequest() {
-  return window.location.href.indexOf(settings.redirectURL) === 0;
+  return initialURL.indexOf(settings.redirectURL) === 0;
 }
 
 export function isSigninPopupCallbackRequest() {
-  return window.location.href.indexOf(settings.popupRedirectURL) === 0;
+  return initialURL.indexOf(settings.popupRedirectURL) === 0;
 }
 
 export function isPostSignoutCallbackRequest() {
-  return window.location.href.indexOf(settings.postLogoutRedirectURL) === 0;
+  return initialURL.indexOf(settings.postLogoutRedirectURL) === 0;
 }
 
 export function isPostSignoutPopupCallbackRequest() {
-  return window.location.href.indexOf(settings.popupPostLogoutRedirectURL) === 0;
+  return initialURL.indexOf(settings.popupPostLogoutRedirectURL) === 0;
 }
 
 export function isCallbackRequest() {
