@@ -4,6 +4,11 @@
 
 
 
+## v2.2.3 (2020-06-22)
+
+- Support query strings in OIDC callbacks
+
+
 ## v2.2.2 (2020-02-27)
 
 - Deduplicate dependencies and check dirty in CI
