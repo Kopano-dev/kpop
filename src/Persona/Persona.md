@@ -32,7 +32,7 @@ function Personas(props) {
   );
 }
 
-const StyledPersonas = withStyles(styles)(Personas);
+const StyledPersonas = withStyles(styles, {withTheme: true})(Personas);
 
 ;<StyledPersonas/>
 ```

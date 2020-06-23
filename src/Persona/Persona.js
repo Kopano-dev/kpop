@@ -23,7 +23,7 @@ const styles = theme => ({
  * Personas are used for rendering an individual's avatar.
  * @since 0.3.0
  */
-export class Persona extends React.Component {
+class Persona extends React.Component {
   state = {};
 
   static getDerivedStateFromProps(nextProps, prevState) {

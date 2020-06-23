@@ -6,6 +6,9 @@ const path = require('path');
 module.exports = {
   components: 'src/**/[A-Z]*.js',
   skipComponentsWithoutExample: true,
+  getExampleFilename(componentPath) {
+    return componentPath.replace(/\.jsx?$/, '.md');
+  },
   serverHost: 'localhost',
   webpackConfig: {
     module: {

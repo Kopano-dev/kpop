@@ -87,7 +87,7 @@
     "react-dom": "^16.8.6",
     "react-intl": "^2.9.0",
     "react-intl-po": "^2.2.1",
-    "react-styleguidist": "^10.6.2",
+    "react-styleguidist": "9.2.0",
     "react-test-renderer": "^16.2.0",
     "render-if": "^0.1.1",
     "svg-inline-loader": "^0.8.0",

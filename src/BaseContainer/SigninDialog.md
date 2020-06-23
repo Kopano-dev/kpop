@@ -7,7 +7,7 @@ const onOpenClick = () => {
 	setState({ isOpen: true});
 }
 
-const onSignInClick = () => {
+const onSigninClick = () => {
 	setState({ isOpen: false});
 }
 
@@ -18,7 +18,7 @@ const onSignInClick = () => {
 		open={state.isOpen}
 		fullWidth maxWidth="xs"
 		PaperProps={{elevation: 0}}
-		onSignInClick={onSignInClick}
+		onSigninClick={onSigninClick}
 	/>
 </div>
 ```
