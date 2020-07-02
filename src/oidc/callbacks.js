@@ -1,7 +1,7 @@
 import { UserManager } from 'oidc-client';
 
 const userManager = new UserManager({
-  response_mode: 'fragment',
+  response_mode: 'fragment', // eslint-disable-line camelcase
 });
 
 export function signinSilentCallback() {

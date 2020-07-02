@@ -39,11 +39,11 @@ export function fetchConfigFromServer(id=defaultID, scope=defaultScope, retry=fa
         true,
         false,
       ));
-    }
+    };
 
     return new Promise(async (resolve, reject) => {
       let delay = 200;
-      while(true) {
+      while(true) { /* eslint-disable-line no-constant-condition */
         try {
           const config = await f();
           resolve(config);
@@ -54,7 +54,8 @@ export function fetchConfigFromServer(id=defaultID, scope=defaultScope, retry=fa
             break;
           }
           delay = delay >= 3200 ? 5000 : delay * 2;
-          console.warn('failed to fetch config: ' + err + ', retrying in ' + delay + 'ms'); // eslint-disable-line no-console
+          console.warn('failed to fetch config: ' + // eslint-disable-line no-console
+            err + ', retrying in ' + delay + 'ms');
           await sleep(delay);
         }
       }

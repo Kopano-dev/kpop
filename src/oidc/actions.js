@@ -362,7 +362,7 @@ export function createUserManager() {
       popup_post_logout_redirect_uri: settings.popupPostLogoutRedirectURL, // eslint-disable-line camelcase
       silent_redirect_uri: settings.silentRedirectURL,  // eslint-disable-line camelcase
       response_type: config.oidc.useImplicitFlow ? 'id_token token' : 'code', // eslint-disable-line camelcase
-      response_mode: 'fragment',
+      response_mode: 'fragment', // eslint-disable-line camelcase
       scope,
       loadUserInfo: true,
       accessTokenExpiringNotificationTime: KPOP_OIDC_TOKEN_EXPIRATION_NOTIFICATION_TIME,
