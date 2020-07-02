@@ -1,6 +1,8 @@
 import { UserManager } from 'oidc-client';
 
-const userManager = new UserManager();
+const userManager = new UserManager({
+  response_mode: 'fragment',
+});
 
 export function signinSilentCallback() {
   return userManager.signinSilentCallback().catch(err => {
