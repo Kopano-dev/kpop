@@ -4,6 +4,13 @@
 
 
 
+## v2.2.4 (2020-07-02)
+
+- Fix linting errors and warnings
+- Force OIDC mode to use fragment
+- Pin styleguidist version and fix examples as needed
+
+
 ## v2.2.3 (2020-06-22)
 
 - Support query strings in OIDC callbacks
