@@ -14,7 +14,7 @@ pipeline {
 		stage('Lint') {
 			steps {
 				sh 'make lint-checkstyle'
-				checkstyle pattern: 'test/tests.eslint.xml', canComputeNew: false, failedTotalAll: '5', unstableTotalAll: '50'
+				recordIssues qualityGates: [[threshold: 5, type: 'TOTAL', unstable: false]], tools: [esLint(pattern: 'test/tests.eslint.xml')], unhealthy: 50
 			}
 		}
 		stage('Build') {
