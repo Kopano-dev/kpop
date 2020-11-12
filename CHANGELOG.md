@@ -4,6 +4,20 @@
 
 
 
+## v2.3.0 (2020-11-12)
+
+- Update to Material-UI 4.11
+- Bump CI test environment to Node 14
+- Add text to clipboard helper
+- Add queueDispatch middleware
+- Update browserslist
+- Catch OIDC profile set error when OIDC is not initialized
+- Expose internal loadUser function for OIDC UserManager
+- Update more 3rd party dependencies
+- Update react and react-dom version from 16.8.6 to 17.0.1
+- Use warningsng plugin as checkstyle is deprecated
+
+
 ## v2.2.4 (2020-07-02)
 
 - Fix linting errors and warnings
