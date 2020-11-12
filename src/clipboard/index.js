@@ -1,0 +1,1 @@
+export { writeTextToClipboard } from './writeTextToClipboard';
