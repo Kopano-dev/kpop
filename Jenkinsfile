@@ -3,7 +3,7 @@
 pipeline {
 	agent {
 		docker {
-			image 'node:12'
+			image 'node:14'
 		}
 	}
 	environment {
@@ -44,9 +44,9 @@ pipeline {
 			}
 		}
 	}
-    post {
-        always {
-            cleanWs()
-        }
-    }
+	post {
+		always {
+			cleanWs()
+		}
+	}
 }
