@@ -170,5 +170,9 @@ export class UserManager {
   _getCachedMetadata() {
     return getUserManagerMetadata(this);
   }
+
+  _loadUser() {
+    return this._um._loadUser();
+  }
 }
 
