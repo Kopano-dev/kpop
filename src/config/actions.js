@@ -1,5 +1,5 @@
 import { networkFetch, userRequiredError } from '../common/actions';
-import { fetchUser, receiveUser, ensureRequiredScopes } from '../oidc/actions';
+import { fetchUserWithRetryOrFromStorage, receiveUser, ensureRequiredScopes } from '../oidc/actions';
 import { isCallbackRequest } from '../oidc/utils';
 import { KPOP_OIDC_DEFAULT_SCOPE } from '../oidc/constants';
 import { sleep } from '../utils/sleep';
@@ -180,7 +180,8 @@ export function initializeUserWithConfig(config, options={}) {
         // Allow app to define args with config.
         fetchUserArgs = await args(config, other);
       }
-      user = await dispatch(fetchUser(fetchUserArgs));
+      // Fetch user with retry support.
+      user = await dispatch(fetchUserWithRetryOrFromStorage(fetchUserArgs));
     }
 
     if (!user || user.expired) {

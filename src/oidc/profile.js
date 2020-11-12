@@ -6,10 +6,18 @@ import { makeOIDCState } from './state';
 /**
  * Converts OIDC profile object to match the requirements to work as userShape.
  */
-export function profileAsUserShape(profile, userManager) {
+export function profileAsUserShape(profile, userManager, idToken=null) {
   const metadata = getUserManagerMetadata(userManager);
-  if (!metadata) {
-    throw new Error('oidc has no meta data');
+  let issuer = null;
+  if (metadata) {
+    issuer = metadata.issuer;
+  } else {
+    if (idToken) {
+      // Parse issuer from IDToken value.
+      issuer = userManager._parseJwt(idToken).payload.iss;
+    } else {
+      throw new Error('oidc has no meta data');
+    }
   }
 
   const r = {
@@ -18,12 +26,12 @@ export function profileAsUserShape(profile, userManager) {
     surname: profile.family_name,
     mail: profile.email,
 
-    guid: profile.email ? profile.email : `${metadata.issuer}/${profile.sub}`,
+    guid: profile.email ? profile.email : `${issuer}/${profile.sub}`,
   };
 
   // NOTE(longsleep): Sign out support is optional. Check if the issuer has
   // support and register handler if so. Otherwise the handler is undefined.
-  if (metadata.end_session_endpoint) {
+  if (metadata && metadata.end_session_endpoint) {
     r.signoutHandler = async () => {
       console.info('oidc user sign-out handler called'); // eslint-disable-line no-console
       const args = {
@@ -62,6 +70,13 @@ export function profileAsUserShape(profile, userManager) {
         return userManager.signoutRedirect(args);
       }
     };
+  } else {
+    // Local sign out.
+    r.signoutHandler = async () => {
+      console.info('oidc local sign-out handler called'); // eslint-disable-line no-console
+      await userManager.removeUser();
+      return;
+    }
   }
 
   return r;

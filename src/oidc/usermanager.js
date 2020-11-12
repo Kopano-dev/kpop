@@ -149,6 +149,17 @@ export class UserManager {
     return this._um.revokeAccessToken();
   }
 
+  removeAccessToken() {
+    return this._um._loadUser().then(user => {
+      if (user) {
+        this._clearAccessToken(user);
+        return this._um.storeUser(user).then(() => {
+          this._um.events.load(user);
+        });
+      }
+    });
+  }
+
   startSilentRenew() {
     return this._um.startSilentRenew();
   }
@@ -173,6 +184,15 @@ export class UserManager {
 
   _loadUser() {
     return this._um._loadUser();
+  }
+
+  _parseJwt(token) {
+    return this._um._joseUtil.parseJwt(token);
+  }
+
+  _clearAccessToken(user) {
+    user.access_token = null; // eslint-disable-line camelcase
+    user.expires_at = null; // eslint-disable-line camelcase
   }
 }
 

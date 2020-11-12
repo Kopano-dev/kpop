@@ -1,21 +1,27 @@
 import { defineMessages } from 'react-intl';
 
+import { WebStorageStateStore } from 'oidc-client';
+
 import { setError } from '../common/actions';
 import { KPOP_ERRORID_USER_REQUIRED } from '../common/constants';
 import { clearError } from '../errors/actions';
+import { sleep } from '../utils/sleep';
+import { isInStandaloneMode } from '../utils';
 
 import {
   KPOP_RECEIVE_USER,
   KPOP_RESET_USER_AND_REDIRECT_TO_SIGNIN,
+  KPOP_RESTART_SIGNIN_SILENT,
   KPOP_OIDC_DEFAULT_SCOPE,
   KPOP_OIDC_TOKEN_EXPIRATION_NOTIFICATION_TIME,
 } from './constants';
 import { settings } from './settings';
 import { isSigninCallbackRequest, isPostSignoutCallbackRequest, completeCallbackRequest,
   blockAsyncProgress, openPopupInAuthorityContext } from './utils';
-import { newUserManager, getUserManager, setUserManagerMetadata, onBeforeSignin, onBeforeSignout } from './usermanager';
+import { newUserManager, getUserManager, setUserManagerMetadata, getUserManagerMetadata, onBeforeSignin, onBeforeSignout } from './usermanager';
 import { makeOIDCState, restoreOIDCState, updateOIDCState } from './state';
 import { profileAsUserShape } from './profile';
+import { scopeOfflineAccess } from './scopes';
 
 const translations = defineMessages({
   insufficientScopeErrorMessage: {
@@ -31,14 +37,26 @@ const translations = defineMessages({
     id: 'kpop.oidc.swichUserButton.label',
     defaultMessage: 'Switch user',
   },
+  authExpiredErrorMessage: {
+    id: 'kpop.oidc.errorMessage.authExpired.message',
+    defaultMessage: 'Access token expired',
+  },
+  authExpiredErrorDetail: {
+    id: 'kpop.oidc.errorMessage.authExpired.detail',
+    defaultMessage: 'Failed to renew your session. Please check your network connection.'
+  },
+  retryButtonText: {
+    id: 'kpop.oidc.retryButton.label',
+    defaultMessage: 'Retry',
+  },
 });
 
-export function receiveUser(user, userManager) {
+export function receiveUser(user, userManager, fatal=false) {
   return async (dispatch) => {
     let profile = null;
     if (user) {
       try {
-        profile = profileAsUserShape(user.profile, userManager);
+        profile = profileAsUserShape(user.profile, userManager, user.id_token);
       } catch(err) {
         console.error('oidc failed to set profile', err);  // eslint-disable-line no-console
         user = null;
@@ -52,9 +70,12 @@ export function receiveUser(user, userManager) {
     });
     if (user) {
       // Ensure to clear error, if the current error is a user required error.
-      dispatch(clearError({
+      await dispatch(clearError({
         id: KPOP_ERRORID_USER_REQUIRED,
       }, 'id'));
+      if (fatal || (!user.access_token && user.refresh_token)) {
+        await dispatch(authExpiredError(fatal));
+      }
     }
   };
 }
@@ -168,6 +189,49 @@ export function ensureRequiredScopes(user, requiredScopes, dispatchError=true) {
   };
 }
 
+export function fetchUserWithRetryOrFromStorage(options={}) {
+  return (dispatch) => {
+    return new Promise(async (resolve, reject) => {
+      let count = 0;
+      while (true) {
+        try {
+          let u = await dispatch(fetchUser(options));
+          if (u && u.refresh_token) {
+            // Kill offline access, if not configured.
+            const userManager = getUserManager();
+            if (userManager.settings.scope.indexOf('offline_access') === -1) {
+              console.debug('oidc clear existing user as offline_access is not in scope list'); // eslint-disable-line no-console
+              await userManager.removeUser();
+              u = null;
+            }
+          }
+          resolve(u);
+        } catch(e) {
+          count++
+          if (count < 3) {
+            await sleep(3000);
+            continue;
+          }
+          const userManager = getUserManager();
+          if (userManager) {
+            let u = await userManager._loadUser();
+            if (u) {
+              if (u.refresh_token) {
+                userManager._clearAccessToken(u);
+                await dispatch(receiveUser(u, userManager, true));
+                resolve(u);
+                return;
+              }
+            }
+          }
+          reject(e);
+        }
+        break;
+      }
+    });
+  }
+}
+
 export function fetchUser(options={}) {
   return async (dispatch) => {
     const { removeUser } = options;
@@ -197,9 +261,10 @@ export function fetchUser(options={}) {
             // Try to recover silently. This state can happen when the device
             // comes back after it was off/suspended.
             console.debug('oidc silently retrying after no matching state was found'); // eslint-disable-line no-console
-            const args = {
-              state: makeOIDCState(),
-            };
+            const args = {};
+            if (!user || !user.refresh_token) {
+              args.state = makeOIDCState();
+            }
             return userManager.signinSilent(args).catch((err) => {
               console.debug('oidc failed to silently recover after no matching state was found', err); // eslint-disable-line no-console, max-len
               return null;
@@ -235,8 +300,8 @@ export function fetchUser(options={}) {
           return dispatch(signinRedirectWhenRequired(options));
         });
       } else {
-        if (user && !user.expired) {
-          // NOTE(longsleep): Only return user here when it is not expired.
+        if (user && user.access_token && !user.expired) {
+          // NOTE(longsleep): Only return user here when with access token and it is not expired.
           return user;
         }
 
@@ -244,9 +309,10 @@ export function fetchUser(options={}) {
         // Store options in state, so they can be restored after a redirect.
         updateOIDCState({options});
 
-        const args = {
-          state: makeOIDCState(),
-        };
+        const args = {};
+        if (!user || !user.refresh_token) {
+          args.state = makeOIDCState();
+        }
         try {
           // Try to retrieve user silently. This will fail with error when
           // not signed in but avoids a top level redirect when signed in.
@@ -298,20 +364,23 @@ export function fetchUserSilent() {
     const userManager = await dispatch(getOrCreateUserManager());
 
     return userManager.getUser().then(async user => {
-      if (user !== null) {
+      if (user !== null && user.access_token) {
         return user;
       }
 
-      const args = {
-        state: makeOIDCState(),
-      };
+      const args = {};
+      if (!user || !user.refresh_token) {
+        args.state = makeOIDCState();
+      }
       try {
         // Try to retrieve user silently. This will fail with error when
         // not signed in.
         user = await userManager.signinSilent(args);
       } catch (err) {
         console.debug('oidc silent sign-in failed', err); // eslint-disable-line no-console
-        user = null;
+        if (!user || !user.refresh_token) {
+          user = null;
+        }
       }
       return user;
     }).then(async user => {
@@ -326,9 +395,14 @@ export function fetchUserSilent() {
 }
 
 export function getOrCreateUserManager() {
-  return (dispatch) => {
+  return async (dispatch) => {
     let userManager = getUserManager();
     if (userManager) {
+      let metadata = getUserManagerMetadata(userManager);
+      if (!metadata) {
+        metadata = await userManager._getMetadata();
+        setUserManagerMetadata(userManager, metadata);
+      }
       return userManager;
     }
 
@@ -350,6 +424,10 @@ export function createUserManager() {
   return async (dispatch, getState) => {
     const { config } = getState().common;
 
+    const options = {
+      monitorSession: true,
+    };
+
     let iss = config.oidc.iss;
     if (iss === '') {
       // Auto generate issuer with current host.
@@ -358,6 +436,15 @@ export function createUserManager() {
     let scope = config.oidc.scope;
     if (scope === '' || scope === undefined) {
       scope = KPOP_OIDC_DEFAULT_SCOPE;
+    }
+    if (config.oidc.standaloneOfflineAccess && isInStandaloneMode()) {
+      scope += ' ' + scopeOfflineAccess;
+      options.userStore = new WebStorageStateStore({
+        prefix: 'kpop-oidc.',
+        store: window.localStorage,
+      });
+      options.monitorSession = false;
+      console.debug('oidc standalone offline access support enabled');
     }
 
     const userManager = newUserManager({
@@ -379,19 +466,31 @@ export function createUserManager() {
       popupWindowTarget: settings.popupWindowTarget,
       extraQueryParams: config.oidc.eqp || undefined,
       metadataUrl: config.oidc.metadataURL || undefined,
+      ...options,
     });
     userManager.events.addAccessTokenExpiring(() => {
       console.debug('oidc token expiring'); // eslint-disable-line no-console
     });
     userManager.events.addAccessTokenExpired(() => {
       console.warn('oidc access token expired'); // eslint-disable-line no-console
-      userManager.removeUser();
-      setTimeout(() => {
-        // Try to fetch new user silently. This for example helps when the device
-        // comes back after it was suspended or lost connection which led it to
-        // miss the opportunity to renew tokens in time.
-        dispatch(fetchUserSilent());
-      }, 0);
+      userManager._loadUser().then(async user => {
+        if (user) {
+          if (!user.refresh_token) {
+            await userManager.removeUser();
+            user = null;
+          } else {
+            await userManager.removeAccessToken();
+            console.debug('oidc removed expired access token'); // eslint-disable-line no-console
+          }
+        }
+      }).then(() => {
+        setTimeout(() => {
+          // Try to fetch new user silently. This for example helps when the device
+          // comes back after it was suspended or lost connection which led it to
+          // miss the opportunity to renew tokens in time.
+          dispatch(fetchUserSilent());
+        }, 0);
+      });
     });
     userManager.events.addUserLoaded(async user => {
       console.debug('oidc user loaded', user); // eslint-disable-line no-console
@@ -431,7 +530,8 @@ export function createUserManager() {
         console.debug('oidc retrying silent renew'); // eslint-disable-line no-console
         userManager.getUser().then(user => {
           console.debug('oidc retrying silent renew of user', user); // eslint-disable-line no-console
-          if (user && !user.expired) {
+          if (user && (!user.expired || user.refresh_token)) {
+            userManager.stopSilentRenew();
             userManager.startSilentRenew();
           } else {
             console.warn('oidc remove user as silent renew has failed to renew in time'); // eslint-disable-line no-console, max-len
@@ -463,4 +563,30 @@ export function insufficientScopeError(fatal=true, raisedError=null) {
 
     return dispatch(setError(error));
   };
+}
+
+export function authExpiredError(fatal=false, raisedError=null) {
+  return (dispatch) => {
+    const error = {
+      fatal,
+      resolution: KPOP_RESTART_SIGNIN_SILENT,
+      raisedError,
+      message: translations.authExpiredErrorMessage,
+      detail: translations.authExpiredErrorDetail,
+      withoutFatalSuffix: true,
+      withoutReloadAfterResolve: true,
+      reloadButtonText: translations.retryButtonText,
+    };
+    if (!fatal) {
+      error.message = error.detail;
+      error.snack = {
+        options: {
+          key: KPOP_RESTART_SIGNIN_SILENT,
+          persist: true,
+        },
+      };
+    }
+
+    return dispatch(setError(error));
+  }
 }
