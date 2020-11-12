@@ -35,8 +35,15 @@ const translations = defineMessages({
 
 export function receiveUser(user, userManager) {
   return async (dispatch) => {
-    const profile = user ? profileAsUserShape(user.profile, userManager) : null;
-
+    let profile = null;
+    if (user) {
+      try {
+        profile = profileAsUserShape(user.profile, userManager);
+      } catch(err) {
+        console.error('oidc failed to set profile', err);  // eslint-disable-line no-console
+        user = null;
+      };
+    }
     await dispatch({
       type: KPOP_RECEIVE_USER,
       user,
