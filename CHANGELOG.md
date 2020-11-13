@@ -4,6 +4,13 @@
 
 
 
+## v2.4.0 (2020-11-13)
+
+- Allow React 17 as peer dependency
+- Add initial support for web vitals reporting
+- Add service worker registration with hook support
+
+
 ## v2.3.0 (2020-11-12)
 
 - Update to Material-UI 4.11
