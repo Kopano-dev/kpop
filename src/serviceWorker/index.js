@@ -32,6 +32,11 @@ const isLocalhost = Boolean(
 const defaultOptions = {
   env: undefined,
   publicUrl: undefined,
+
+  noSkipWaiting: false,
+  noDispatchNewContent: false,
+  noDispatchReadyForOfflineUse: false,
+  noDispatchIsOfflineMode: false,
 };
 
 export default function register(store, options=defaultOptions) {
@@ -44,9 +49,9 @@ export default function register(store, options=defaultOptions) {
       registerBeforeinstallPrompt(store);
     }
 
-    if ('serviceWorker' in navigator) {
+    if (options.env === 'production' && 'serviceWorker' in navigator) {
       // The URL constructor is available in all browsers that support SW.
-      const publicUrl = new URL(options.publicUrl, window.location);
+      const publicUrl = new URL(options.publicUrl, window.location.href);
       if (publicUrl.origin !== window.location.origin) {
         // Our service worker won't work if PUBLIC_URL is on a different origin
         // from what our page is served on.
@@ -60,7 +65,7 @@ export default function register(store, options=defaultOptions) {
 
         if (isLocalhost) {
           // This is running on localhost. Lets check if a service worker still exists or not.
-          resolve(checkValidServiceWorker(swUrl, store));
+          resolve(checkValidServiceWorker(swUrl, store, options));
 
           // Add some additional logging to localhost,
           navigator.serviceWorker.ready.then(() => {
@@ -68,14 +73,16 @@ export default function register(store, options=defaultOptions) {
           });
         } else {
           // Is not local host. Just register service worker
-          resolve(registerValidSW(swUrl, store));
+          resolve(registerValidSW(swUrl, store, options));
         }
       });
+    } else {
+      resolve(null);
     }
   });
 }
 
-function registerValidSW(swUrl, store) {
+function registerValidSW(swUrl, store, options) {
   return navigator.serviceWorker
     .register(swUrl)
     .then(async registration => {
@@ -91,17 +98,33 @@ function registerValidSW(swUrl, store) {
               // but the previous service worker will still serve the older
               // content until all client tabs are closed or after it has
               // triggered skipWaiting.
-              installingWorker.postMessage({
-                type: 'SKIP_WAITING',
-              });
               console.debug('New content is available; please refresh.');
-              store.dispatch(newContent());
+              if (!options || !options.noSkipWaiting) {
+                registration.waiting.postMessage({
+                  type: 'SKIP_WAITING',
+                });
+              }
+              // Execute callback.
+              if (options && options.onUpdate) {
+                options.onUpdate(registration);
+              }
+              // Dispatch.
+              if (!options || !options.noDispatchNewContent) {
+                store.dispatch(newContent());
+              }
             } else {
               // At this point, everything has been precached.
               // It's the perfect time to display a
               // "Content is cached for offline use." message.
               console.debug('Content is cached for offline use.');
-              store.dispatch(readyForOfflineUse());
+              // Execute callback.
+              if (options && options.onSuccess) {
+                options.onSuccess(registration);
+              }
+              // Dispatch.
+              if (!options || !options.noDispatchReadyForOfflineUse) {
+                store.dispatch(readyForOfflineUse());
+              }
             }
           }
         };
@@ -115,9 +138,11 @@ function registerValidSW(swUrl, store) {
     });
 }
 
-function checkValidServiceWorker(swUrl, store) {
+function checkValidServiceWorker(swUrl, store, options) {
   // Check if the service worker can be found. If it can't reload the page.
-  return fetch(swUrl)
+  return fetch(swUrl, {
+    headers: { 'Service-Worker': 'script' },
+  })
     .then(response => {
       // Ensure service worker exists, and that we really are getting a JS file.
       const contentType = response.headers.get('content-type');
@@ -133,12 +158,15 @@ function checkValidServiceWorker(swUrl, store) {
         });
       } else {
         // Service worker found. Proceed as normal.
-        return registerValidSW(swUrl, store);
+        return registerValidSW(swUrl, store, options);
       }
     })
     .catch(() => {
       console.debug('No internet connection found. App is running in offline mode.');
-      store.dispatch(isOfflineMode());
+      // Dispatch.
+      if (!options || !options.noDispatchIsOfflineMode) {
+        store.dispatch(isOfflineMode());
+      }
     });
 }
 
@@ -146,6 +174,8 @@ export async function unregister() {
   if ('serviceWorker' in navigator) {
     return navigator.serviceWorker.ready.then(registration => {
       registration.unregister();
+    }).catch(error => {
+      console.error(error.message);
     });
   }
 }
