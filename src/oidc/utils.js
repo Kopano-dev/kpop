@@ -38,7 +38,7 @@ export function isCallbackRequest() {
 export function resetHash() {
   const h = getHistory();
   const l = h.location || window.location;
-  h.replaceState(null, '', l.pathname + l.search);
+  h.replaceState(h.state || null, '', l.pathname + l.search);
 }
 
 export function blockAsyncProgress() {
