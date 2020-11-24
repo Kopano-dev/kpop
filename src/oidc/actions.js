@@ -11,7 +11,7 @@ import {
   KPOP_OIDC_TOKEN_EXPIRATION_NOTIFICATION_TIME,
 } from './constants';
 import { settings } from './settings';
-import { isSigninCallbackRequest, isPostSignoutCallbackRequest, resetHash,
+import { isSigninCallbackRequest, isPostSignoutCallbackRequest, completeCallbackRequest,
   blockAsyncProgress, openPopupInAuthorityContext } from './utils';
 import { newUserManager, getUserManager, setUserManagerMetadata, onBeforeSignin, onBeforeSignout } from './usermanager';
 import { makeOIDCState, restoreOIDCState, updateOIDCState } from './state';
@@ -210,7 +210,7 @@ export function fetchUser(options={}) {
         }).then(user => {
           // FIXME(longsleep): This relies on exclusive hash access. Ensure that
           // this reset happens before the state is restored.
-          resetHash();
+          completeCallbackRequest();
           return user;
         });
       } else if (isPostSignoutCallbackRequest()) {
@@ -223,7 +223,7 @@ export function fetchUser(options={}) {
         }).then(resp => {
           // FIXME(longsleep): This relies on exclusive hash access. Ensure that
           // this reset happens before the state is restored.
-          resetHash();
+          completeCallbackRequest();
           // This is a redirect - restore options from state together with state.
           if (resp && resp.state) {
             if (resp.state.options) {

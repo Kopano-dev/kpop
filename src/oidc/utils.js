@@ -2,7 +2,7 @@ import { getHistory } from '../config/history';
 
 import settings from './settings';
 
-const initialURL = (() => {
+let initialURL = (() => {
   const u = new URL(window.location.href);
   u.search = ''; // Strip query, only include path and hash.
   return u.href;
@@ -33,6 +33,11 @@ export function isCallbackRequest() {
     isSigninPopupCallbackRequest() ||
     isPostSignoutCallbackRequest() ||
     isPostSignoutPopupCallbackRequest();
+}
+
+export function completeCallbackRequest() {
+  initialURL = ''; // Kill initial URL so it never retriggers as callback until reload.
+  resetHash();
 }
 
 export function resetHash() {
