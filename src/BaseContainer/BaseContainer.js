@@ -14,6 +14,7 @@ import { startSignin } from '../oidc/actions';
 import { glueGlued } from '../common/actions';
 import { initialize as initializeVisibility } from '../visibility/actions';
 import { initialize as initializeOffline } from '../offline/actions';
+import { reloadAfterUpdate, reloadWithState } from '../config/actions';
 
 import BaseErrorDialog from './BaseErrorDialog';
 import UpdateRequiredDialog from './UpdateRequiredDialog';
@@ -153,16 +154,25 @@ class BaseContainer extends React.PureComponent {
   }
 
   handleReloadClick = (error=null) => async (event) => {
+    const { dispatch } = this.props;
+
     if (event && event.preventDefault) {
       event.preventDefault();
     }
+
     if (error && error.resolver) {
       // Special actions for error handling.
       await error.resolver();
     }
 
-    window.location.reload();
+    dispatch(reloadWithState());
   };
+
+  handleUpdateClick = (event) => {
+    const { dispatch } = this.props;
+
+    dispatch(reloadAfterUpdate());
+  }
 
   handleA2HsClick = () => {
     const { dispatch } = this.props;
@@ -242,7 +252,7 @@ class BaseContainer extends React.PureComponent {
             />
           )}
           {ifUpdateAvailable(
-            <UpdateAvailableSnack onReloadClick={this.handleReloadClick()}/>
+            <UpdateAvailableSnack onReloadClick={this.handleUpdateClick}/>
           )}
           {ifUpdateRequired(
             <UpdateRequiredDialog
@@ -252,7 +262,7 @@ class BaseContainer extends React.PureComponent {
               disableBackdropClick
               disableEscapeKeyDown
               PaperProps={{elevation: 0}}
-              onReloadClick={this.handleReloadClick()}
+              onReloadClick={this.handleUpdateClick}
               updateAvailable={updateAvailable}
             />
           )}

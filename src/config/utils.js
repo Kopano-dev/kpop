@@ -1,3 +1,6 @@
+import { getHistory } from './history';
+import { KPOP_HISTORY_STATE_UPDATE_REQUESTED } from './constants';
+
 export function getHeadersFromConfig(config, user, additionalHeaders) {
   const headers = new Headers({
     'Kopano-XSRF': '1',
@@ -19,4 +22,9 @@ export function getHeadersFromConfig(config, user, additionalHeaders) {
   }
 
   return headers;
+}
+
+export function isLoadAfterUpdate() {
+  const history = getHistory();
+  return history && history.state === KPOP_HISTORY_STATE_UPDATE_REQUESTED;
 }

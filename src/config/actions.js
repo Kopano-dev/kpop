@@ -5,8 +5,8 @@ import { KPOP_OIDC_DEFAULT_SCOPE } from '../oidc/constants';
 import { sleep } from '../utils/sleep';
 
 import { getHeadersFromConfig } from './utils';
-import { KPOP_RECEIVE_CONFIG, KPOP_RESET_CONFIG } from './constants';
-import { setHistory } from './history';
+import { KPOP_RECEIVE_CONFIG, KPOP_RESET_CONFIG, KPOP_HISTORY_STATE_UPDATE_REQUESTED } from './constants';
+import { setHistory, getHistory } from './history';
 
 const basePrefix = '';
 const defaultID = 'general';
@@ -214,4 +214,22 @@ export function initializeUserWithConfig(config, options={}) {
     }
     return user;
   };
+}
+
+export function reloadWithState(state) {
+  return () => {
+    if (state !== undefined) {
+      const history = getHistory();
+      history.replaceState(state, '');
+    }
+    window.location.reload();
+
+    return new Promise(() => {}, () => {});
+  };
+}
+
+export function reloadAfterUpdate() {
+  return (dispatch) => {
+    return dispatch(reloadWithState(KPOP_HISTORY_STATE_UPDATE_REQUESTED));
+  }
 }
