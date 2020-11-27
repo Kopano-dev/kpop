@@ -1,6 +1,6 @@
 {
   "name": "kpop",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "jsnext:main": "es/index.js",
   "module": "es/index.js",
   "private": true,

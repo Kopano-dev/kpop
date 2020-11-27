@@ -4,6 +4,13 @@
 
 
 
+## v2.5.0 (2020-11-27)
+
+- Add functionality to detect app load after update was clicked
+- Ensure OIDC callbacks trigger exactly once
+- Keep current browser history state on hash reset
+
+
 ## v2.4.0 (2020-11-13)
 
 - Allow React 17 as peer dependency
