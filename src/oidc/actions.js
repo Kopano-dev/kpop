@@ -42,7 +42,7 @@ export function receiveUser(user, userManager) {
       } catch(err) {
         console.error('oidc failed to set profile', err);  // eslint-disable-line no-console
         user = null;
-      };
+      }
     }
     await dispatch({
       type: KPOP_RECEIVE_USER,

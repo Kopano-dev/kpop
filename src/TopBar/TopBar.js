@@ -77,7 +77,7 @@ export const defaultBadgeProps = {
   color: 'primary',
   variant: 'dot',
   invisible: 'true',
-}
+};
 
 const TopBar = React.forwardRef(function TopBar(props, ref) {
   const {
@@ -208,7 +208,7 @@ TopBar.propTypes = {
    * The apps logo to show instead of Kopano logo.
    */
   appLogo: PropTypes.element,
-   /**
+  /**
    * Props applied to the Badge element.
    */
   BadgeProps: PropTypes.object,

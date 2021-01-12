@@ -231,5 +231,5 @@ export function reloadWithState(state) {
 export function reloadAfterUpdate() {
   return (dispatch) => {
     return dispatch(reloadWithState(KPOP_HISTORY_STATE_UPDATE_REQUESTED));
-  }
+  };
 }

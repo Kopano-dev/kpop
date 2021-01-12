@@ -168,7 +168,7 @@ class BaseContainer extends React.PureComponent {
     dispatch(reloadWithState());
   };
 
-  handleUpdateClick = (event) => {
+  handleUpdateClick = () => {
     const { dispatch } = this.props;
 
     dispatch(reloadAfterUpdate());
