@@ -6,6 +6,9 @@ pipeline {
 			image 'node:14'
 		}
 	}
+	options {
+		copyArtifactPermission('kapp-release-nightly,kapp-release')
+	}
 	environment {
 		CI = 'true'
 		YARN_CACHE_FOLDER = '/tmp/.yarn-cache'
