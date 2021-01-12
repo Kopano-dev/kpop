@@ -20,10 +20,13 @@ import KopanoWebappIcon from '../icons/KopanoWebappIcon';
 const styles = theme => ({
   root: {
     display: 'grid',
-    gridTemplateColumns: '84px 84px 84px',
+    gridTemplateColumns: '64px 64px 64px',
     gridGap: '2px',
     margin: 0,
     padding: 0,
+  },
+  rootSmall: {
+    gridTemplateColumns: '32px 32px 32px',
   },
   app: {
     display: 'flex',
@@ -31,8 +34,8 @@ const styles = theme => ({
     alignItems: 'center',
   },
   button: {
-    width: 84,
-    height: 84,
+    width: 64,
+    height: 64,
     padding: 2,
     display: 'inline-block',
     textAlign: 'center',
@@ -45,15 +48,18 @@ const styles = theme => ({
         backgroundColor: 'transparent',
       },
     },
-    fontSize: theme.typography.pxToRem(54),
+    fontSize: theme.typography.pxToRem(56),
   },
   icon: {
     display: 'block',
     margin: '0 auto',
+    maxHeight: 32,
+    maxWidth: 32,
   },
   label: {
     display: 'block',
     padding: 2,
+    fontSize: theme.typography.fontSize,
   },
   /* Styles applied to the button element if `size="small"`. */
   sizeSmall: {
@@ -208,7 +214,9 @@ class AppsGrid extends React.PureComponent {
       </li>);
     }
 
-    return <ul className={classNames(classes.root, classNameProp)}>
+    return <ul className={classNames(classes.root, {
+      [classes.rootSmall]: size === 'small',
+    }, classNameProp)}>
       {icons}
     </ul>;
   }

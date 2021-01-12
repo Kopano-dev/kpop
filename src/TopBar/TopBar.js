@@ -76,7 +76,7 @@ export const styles = theme => {
 export const defaultBadgeProps = {
   color: 'primary',
   variant: 'dot',
-  invisible: 'true',
+  invisible: true,
 };
 
 const TopBar = React.forwardRef(function TopBar(props, ref) {
