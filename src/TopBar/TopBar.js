@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Hidden from '@material-ui/core/Hidden';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Badge from '@material-ui/core/Badge';
 
 import { KopanoLogo } from '../logos';
 import { userShape, embeddedShape } from '../shapes';
@@ -72,6 +73,12 @@ export const styles = theme => {
   };
 };
 
+export const defaultBadgeProps = {
+  color: 'primary',
+  variant: 'dot',
+  invisible: 'true',
+}
+
 const TopBar = React.forwardRef(function TopBar(props, ref) {
   const {
     children,
@@ -85,6 +92,7 @@ const TopBar = React.forwardRef(function TopBar(props, ref) {
     centerContent,
     profile,
     appLogo,
+    BadgeProps,
 
     ...other
   } = props;
@@ -102,7 +110,9 @@ const TopBar = React.forwardRef(function TopBar(props, ref) {
       onClick={onAnchorClick}
       className={classes.anchor}
     >
-      <MenuIcon />
+      <Badge {...{...defaultBadgeProps, ...BadgeProps}}>
+        <MenuIcon />
+      </Badge>
     </IconButton>
   ) : null;
 
@@ -193,6 +203,10 @@ TopBar.propTypes = {
    * The apps logo to show instead of Kopano logo.
    */
   appLogo: PropTypes.element,
+   /**
+   * Props applied to the Badge element.
+   */
+  BadgeProps: PropTypes.object,
 };
 
 TopBar.defaultProps = {

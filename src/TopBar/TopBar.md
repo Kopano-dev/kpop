@@ -28,11 +28,11 @@ TopBar example with secondary color:
 <TopBar title="App title" color="secondary" position="static"></TopBar>
 ```
 
-TopBar example with app logo:
+TopBar example with app logo and default badge:
 ```js
 const KopanoMeetIcon = require('../icons/KopanoMeetIcon').default;
 
-<TopBar title="Meet" forceAnchor appLogo={<KopanoMeetIcon/>} position="static"></TopBar>
+<TopBar title="Meet" forceAnchor appLogo={<KopanoMeetIcon/>} position="static" BadgeProps={{invisible: false}}></TopBar>
 ```
 
 TopBar example without app logo:
