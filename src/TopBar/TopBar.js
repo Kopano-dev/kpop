@@ -59,7 +59,7 @@ export const styles = theme => {
     },
     anchor: {
       marginLeft: -12,
-      marginRight: 20,
+      marginRight: 12,
     },
     userDisplayName: {
       fontFamily: theme.typography.fontFamily,
@@ -92,6 +92,7 @@ const TopBar = React.forwardRef(function TopBar(props, ref) {
     centerContent,
     profile,
     appLogo,
+    anchorIcon,
     BadgeProps,
 
     ...other
@@ -111,7 +112,7 @@ const TopBar = React.forwardRef(function TopBar(props, ref) {
       className={classes.anchor}
     >
       <Badge {...{...defaultBadgeProps, ...BadgeProps}}>
-        <MenuIcon />
+        {anchorIcon}
       </Badge>
     </IconButton>
   ) : null;
@@ -187,6 +188,10 @@ TopBar.propTypes = {
    */
   onAnchorClick: PropTypes.func,
   /**
+   * The icon used as anchor on the top bar.
+   */
+  anchorIcon: PropTypes.node,
+  /**
    * The header label shown on the top bar.
    */
   title: PropTypes.node,
@@ -212,10 +217,10 @@ TopBar.propTypes = {
 TopBar.defaultProps = {
   elevation: 0,
   title: 'Kopano',
+  anchorIcon: <MenuIcon />,
 
   color: 'inherit',
   position: 'absolute',
-
 };
 
 export default withBase(withStyles(styles, { name: 'KpopTopBar' })(TopBar));

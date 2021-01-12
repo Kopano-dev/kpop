@@ -28,6 +28,14 @@ TopBar example with secondary color:
 <TopBar title="App title" color="secondary" position="static"></TopBar>
 ```
 
+TopBar example with custom anchor icon:
+
+```js
+const PersonIcon = require('@material-ui/icons/Person').default;
+
+<TopBar title="App title" color="primary" position="static" forceAnchor anchorIcon={<PersonIcon/>}></TopBar>
+```
+
 TopBar example with app logo and default badge:
 ```js
 const KopanoMeetIcon = require('../icons/KopanoMeetIcon').default;
@@ -40,4 +48,11 @@ TopBar example without app logo:
 const KopanoMeetIcon = require('../icons/KopanoMeetIcon').default;
 
 <TopBar title="App title" forceAnchor appLogo={null} position="static"></TopBar>
+```
+
+TopBar minimal example with app logo as anchor and badge:
+```js
+const KopanoMeetIcon = require('../icons/KopanoMeetIcon').default;
+
+<TopBar title={null} forceAnchor appLogo={null} forceAnchor anchorIcon={<KopanoMeetIcon/>} position="static" BadgeProps={{invisible: false}}></TopBar>
 ```
