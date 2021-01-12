@@ -34,3 +34,10 @@ const KopanoMeetIcon = require('../icons/KopanoMeetIcon').default;
 
 <TopBar title="Meet" forceAnchor appLogo={<KopanoMeetIcon/>} position="static"></TopBar>
 ```
+
+TopBar example without app logo:
+```js
+const KopanoMeetIcon = require('../icons/KopanoMeetIcon').default;
+
+<TopBar title="App title" forceAnchor appLogo={null} position="static"></TopBar>
+```

@@ -112,7 +112,7 @@ const TopBar = React.forwardRef(function TopBar(props, ref) {
     />
   ): null;
 
-  const logo = appLogo ?
+  const logo = appLogo === null ? null : appLogo ?
     <ButtonBase disableRipple className={classes.appLogo}>{appLogo}</ButtonBase> :
     <Hidden smDown><img src={KopanoLogo} className={classes.kopanoLogo} alt="Kopano"/> </Hidden>;
 
@@ -125,7 +125,7 @@ const TopBar = React.forwardRef(function TopBar(props, ref) {
       <Toolbar className={classes.bar}>
         {anchor}
         <Typography variant="h6" color="inherit" noWrap className={classes.left}>
-          {logo}<span className={classes.title}>{title}</span>
+          {logo}{title && <span className={classes.title}>{title}</span>}
         </Typography>
         <div className={classes.center}>{centerContent}</div>
         {children}
