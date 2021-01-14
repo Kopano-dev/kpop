@@ -4,6 +4,15 @@
 
 
 
+## v2.6.0 (2021-01-12)
+
+- Reduce AppsGrid icon size
+- Fix linter errors
+- Add support for custom TopBar anchor icon
+- Add badge support to TopBar anchor
+- Support TopBars without app logo
+
+
 ## v2.5.0 (2020-11-27)
 
 - Add functionality to detect app load after update was clicked
