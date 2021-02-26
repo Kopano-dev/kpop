@@ -41,6 +41,11 @@ export const errorPropTypes = {
    * Additional options attached for this error.
    */
   options: PropTypes.object,
+  /**
+   * If set, the error will be considered to trigger a snack message when its
+   * not fatal at the same time.
+   */
+  snack: PropTypes.object,
 };
 
 const errorShape = PropTypes.shape({

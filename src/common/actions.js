@@ -54,16 +54,21 @@ const translations = defineMessages({
 
 export function setError(error) {
   return async (dispatch) => {
-    if (error && error.resolution) {
-      if (error.fatal) {
+    if (error) {
+      if (error.resolution) {
         error.resolver = async () => {
           await dispatch(resolveError(error));
         };
-      } else {
-        await dispatch(resolveError(error));
       }
-    } else if (error && !error.fatal) {
-      dispatch(enqueueErrorSnackbar(error));
+
+      if (!error.fatal && !error.snack)  {
+        if (error.resolution) {
+          // Auto resolve.
+          await dispatch(resolveError(error));
+        }
+      } else if (!error.fatal) {
+        dispatch(enqueueErrorSnackbar(error));
+      }
     }
 
     dispatch({
@@ -203,13 +208,19 @@ export function appInitializationError(fatal=true, {raisedError, detail} = {}) {
 
 export function enqueueErrorSnackbar(error) {
   return (dispatch) => {
+    const snack = {
+      ...error.snack,
+    }
     return dispatch(enqueueSnackbar({
       message: error.message,
+      values: error.values,
+      ...snack,
       options: {
         ...error.options,
         variant: 'error',
+        ...snack.options,
       },
-      values: error.values,
+      error,
     }));
   };
 }
