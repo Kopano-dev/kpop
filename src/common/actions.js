@@ -219,9 +219,9 @@ export function enqueueSnackbar(notification) {
 
   return {
     type: KPOP_SNACKBAR_ENQUEUE,
+    key: key ? key : String(new Date().getTime() + Math.random()),
     notification: {
       ...notification,
-      key: key ? key : String(new Date().getTime() + Math.random()),
     },
   };
 }

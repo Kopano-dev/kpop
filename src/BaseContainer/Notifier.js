@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { injectIntl, intlShape } from 'react-intl';
+
+import Button from '@material-ui/core/Button';
 
 import { withSnackbar } from './SnackbarContext';
 
@@ -9,65 +11,82 @@ import {
   removeSnackbar,
 } from '../common/actions';
 
+const Notification = React.memo(function Notification({ dispatch, intl, enqueueSnackbar, closeSnackbar, notification }) {
+  useEffect(() => {
+    let { message, values, error, options = {} } = notification;
+    let closed = false;
+
+    // Translation support.
+    if (typeof message !== 'string') {
+      message = intl.formatMessage(message, values);
+    }
+
+    // Generate action if an error with an resolver is set.
+    const action = {};
+    if (error && error.resolver) {
+      let buttonText = error.reloadButtonText ? error.reloadButtonText : 'Retry';
+      if (typeof buttonText !== 'string') {
+        buttonText = intl.formatMessage(buttonText, values);
+      }
+      action.action = key => {
+        return <Button
+          size="small"
+          onClick={async () => {
+            try {
+              await error.resolver();
+            } catch(e) {
+              console.error(e);
+              return;
+            }
+            await dispatch(removeSnackbar(key));
+          }}
+        >
+          {buttonText.toLowerCase()}
+        </Button>
+      }
+    }
+
+    // Display.
+    const key = enqueueSnackbar(message, {
+      ...action,
+      ...options,
+      onClose: (event, reason, key) => {
+        if (options.onClose) {
+          options.onClose(event, reason, key);
+        }
+        closed = true;
+        dispatch(removeSnackbar(key));
+      },
+    });
+
+    // Cleanup via unmount handler.
+    return () => {
+      if (!closed) {
+        closeSnackbar(key);
+      }
+    }
+  }, []);
+
+  return null;
+});
+
 class Notifier extends React.PureComponent {
-  displayed = [];
-
-  storeDisplayed = key => {
-    this.displayed = [ ...this.displayed, key ];
-  }
-
-  removeDisplayed = key => {
-    this.displayed = this.displayed.filter(k => key !== k);
-  }
-
-  componentDidUpdate() {
+  render() {
     const {
-      dispatch,
-      intl,
-      enqueueSnackbar,
-      closeSnackbar,
-      notifications = [],
+      notifications,
+      ...other
     } = this.props;
 
-    notifications.forEach(({ key, message, values, options = {}, dismissed = false }) => {
-      // Fastpass to dismiss.
-      if (dismissed) {
-        closeSnackbar(key);
-        return;
-      }
-
-      // Avoid to display again.
-      if (this.displayed.includes(key)) {
-        return;
-      }
-
-      // Translation support.
-      if (typeof message !== 'string') {
-        message = intl.formatMessage(message, values);
-      }
-
-      // Display.
-      enqueueSnackbar(message, {
-        key,
-        ...options,
-        onClose: (event, reason, key) => {
-          if (options.onClose) {
-            options.onClose(event, reason, key);
-          }
-        },
-        onExited: (event, key) => {
-          dispatch(removeSnackbar(key));
-          this.removeDisplayed(key);
-        },
-      });
-
-      // Keep track.
-      this.storeDisplayed(key);
-    });
-  }
-
-  render() {
-    return null;
+    return <React.Fragment>
+      {notifications.map(notification => {
+        const { uid } = notification;
+        return <Notification
+          key={uid}
+          notification={notification}
+          {...other}
+        ></Notification>
+      })}
+    </React.Fragment>;
   }
 }
 

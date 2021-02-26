@@ -38,6 +38,10 @@ const defaultState = {
   notifications: [],
 };
 
+const snackGlobalState = {
+  count: 0,
+};
+
 function commonReducer(state = defaultState, action) {
   switch (action.type) {
     case KPOP_SET_ERROR:
@@ -88,32 +92,36 @@ function commonReducer(state = defaultState, action) {
       });
 
     case KPOP_SNACKBAR_ENQUEUE:
+      if (state.notifications.findIndex(notification => notification.key === action.key) > -1) {
+        // Prevent adding duplicates.
+        return state;
+      }
       return {
         ...state,
         notifications: [
           ...state.notifications,
           {
+            uid: snackGlobalState.count++, // Always add a unique ID for each added snack.
             key: action.key,
             ...action.notification,
           },
         ],
       };
     case KPOP_SNACKBAR_REMOVE:
-      return {
-        ...state,
-        notifications: state.notifications.filter(
-          notification => notification.key !== action.key
-        ),
-      };
     case KPOP_SNACKBAR_CLOSE:
-      return {
-        ...state,
-        notifications: state.notifications.map(notification => (
-          (action.dismissAll || notification.key === action.key)
-            ? { ...notification, dismissed: true }
-            : { ...notification }
-        )),
-      };
+      if (action.dismissAll) {
+        return {
+          ...state,
+          notifications: [],
+        }
+      } else {
+        return {
+          ...state,
+          notifications: state.notifications.filter(
+            notification => notification.key !== action.key
+          ),
+        };
+      }
 
     default:
       return state;
