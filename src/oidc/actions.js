@@ -18,7 +18,8 @@ import {
 import { settings } from './settings';
 import { isSigninCallbackRequest, isPostSignoutCallbackRequest, completeCallbackRequest,
   blockAsyncProgress, openPopupInAuthorityContext } from './utils';
-import { newUserManager, getUserManager, setUserManagerMetadata, getUserManagerMetadata, onBeforeSignin, onBeforeSignout } from './usermanager';
+import { newUserManager, getUserManager, setUserManagerMetadata, getUserManagerMetadata,
+  onBeforeSignin, onBeforeSignout } from './usermanager';
 import { makeOIDCState, restoreOIDCState, updateOIDCState } from './state';
 import { profileAsUserShape } from './profile';
 import { scopeOfflineAccess } from './scopes';
@@ -43,7 +44,7 @@ const translations = defineMessages({
   },
   authExpiredErrorDetail: {
     id: 'kpop.oidc.errorMessage.authExpired.detail',
-    defaultMessage: 'Failed to renew your session. Please check your network connection.'
+    defaultMessage: 'Failed to renew your session. Please check your network connection.',
   },
   retryButtonText: {
     id: 'kpop.oidc.retryButton.label',
@@ -193,21 +194,21 @@ export function fetchUserWithRetryOrFromStorage(options={}) {
   return (dispatch) => {
     return new Promise(async (resolve, reject) => {
       let count = 0;
-      while (true) {
+      while (true) { // eslint-disable-line no-constant-condition
         try {
           let u = await dispatch(fetchUser(options));
           if (u && u.refresh_token) {
             // Kill offline access, if not configured.
             const userManager = getUserManager();
             if (userManager.settings.scope.indexOf('offline_access') === -1) {
-              console.debug('oidc clear existing user as offline_access is not in scope list'); // eslint-disable-line no-console
+              console.debug('oidc clear existing user as offline_access is not in scope list'); // eslint-disable-line no-console, max-len
               await userManager.removeUser();
               u = null;
             }
           }
           resolve(u);
         } catch(e) {
-          count++
+          count++;
           if (count < 3) {
             await sleep(3000);
             continue;
@@ -229,7 +230,7 @@ export function fetchUserWithRetryOrFromStorage(options={}) {
         break;
       }
     });
-  }
+  };
 }
 
 export function fetchUser(options={}) {
@@ -444,7 +445,7 @@ export function createUserManager() {
         store: window.localStorage,
       });
       options.monitorSession = false;
-      console.debug('oidc standalone offline access support enabled');
+      console.debug('oidc standalone offline access support enabled'); // eslint-disable-line no-console
     }
 
     const userManager = newUserManager({
@@ -588,5 +589,5 @@ export function authExpiredError(fatal=false, raisedError=null) {
     }
 
     return dispatch(setError(error));
-  }
+  };
 }

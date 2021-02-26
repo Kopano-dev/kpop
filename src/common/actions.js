@@ -210,7 +210,7 @@ export function enqueueErrorSnackbar(error) {
   return (dispatch) => {
     const snack = {
       ...error.snack,
-    }
+    };
     return dispatch(enqueueSnackbar({
       message: error.message,
       values: error.values,

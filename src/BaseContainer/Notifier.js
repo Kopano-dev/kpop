@@ -11,7 +11,13 @@ import {
   removeSnackbar,
 } from '../common/actions';
 
-const Notification = React.memo(function Notification({ dispatch, intl, enqueueSnackbar, closeSnackbar, notification }) {
+const Notification = React.memo(function Notification({
+  dispatch,
+  intl,
+  enqueueSnackbar,
+  closeSnackbar,
+  notification,
+}) {
   useEffect(() => {
     let { message, values, error, options = {} } = notification;
     let closed = false;
@@ -28,22 +34,22 @@ const Notification = React.memo(function Notification({ dispatch, intl, enqueueS
       if (typeof buttonText !== 'string') {
         buttonText = intl.formatMessage(buttonText, values);
       }
-      action.action = key => {
+      action.action = key => { // eslint-disable-line react/display-name
         return <Button
           size="small"
           onClick={async () => {
             try {
-              await error.resolver();
+              await error.resolver(); // eslint-disable-line react/prop-types
             } catch(e) {
-              console.error(e);
+              console.error(e); // eslint-disable-line no-console
               return;
             }
             await dispatch(removeSnackbar(key));
           }}
         >
           {buttonText.toLowerCase()}
-        </Button>
-      }
+        </Button>;
+      };
     }
 
     // Display.
@@ -64,11 +70,34 @@ const Notification = React.memo(function Notification({ dispatch, intl, enqueueS
       if (!closed) {
         closeSnackbar(key);
       }
-    }
+    };
   }, []);
 
   return null;
 });
+
+Notification.propTypes = {
+  /**
+   * Internationalization api.
+   */
+  intl: intlShape.isRequired,
+  /**
+   * Helper function to enqueue notification to snackbar.
+   */
+  enqueueSnackbar: PropTypes.func.isRequired,
+  /**
+   * Helper function to dismiss notification from snackbar.
+   */
+  closeSnackbar: PropTypes.func.isRequired,
+  /**
+   * A dispatch function, for example from redux.
+   */
+  dispatch: PropTypes.func.isRequired,
+  /**
+   * Notification object.
+   */
+  notification: PropTypes.object.isRequired,
+};
 
 class Notifier extends React.PureComponent {
   render() {
@@ -84,7 +113,7 @@ class Notifier extends React.PureComponent {
           key={uid}
           notification={notification}
           {...other}
-        ></Notification>
+        ></Notification>;
       })}
     </React.Fragment>;
   }

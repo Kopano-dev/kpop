@@ -76,7 +76,7 @@ export function profileAsUserShape(profile, userManager, idToken=null) {
       console.info('oidc local sign-out handler called'); // eslint-disable-line no-console
       await userManager.removeUser();
       return;
-    }
+    };
   }
 
   return r;

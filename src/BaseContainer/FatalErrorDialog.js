@@ -72,9 +72,9 @@ const FatalErrorDialog = React.forwardRef(function FatalErrorDialog(props, ref) 
       try {
         await onReloadClick();
       } catch(e) {
-        console.error(e);
+        console.error(e); // eslint-disable-line no-console
         setPending(false); // Allow to click again, on error.
-      };
+      }
     }
   }, [setPending, pending]);
 

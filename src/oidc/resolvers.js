@@ -16,7 +16,7 @@ import {
   fetchUserSilent,
 } from './actions';
 
-function resetUser(error) {
+function resetUser(error) { // eslint-disable-line no-unused-vars
   return async (dispatch) => {
     const userManager = await dispatch(getOrCreateUserManager());
 

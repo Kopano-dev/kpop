@@ -113,7 +113,7 @@ function commonReducer(state = defaultState, action) {
         return {
           ...state,
           notifications: [],
-        }
+        };
       } else {
         return {
           ...state,
