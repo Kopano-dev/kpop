@@ -153,8 +153,8 @@ export class UserManager {
     return this._um.startSilentRenew();
   }
 
-  stopSlientRenew() {
-    return this._um.stopSlientRenew();
+  stopSilentRenew() {
+    return this._um.stopSilentRenew();
   }
 
   // Internal functions.
