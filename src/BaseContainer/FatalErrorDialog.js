@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
@@ -13,6 +13,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 
 import errorShape from '../shapes/error';
+import sleep from '../utils/sleep';
 
 const styles = () => ({
   paper: {
@@ -61,6 +62,22 @@ const FatalErrorDialog = React.forwardRef(function FatalErrorDialog(props, ref) 
     detail = intl.formatMessage(detail, values);
   }
 
+  const [pending, setPending] = useState(false);
+  const handleReloadClick = useCallback(async () => {
+    setPending(true);
+  }, [onReloadClick, setPending]);
+  useEffect(async () => {
+    if (pending) {
+      await sleep(500);
+      try {
+        await onReloadClick();
+      } catch(e) {
+        console.error(e);
+        setPending(false); // Allow to click again, on error.
+      };
+    }
+  }, [setPending, pending]);
+
   return (
     <Dialog
       fullScreen={fullScreen}
@@ -79,7 +96,7 @@ const FatalErrorDialog = React.forwardRef(function FatalErrorDialog(props, ref) 
         {suffixes}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onReloadClick} color="primary" autoFocus>
+        <Button onClick={handleReloadClick} color="primary" autoFocus disabled={pending}>
           {reloadButtonText}
         </Button>
       </DialogActions>
