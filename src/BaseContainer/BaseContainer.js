@@ -163,6 +163,10 @@ class BaseContainer extends React.PureComponent {
     if (error && error.resolver) {
       // Special actions for error handling.
       await error.resolver();
+      if (error.withoutReloadAfterResolve) {
+        // Exit early, resolve is the last action if flag is set.
+        return;
+      }
     }
 
     dispatch(reloadWithState());
