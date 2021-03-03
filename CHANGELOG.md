@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+
+
+## v2.7.0 (2021-03-03)
+
 - Update translations and translate to German
 - Handle refresh issues when with refresh token
 - Fix linting errors and warnings
