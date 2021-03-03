@@ -1,11 +1,11 @@
-import { networkFetch, userRequiredError } from '../common/actions';
+import { networkFetch, userRequiredError, setBaseReady } from '../common/actions';
 import { fetchUserWithRetryOrFromStorage, receiveUser, ensureRequiredScopes } from '../oidc/actions';
 import { isCallbackRequest } from '../oidc/utils';
 import { KPOP_OIDC_DEFAULT_SCOPE } from '../oidc/constants';
 import { sleep } from '../utils/sleep';
 
 import { getHeadersFromConfig } from './utils';
-import { KPOP_RECEIVE_CONFIG, KPOP_RESET_CONFIG, KPOP_HISTORY_STATE_UPDATE_REQUESTED } from './constants';
+import { KPOP_RECEIVE_CONFIG, KPOP_CONFIG_READY, KPOP_RESET_CONFIG, KPOP_HISTORY_STATE_UPDATE_REQUESTED } from './constants';
 import { setHistory, getHistory } from './history';
 
 const basePrefix = '';
@@ -18,6 +18,13 @@ export function receiveConfig(config) {
   return {
     type: KPOP_RECEIVE_CONFIG,
     config,
+  };
+}
+
+export function configReady(ready=true) {
+  return {
+    type: KPOP_CONFIG_READY,
+    ready,
   };
 }
 
@@ -102,8 +109,15 @@ export function fetchConfigAndInitializeUser(options) {
       });
 
       // Callback support with lazy user logon trigger.
-      const action = (opts) => dispatch(initializeUserWithConfig(config, opts));
+      const action = (opts) => dispatch(initializeUserWithConfig(config, opts)).then(async (user) => {
+        await dispatch(configReady(true));
+        return user;
+      });
       if (withUserLazy) {
+        // TODO(longsleep): This modifies the config in state by reference, find better way. The whole functionality
+        // here relies on the fact that the config stored in the state, remains the same reference as the config
+        // used in the local scope config. This works as of now, as the receive config reducer does take in the config
+        // as is, and its only recreated by reference when the config ready action is triggered (which comes after).
         config.continue = async (opts={}) => {
           delete config.continue;
           try {
@@ -180,7 +194,7 @@ export function initializeUserWithConfig(config, options={}) {
         // Allow app to define args with config.
         fetchUserArgs = await args(config, other);
       }
-      // Fetch user with retry support.
+      // Fetch user from OIDC with retry support.
       user = await dispatch(fetchUserWithRetryOrFromStorage(fetchUserArgs));
     }
 

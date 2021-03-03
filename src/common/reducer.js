@@ -1,5 +1,6 @@
 import {
   KPOP_RECEIVE_CONFIG,
+  KPOP_CONFIG_READY,
   KPOP_RESET_CONFIG,
 } from '../config/constants';
 import {
@@ -71,7 +72,15 @@ function commonReducer(state = defaultState, action) {
 
     case KPOP_RECEIVE_CONFIG:
       return Object.assign({}, state, {
-        config: action.config,
+        config: action.config, // NOTE(longsleep): Use by reference for config.continue hook.
+      });
+
+    case KPOP_CONFIG_READY:
+      return Object.assign({}, state, {
+        config: {
+          ...state.config,
+          ready: action.ready,
+        },
       });
 
     case KPOP_RECEIVE_USER:

@@ -192,9 +192,12 @@ export function ensureRequiredScopes(user, requiredScopes, dispatchError=true) {
 
 export function fetchUserWithRetryOrFromStorage(options={}) {
   return (dispatch) => {
+    const { initializeEvenWhenOffline } = options;
+
     return new Promise(async (resolve, reject) => {
-      let count = 0;
-      while (true) { // eslint-disable-line no-constant-condition
+      let count = 1;
+      let err;
+      do {
         try {
           let u = await dispatch(fetchUser(options));
           if (u && u.refresh_token) {
@@ -207,27 +210,32 @@ export function fetchUserWithRetryOrFromStorage(options={}) {
             }
           }
           resolve(u);
+          err = null;
+          break;
         } catch(e) {
-          count++;
-          if (count < 3) {
-            await sleep(3000);
-            continue;
-          }
-          const userManager = getUserManager();
-          if (userManager) {
-            let u = await userManager._loadUser();
-            if (u) {
-              if (u.refresh_token) {
-                userManager._clearAccessToken(u);
-                await dispatch(receiveUser(u, userManager, true));
-                resolve(u);
-                return;
-              }
-            }
-          }
-          reject(e);
+          err = e;
         }
-        break;
+        count++;
+        await sleep(500 * count * count);
+      } while (count < 3);
+      if (err !== null) {
+        const userManager = getUserManager();
+        if (userManager) {
+          let u = await userManager._loadUser();
+          if (u && u.refresh_token) {
+            if (userManager.settings.scope.indexOf('offline_access') === -1) {
+              console.debug('oidc clear existing local user as offline_access is not in scope list'); // eslint-disable-line no-console, max-len
+              await userManager.removeUser();
+              u = null;
+            } else {
+              userManager._clearAccessToken(u);
+              await dispatch(receiveUser(u, userManager, !initializeEvenWhenOffline));
+            }
+            resolve(u);
+            return;
+          }
+        }
+        reject(err);
       }
     });
   };

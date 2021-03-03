@@ -35,8 +35,7 @@
     "oidc-client": "^1.11.0",
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0",
-    "react-intl": "^2.6.0",
-    "render-if": "^0.1.1"
+    "react-intl": "^2.6.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.0",
@@ -91,7 +90,6 @@
     "react-router-dom": "^5.2.0",
     "react-styleguidist": "9.2.0",
     "react-test-renderer": "^17.0.1",
-    "render-if": "^0.1.1",
     "svg-inline-loader": "^0.8.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.6.0",

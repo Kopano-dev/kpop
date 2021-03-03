@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { FormattedMessage } from 'react-intl';
 
-import renderIf from 'render-if';
 import * as Glue from '@gluejs/glue';
 
 import A2HsAvailableSnack from '../pwa/A2HsAvailableSnack';
@@ -217,48 +216,47 @@ class BaseContainer extends React.PureComponent {
     const { initialized, updateRequired: updateRequiredState } = this.state;
     const { embedded } = this.state.value;
 
-    const updateRequired = updateRequiredProp || updateRequiredState;
-    const ready = readyProp && initialized && !embedded.wait && !updateRequired && config;
-    const readyAndNotFatalError = ready && (!error || !error.fatal);
-
-    const ifReady = renderIf(readyAndNotFatalError);
-    const ifNotReady = renderIf(!ready);
-    const ifFatalError = renderIf(error && error.fatal);
-    const ifUpdateAvailable = renderIf(updateAvailable && !updateRequired);
-    const ifUpdateRequired = renderIf(updateRequired);
-    const ifA2HsAvailable = renderIf(a2HsAvailable && !updateAvailable && !updateRequired);
-    const ifNotifications = renderIf(notifications !== undefined);
+    const updateRequired = Boolean(updateRequiredProp || updateRequiredState);
+    const ready = Boolean(readyProp && initialized && !embedded.wait && !updateRequired && config);
+    const readyAndNotFatalError = Boolean(ready && (!error || !error.fatal));
 
     return (
       <BaseContext.Provider value={this.state.value}>
         <SnackbarProvider withSnackbar={withSnackbar}>
-          {ifNotifications(
+          {(notifications !== undefined) && (
             <Notifier dispatch={dispatch} notifications={notifications}/>
           )}
-          {ifReady(
+          {(readyAndNotFatalError) && (
             children
           )}
-          {ifNotReady(
+          {(!ready || !config || !config.ready) && (
             <React.Fragment>
               <div id="loader">
-                <FormattedMessage
-                  id="kpop.loader.initializing.message"
-                  defaultMessage="Initializing...">
-                </FormattedMessage>
+                {(!ready || !config) ?
+                  <FormattedMessage
+                    id="kpop.loader.initializing.message"
+                    defaultMessage="Initializing...">
+                  </FormattedMessage>
+                  :
+                  <FormattedMessage
+                    id="kpop.loader.connecting.message"
+                    defaultMessage="Connecting...">
+                  </FormattedMessage>
+                }
               </div>
             </React.Fragment>
           )}
-          {ifFatalError(
+          {(error && error.fatal) && (
             <BaseErrorDialog
               error={error}
               onSigninClick={this.handleSigninClick(error)}
               onReloadClick={this.handleReloadClick(error)}
             />
           )}
-          {ifUpdateAvailable(
+          {(updateAvailable && !updateRequired) && (
             <UpdateAvailableSnack onReloadClick={this.handleUpdateClick}/>
           )}
-          {ifUpdateRequired(
+          {(updateRequired) && (
             <UpdateRequiredDialog
               open
               fullWidth
@@ -270,7 +268,7 @@ class BaseContainer extends React.PureComponent {
               updateAvailable={updateAvailable}
             />
           )}
-          {ifA2HsAvailable(
+          {(a2HsAvailable && !updateAvailable && !updateRequired) && (
             <A2HsAvailableSnack onAddClick={this.handleA2HsClick}/>
           )}
         </SnackbarProvider>
@@ -300,7 +298,8 @@ BaseContainer.propTypes = {
    */
   withSnackbar: PropTypes.bool,
   /**
-   * If true the component will show its content.
+   * If true and if the component otherwise is ready and initialized, children
+   * are rendered.
    */
   ready: PropTypes.bool.isRequired,
   /**
