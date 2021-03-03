@@ -1,11 +1,19 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2020-01-22T11:58:06.118Z\n"
+"POT-Creation-Date: 2021-03-03T18:00:39.515Z\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "MIME-Version: 1.0\n"
 "X-Generator: react-intl-po\n"
 
+
+#: ./i18n/src/oidc/actions.json
+#. [kpop.oidc.errorMessage.authExpired.message]
+#. defaultMessage is:
+#. Access token expired
+msgctxt "kpop.oidc.errorMessage.authExpired.message"
+msgid "Access token expired"
+msgstr ""
 
 #: ./i18n/src/pwa/A2HsAvailableSnack.json
 #. [kpop.a2hsAvailableSnack.addButton.text]
@@ -21,6 +29,14 @@ msgstr ""
 #. App start failed with error!
 msgctxt "kpop.common.errorMessage.appInitializationError.message"
 msgid "App start failed with error!"
+msgstr ""
+
+#: ./i18n/src/BaseContainer/BaseContainer.json
+#. [kpop.loader.connecting.message]
+#. defaultMessage is:
+#. Connecting...
+msgctxt "kpop.loader.connecting.message"
+msgid "Connecting..."
 msgstr ""
 
 #: ./i18n/src/Loading/Loading.json
@@ -45,6 +61,14 @@ msgstr ""
 #. Error: network request forbidden: {status}
 msgctxt "kpop.common.errorMessage.networkRequestForbidden.message"
 msgid "Error: network request forbidden: {status}"
+msgstr ""
+
+#: ./i18n/src/oidc/actions.json
+#. [kpop.oidc.errorMessage.authExpired.detail]
+#. defaultMessage is:
+#. Failed to renew your session. Please check your network connection.
+msgctxt "kpop.oidc.errorMessage.authExpired.detail"
+msgid "Failed to renew your session. Please check your network connection."
 msgstr ""
 
 #: ./i18n/src/BaseContainer/BaseContainer.json
@@ -109,6 +133,14 @@ msgstr ""
 #. Reload
 msgctxt "kpop.updateAvailableSnack.reloadButton.text"
 msgid "Reload"
+msgstr ""
+
+#: ./i18n/src/oidc/actions.json
+#. [kpop.oidc.retryButton.label]
+#. defaultMessage is:
+#. Retry
+msgctxt "kpop.oidc.retryButton.label"
+msgid "Retry"
 msgstr ""
 
 #: ./i18n/src/BaseContainer/SigninDialog.json

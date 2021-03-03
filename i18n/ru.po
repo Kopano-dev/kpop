@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-01-22T11:58:06.118Z\n"
+"POT-Creation-Date: 2021-03-03T18:00:39.515Z\n"
 "PO-Revision-Date: 2018-10-30 20:26+0000\n"
 "Last-Translator: Sotneo <kerovsot@gmail.com>\n"
 "Language-Team: Russian <http://translate.kopano.io/projects/kopano/kpop/ru/>\n"
@@ -11,6 +11,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 2.4\n"
+
+#. [kpop.oidc.errorMessage.authExpired.message]
+#. defaultMessage is:
+#. Access token expired
+#: i18n/src/oidc/actions.json
+msgctxt "kpop.oidc.errorMessage.authExpired.message"
+msgid "Access token expired"
+msgstr ""
 
 #. [kpop.a2hsAvailableSnack.addButton.text]
 #. defaultMessage is:
@@ -27,6 +35,15 @@ msgstr "Добавить"
 msgctxt "kpop.common.errorMessage.appInitializationError.message"
 msgid "App start failed with error!"
 msgstr ""
+
+#. [kpop.loader.connecting.message]
+#. defaultMessage is:
+#. Connecting...
+#: i18n/src/BaseContainer/BaseContainer.json
+#, fuzzy
+msgctxt "kpop.loader.connecting.message"
+msgid "Connecting..."
+msgstr "Загрузка..."
 
 #. [kpop.loader.error.message]
 #. defaultMessage is:
@@ -50,6 +67,14 @@ msgstr ""
 #: i18n/src/common/actions.json
 msgctxt "kpop.common.errorMessage.networkRequestForbidden.message"
 msgid "Error: network request forbidden: {status}"
+msgstr ""
+
+#. [kpop.oidc.errorMessage.authExpired.detail]
+#. defaultMessage is:
+#. Failed to renew your session. Please check your network connection.
+#: i18n/src/oidc/actions.json
+msgctxt "kpop.oidc.errorMessage.authExpired.detail"
+msgid "Failed to renew your session. Please check your network connection."
 msgstr ""
 
 #. [kpop.loader.initializing.message]
@@ -115,6 +140,15 @@ msgstr "Перезагрузить"
 msgctxt "kpop.updateAvailableSnack.reloadButton.text"
 msgid "Reload"
 msgstr "Перезагрузить"
+
+#. [kpop.oidc.retryButton.label]
+#. defaultMessage is:
+#. Retry
+#: i18n/src/oidc/actions.json
+#, fuzzy
+msgctxt "kpop.oidc.retryButton.label"
+msgid "Retry"
+msgstr "повторить"
 
 #. [kpop.signinDialog.signInButton.text]
 #. defaultMessage is:
