@@ -2,9 +2,20 @@
 
 ## Unreleased
 
+- Update translations and translate to German
+- Handle refresh issues when with refresh token
+- Fix linting errors and warnings
+- Implement refresh token support
+- Fix typo in usermanager API stopSilentRenew function
+- Improve error as snack functionality
+- Disable fatal error action button after click
+- Add support for fatal errors without a final reload
+- Use component based approach for notifier
+- Bump oidc-client-js to 0.11.5
+- Allow kapp-release/kapp-release-nightly to copy artifacts
 
 
-## v2.6.0 (2021-01-12)
+## v2.6.0 (2021-01-14)
 
 - Reduce AppsGrid icon size
 - Fix linter errors
