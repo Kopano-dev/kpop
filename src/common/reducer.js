@@ -80,6 +80,7 @@ function commonReducer(state = defaultState, action) {
         config: {
           ...state.config,
           ready: action.ready,
+          continue: null, // NOTE(longsleep): Always remove continue hook, to avoid loops.
         },
       });
 

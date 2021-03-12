@@ -119,7 +119,7 @@ export function fetchConfigAndInitializeUser(options) {
         // used in the local scope config. This works as of now, as the receive config reducer does take in the config
         // as is, and its only recreated by reference when the config ready action is triggered (which comes after).
         config.continue = async (opts={}) => {
-          delete config.continue;
+          config.continue = null;
           try {
             const user = await action(opts);
             return {
