@@ -4,6 +4,11 @@
 
 
 
+## v2.7.1 (2021-03-12)
+
+- Ensure config.continue reference is always cleared
+
+
 ## v2.7.0 (2021-03-03)
 
 - Update translations and translate to German
