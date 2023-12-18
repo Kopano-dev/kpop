@@ -4,6 +4,12 @@
 
 
 
+## v2.7.2 (2023-12-18)
+
+- Remove unused cldr third-party build dependency
+- Fix the identifier package.json version and add the license
+
+
 ## v2.7.1 (2021-03-12)
 
 - Ensure config.continue reference is always cleared
