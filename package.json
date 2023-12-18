@@ -23,7 +23,6 @@
     "deduplicate": "yarn-deduplicate -s fewer yarn.lock"
   },
   "dependencies": {
-    "cldr": "^5.2.0",
     "crc32": "^0.2.2",
     "hsv-rgb": "^1.0.0",
     "iso-639-1": "^2.0.5"
