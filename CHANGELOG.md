@@ -4,6 +4,11 @@
 
 
 
+## v2.7.3 (2024-08-02)
+
+- Fix package.json version
+
+
 ## v2.7.2 (2023-12-18)
 
 - Remove unused cldr third-party build dependency
